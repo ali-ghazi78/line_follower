@@ -573,6 +573,8 @@ void controller()
     else
     {
         error=last_error;
+        if((last_error<299&&last_error>0)||(last_error>-299&&last_error<0))
+            error=0;
     }
     motor_speed=error*kp;
 
@@ -580,10 +582,10 @@ void controller()
 //    lcd_put_int(motor_speed);
 //    lcd_gotoxy(0,1);
 //    lcd_put_int(error);
-    if(error==0)
-        Stop();
-    else
-        Move(140-motor_speed,140+motor_speed);
+//    if(error==0&&(!(R_1||R_2||L_2||R_2||L_3||R_3||L_4||R_4||L_5||R_5||L_6||R_6)))
+//        Stop();
+//    else
+    Move(140-motor_speed,140+motor_speed);
 
 
 }

@@ -1677,166 +1677,164 @@
 ; 0000 023F         error=last_error;
 ;PCODE: $0000042C VOL: 0
 ;PCODE: $0000042D VOL: 0
-; 0000 0240     }
+; 0000 0240         if((last_error<299&&last_error>0)||(last_error>-299&&last_error<0))
 ;PCODE: $0000042E VOL: 0
-; 0000 0241     motor_speed=error*kp;
 ;PCODE: $0000042F VOL: 0
 ;PCODE: $00000430 VOL: 0
 ;PCODE: $00000431 VOL: 0
 ;PCODE: $00000432 VOL: 0
 ;PCODE: $00000433 VOL: 0
 ;PCODE: $00000434 VOL: 0
-; 0000 0242 
-; 0000 0243 //    lcd_clear();
-; 0000 0244 //    lcd_put_int(motor_speed);
-; 0000 0245 //    lcd_gotoxy(0,1);
-; 0000 0246 //    lcd_put_int(error);
-; 0000 0247     if(error==0)
 ;PCODE: $00000435 VOL: 0
 ;PCODE: $00000436 VOL: 0
 ;PCODE: $00000437 VOL: 0
-; 0000 0248         Stop();
 ;PCODE: $00000438 VOL: 0
-; 0000 0249     else
 ;PCODE: $00000439 VOL: 0
 ;PCODE: $0000043A VOL: 0
-; 0000 024A         Move(140-motor_speed,140+motor_speed);
 ;PCODE: $0000043B VOL: 0
 ;PCODE: $0000043C VOL: 0
 ;PCODE: $0000043D VOL: 0
 ;PCODE: $0000043E VOL: 0
 ;PCODE: $0000043F VOL: 0
 ;PCODE: $00000440 VOL: 0
-; 0000 024B 
-; 0000 024C 
-; 0000 024D }
+; 0000 0241             error=0;
 ;PCODE: $00000441 VOL: 0
 ;PCODE: $00000442 VOL: 0
+; 0000 0242     }
 ;PCODE: $00000443 VOL: 0
 ;PCODE: $00000444 VOL: 0
+; 0000 0243     motor_speed=error*kp;
 ;PCODE: $00000445 VOL: 0
-;void digitalize()
-; 0000 024F {
 ;PCODE: $00000446 VOL: 0
 ;PCODE: $00000447 VOL: 0
-; 0000 0250     int i=0;
-; 0000 0251     for(;i<24;i++)
 ;PCODE: $00000448 VOL: 0
 ;PCODE: $00000449 VOL: 0
-;	i -> R16,R17
 ;PCODE: $0000044A VOL: 0
+; 0000 0244 
+; 0000 0245 //    lcd_clear();
+; 0000 0246 //    lcd_put_int(motor_speed);
+; 0000 0247 //    lcd_gotoxy(0,1);
+; 0000 0248 //    lcd_put_int(error);
+; 0000 0249 //    if(error==0&&(!(R_1||R_2||L_2||R_2||L_3||R_3||L_4||R_4||L_5||R_5||L_6||R_6)))
+; 0000 024A //        Stop();
+; 0000 024B //    else
+; 0000 024C     Move(140-motor_speed,140+motor_speed);
 ;PCODE: $0000044B VOL: 0
 ;PCODE: $0000044C VOL: 0
 ;PCODE: $0000044D VOL: 0
 ;PCODE: $0000044E VOL: 0
 ;PCODE: $0000044F VOL: 0
 ;PCODE: $00000450 VOL: 0
+; 0000 024D 
+; 0000 024E 
+; 0000 024F }
 ;PCODE: $00000451 VOL: 0
 ;PCODE: $00000452 VOL: 0
-; 0000 0252     {
-; 0000 0253         if(ir_sensor[i]>BLACK)//ir_max_min_calibrate[0][i]-60)
 ;PCODE: $00000453 VOL: 0
 ;PCODE: $00000454 VOL: 0
+;void digitalize()
+; 0000 0251 {
 ;PCODE: $00000455 VOL: 0
 ;PCODE: $00000456 VOL: 0
+; 0000 0252     int i=0;
+; 0000 0253     for(;i<24;i++)
 ;PCODE: $00000457 VOL: 0
-; 0000 0254             sen[i]=1;
 ;PCODE: $00000458 VOL: 0
+;	i -> R16,R17
 ;PCODE: $00000459 VOL: 0
 ;PCODE: $0000045A VOL: 0
 ;PCODE: $0000045B VOL: 0
-; 0000 0255         else
 ;PCODE: $0000045C VOL: 0
 ;PCODE: $0000045D VOL: 0
-; 0000 0256             sen[i]=0;
 ;PCODE: $0000045E VOL: 0
 ;PCODE: $0000045F VOL: 0
 ;PCODE: $00000460 VOL: 0
 ;PCODE: $00000461 VOL: 0
-; 0000 0257     }
+; 0000 0254     {
+; 0000 0255         if(ir_sensor[i]>BLACK)//ir_max_min_calibrate[0][i]-60)
 ;PCODE: $00000462 VOL: 0
 ;PCODE: $00000463 VOL: 0
 ;PCODE: $00000464 VOL: 0
 ;PCODE: $00000465 VOL: 0
 ;PCODE: $00000466 VOL: 0
+; 0000 0256             sen[i]=1;
 ;PCODE: $00000467 VOL: 0
-; 0000 0258 }
 ;PCODE: $00000468 VOL: 0
 ;PCODE: $00000469 VOL: 0
 ;PCODE: $0000046A VOL: 0
-;void calibrate()
-; 0000 025A {
+; 0000 0257         else
 ;PCODE: $0000046B VOL: 0
 ;PCODE: $0000046C VOL: 0
-; 0000 025B     int count=0;
-; 0000 025C     unsigned char i=0;
-; 0000 025D     for(i=0;i<24;i++)
+; 0000 0258             sen[i]=0;
 ;PCODE: $0000046D VOL: 0
-;	count -> R16,R17
-;	i -> R19
 ;PCODE: $0000046E VOL: 0
 ;PCODE: $0000046F VOL: 0
 ;PCODE: $00000470 VOL: 0
+; 0000 0259     }
 ;PCODE: $00000471 VOL: 0
 ;PCODE: $00000472 VOL: 0
 ;PCODE: $00000473 VOL: 0
 ;PCODE: $00000474 VOL: 0
 ;PCODE: $00000475 VOL: 0
 ;PCODE: $00000476 VOL: 0
+; 0000 025A }
 ;PCODE: $00000477 VOL: 0
 ;PCODE: $00000478 VOL: 0
 ;PCODE: $00000479 VOL: 0
+;void calibrate()
+; 0000 025C {
 ;PCODE: $0000047A VOL: 0
-; 0000 025E     {
-; 0000 025F          ir_max_min_calibrate[0][i]=40;
 ;PCODE: $0000047B VOL: 0
+; 0000 025D     int count=0;
+; 0000 025E     unsigned char i=0;
+; 0000 025F     for(i=0;i<24;i++)
 ;PCODE: $0000047C VOL: 0
+;	count -> R16,R17
+;	i -> R19
 ;PCODE: $0000047D VOL: 0
 ;PCODE: $0000047E VOL: 0
 ;PCODE: $0000047F VOL: 0
-; 0000 0260          ir_max_min_calibrate[1][i]=40;
 ;PCODE: $00000480 VOL: 0
 ;PCODE: $00000481 VOL: 0
 ;PCODE: $00000482 VOL: 0
 ;PCODE: $00000483 VOL: 0
 ;PCODE: $00000484 VOL: 0
-; 0000 0261     }
 ;PCODE: $00000485 VOL: 0
 ;PCODE: $00000486 VOL: 0
 ;PCODE: $00000487 VOL: 0
 ;PCODE: $00000488 VOL: 0
 ;PCODE: $00000489 VOL: 0
-; 0000 0262     Go(50,50);
+; 0000 0260     {
+; 0000 0261          ir_max_min_calibrate[0][i]=40;
 ;PCODE: $0000048A VOL: 0
 ;PCODE: $0000048B VOL: 0
 ;PCODE: $0000048C VOL: 0
 ;PCODE: $0000048D VOL: 0
-; 0000 0263     while(count<5)
 ;PCODE: $0000048E VOL: 0
+; 0000 0262          ir_max_min_calibrate[1][i]=40;
 ;PCODE: $0000048F VOL: 0
 ;PCODE: $00000490 VOL: 0
 ;PCODE: $00000491 VOL: 0
-; 0000 0264     {
-; 0000 0265         for(i=0;i<24;i++)
 ;PCODE: $00000492 VOL: 0
 ;PCODE: $00000493 VOL: 0
+; 0000 0263     }
 ;PCODE: $00000494 VOL: 0
 ;PCODE: $00000495 VOL: 0
 ;PCODE: $00000496 VOL: 0
 ;PCODE: $00000497 VOL: 0
 ;PCODE: $00000498 VOL: 0
+; 0000 0264     Go(50,50);
 ;PCODE: $00000499 VOL: 0
 ;PCODE: $0000049A VOL: 0
-; 0000 0266         {   int temp=0;
-; 0000 0267             ReadMp();
 ;PCODE: $0000049B VOL: 0
 ;PCODE: $0000049C VOL: 0
+; 0000 0265     while(count<5)
 ;PCODE: $0000049D VOL: 0
 ;PCODE: $0000049E VOL: 0
 ;PCODE: $0000049F VOL: 0
-;	temp -> Y+0
 ;PCODE: $000004A0 VOL: 0
-; 0000 0268             if(ir_sensor[i]>ir_max_min_calibrate[0][i])
+; 0000 0266     {
+; 0000 0267         for(i=0;i<24;i++)
 ;PCODE: $000004A1 VOL: 0
 ;PCODE: $000004A2 VOL: 0
 ;PCODE: $000004A3 VOL: 0
@@ -1846,19 +1844,19 @@
 ;PCODE: $000004A7 VOL: 0
 ;PCODE: $000004A8 VOL: 0
 ;PCODE: $000004A9 VOL: 0
+; 0000 0268         {   int temp=0;
+; 0000 0269             ReadMp();
 ;PCODE: $000004AA VOL: 0
-; 0000 0269             {
-; 0000 026A               ir_max_min_calibrate[0][i]=ir_sensor[i];
 ;PCODE: $000004AB VOL: 0
 ;PCODE: $000004AC VOL: 0
 ;PCODE: $000004AD VOL: 0
 ;PCODE: $000004AE VOL: 0
+;	temp -> Y+0
 ;PCODE: $000004AF VOL: 0
+; 0000 026A             if(ir_sensor[i]>ir_max_min_calibrate[0][i])
 ;PCODE: $000004B0 VOL: 0
 ;PCODE: $000004B1 VOL: 0
 ;PCODE: $000004B2 VOL: 0
-; 0000 026B             }
-; 0000 026C             if(ir_sensor[i]<ir_max_min_calibrate[1][i])
 ;PCODE: $000004B3 VOL: 0
 ;PCODE: $000004B4 VOL: 0
 ;PCODE: $000004B5 VOL: 0
@@ -1866,23 +1864,22 @@
 ;PCODE: $000004B7 VOL: 0
 ;PCODE: $000004B8 VOL: 0
 ;PCODE: $000004B9 VOL: 0
+; 0000 026B             {
+; 0000 026C               ir_max_min_calibrate[0][i]=ir_sensor[i];
 ;PCODE: $000004BA VOL: 0
 ;PCODE: $000004BB VOL: 0
 ;PCODE: $000004BC VOL: 0
 ;PCODE: $000004BD VOL: 0
-; 0000 026D             {
-; 0000 026E               ir_max_min_calibrate[1][i]=ir_sensor[i];
 ;PCODE: $000004BE VOL: 0
 ;PCODE: $000004BF VOL: 0
 ;PCODE: $000004C0 VOL: 0
 ;PCODE: $000004C1 VOL: 0
+; 0000 026D             }
+; 0000 026E             if(ir_sensor[i]<ir_max_min_calibrate[1][i])
 ;PCODE: $000004C2 VOL: 0
 ;PCODE: $000004C3 VOL: 0
 ;PCODE: $000004C4 VOL: 0
 ;PCODE: $000004C5 VOL: 0
-; 0000 026F             }
-; 0000 0270 
-; 0000 0271         }
 ;PCODE: $000004C6 VOL: 0
 ;PCODE: $000004C7 VOL: 0
 ;PCODE: $000004C8 VOL: 0
@@ -1890,52 +1887,53 @@
 ;PCODE: $000004CA VOL: 0
 ;PCODE: $000004CB VOL: 0
 ;PCODE: $000004CC VOL: 0
-; 0000 0272         count++;
+; 0000 026F             {
+; 0000 0270               ir_max_min_calibrate[1][i]=ir_sensor[i];
 ;PCODE: $000004CD VOL: 0
 ;PCODE: $000004CE VOL: 0
-; 0000 0273     }
 ;PCODE: $000004CF VOL: 0
 ;PCODE: $000004D0 VOL: 0
-; 0000 0274     Stop();
 ;PCODE: $000004D1 VOL: 0
-; 0000 0275     delay_ms(100);
 ;PCODE: $000004D2 VOL: 0
 ;PCODE: $000004D3 VOL: 0
 ;PCODE: $000004D4 VOL: 0
-; 0000 0276     Back(50,50);
+; 0000 0271             }
+; 0000 0272 
+; 0000 0273         }
 ;PCODE: $000004D5 VOL: 0
 ;PCODE: $000004D6 VOL: 0
 ;PCODE: $000004D7 VOL: 0
 ;PCODE: $000004D8 VOL: 0
-; 0000 0277     count=0;
 ;PCODE: $000004D9 VOL: 0
 ;PCODE: $000004DA VOL: 0
-; 0000 0278     while(count<5)
 ;PCODE: $000004DB VOL: 0
+; 0000 0274         count++;
 ;PCODE: $000004DC VOL: 0
 ;PCODE: $000004DD VOL: 0
+; 0000 0275     }
 ;PCODE: $000004DE VOL: 0
-; 0000 0279     {
-; 0000 027A         for(i=0;i<24;i++)
 ;PCODE: $000004DF VOL: 0
+; 0000 0276     Stop();
 ;PCODE: $000004E0 VOL: 0
+; 0000 0277     delay_ms(100);
 ;PCODE: $000004E1 VOL: 0
 ;PCODE: $000004E2 VOL: 0
 ;PCODE: $000004E3 VOL: 0
+; 0000 0278     Back(50,50);
 ;PCODE: $000004E4 VOL: 0
 ;PCODE: $000004E5 VOL: 0
 ;PCODE: $000004E6 VOL: 0
 ;PCODE: $000004E7 VOL: 0
-; 0000 027B         {   int temp=0;
-; 0000 027C             ReadMp();
+; 0000 0279     count=0;
 ;PCODE: $000004E8 VOL: 0
 ;PCODE: $000004E9 VOL: 0
+; 0000 027A     while(count<5)
 ;PCODE: $000004EA VOL: 0
 ;PCODE: $000004EB VOL: 0
 ;PCODE: $000004EC VOL: 0
-;	temp -> Y+0
 ;PCODE: $000004ED VOL: 0
-; 0000 027D             if(ir_sensor[i]>ir_max_min_calibrate[0][i])
+; 0000 027B     {
+; 0000 027C         for(i=0;i<24;i++)
 ;PCODE: $000004EE VOL: 0
 ;PCODE: $000004EF VOL: 0
 ;PCODE: $000004F0 VOL: 0
@@ -1945,19 +1943,19 @@
 ;PCODE: $000004F4 VOL: 0
 ;PCODE: $000004F5 VOL: 0
 ;PCODE: $000004F6 VOL: 0
+; 0000 027D         {   int temp=0;
+; 0000 027E             ReadMp();
 ;PCODE: $000004F7 VOL: 0
-; 0000 027E             {
-; 0000 027F               ir_max_min_calibrate[0][i]=ir_sensor[i];
 ;PCODE: $000004F8 VOL: 0
 ;PCODE: $000004F9 VOL: 0
 ;PCODE: $000004FA VOL: 0
 ;PCODE: $000004FB VOL: 0
+;	temp -> Y+0
 ;PCODE: $000004FC VOL: 0
+; 0000 027F             if(ir_sensor[i]>ir_max_min_calibrate[0][i])
 ;PCODE: $000004FD VOL: 0
 ;PCODE: $000004FE VOL: 0
 ;PCODE: $000004FF VOL: 0
-; 0000 0280             }
-; 0000 0281             if(ir_sensor[i]<ir_max_min_calibrate[1][i])
 ;PCODE: $00000500 VOL: 0
 ;PCODE: $00000501 VOL: 0
 ;PCODE: $00000502 VOL: 0
@@ -1965,23 +1963,22 @@
 ;PCODE: $00000504 VOL: 0
 ;PCODE: $00000505 VOL: 0
 ;PCODE: $00000506 VOL: 0
+; 0000 0280             {
+; 0000 0281               ir_max_min_calibrate[0][i]=ir_sensor[i];
 ;PCODE: $00000507 VOL: 0
 ;PCODE: $00000508 VOL: 0
 ;PCODE: $00000509 VOL: 0
 ;PCODE: $0000050A VOL: 0
-; 0000 0282             {
-; 0000 0283               ir_max_min_calibrate[1][i]=ir_sensor[i];
 ;PCODE: $0000050B VOL: 0
 ;PCODE: $0000050C VOL: 0
 ;PCODE: $0000050D VOL: 0
 ;PCODE: $0000050E VOL: 0
+; 0000 0282             }
+; 0000 0283             if(ir_sensor[i]<ir_max_min_calibrate[1][i])
 ;PCODE: $0000050F VOL: 0
 ;PCODE: $00000510 VOL: 0
 ;PCODE: $00000511 VOL: 0
 ;PCODE: $00000512 VOL: 0
-; 0000 0284             }
-; 0000 0285 
-; 0000 0286         }
 ;PCODE: $00000513 VOL: 0
 ;PCODE: $00000514 VOL: 0
 ;PCODE: $00000515 VOL: 0
@@ -1989,33 +1986,53 @@
 ;PCODE: $00000517 VOL: 0
 ;PCODE: $00000518 VOL: 0
 ;PCODE: $00000519 VOL: 0
-; 0000 0287         count++;
+; 0000 0284             {
+; 0000 0285               ir_max_min_calibrate[1][i]=ir_sensor[i];
 ;PCODE: $0000051A VOL: 0
 ;PCODE: $0000051B VOL: 0
-; 0000 0288     }
 ;PCODE: $0000051C VOL: 0
 ;PCODE: $0000051D VOL: 0
-; 0000 0289 
-; 0000 028A //    for(i=0;i<24;i++)
-; 0000 028B //    {
-; 0000 028C //        my_put_int(i);
-; 0000 028D //        my_putstr(":max:");
-; 0000 028E //        my_put_int(ir_max_min_calibrate[0][i]);
-; 0000 028F //        my_putstr("\t");
-; 0000 0290 //        my_putstr("min:");
-; 0000 0291 //        my_put_int(ir_max_min_calibrate[1][i]);
-; 0000 0292 //        putchar('\n');
-; 0000 0293 //    }
-; 0000 0294 
-; 0000 0295 
-; 0000 0296     Stop();
 ;PCODE: $0000051E VOL: 0
-; 0000 0297 
-; 0000 0298 }
 ;PCODE: $0000051F VOL: 0
 ;PCODE: $00000520 VOL: 0
 ;PCODE: $00000521 VOL: 0
+; 0000 0286             }
+; 0000 0287 
+; 0000 0288         }
 ;PCODE: $00000522 VOL: 0
+;PCODE: $00000523 VOL: 0
+;PCODE: $00000524 VOL: 0
+;PCODE: $00000525 VOL: 0
+;PCODE: $00000526 VOL: 0
+;PCODE: $00000527 VOL: 0
+;PCODE: $00000528 VOL: 0
+; 0000 0289         count++;
+;PCODE: $00000529 VOL: 0
+;PCODE: $0000052A VOL: 0
+; 0000 028A     }
+;PCODE: $0000052B VOL: 0
+;PCODE: $0000052C VOL: 0
+; 0000 028B 
+; 0000 028C //    for(i=0;i<24;i++)
+; 0000 028D //    {
+; 0000 028E //        my_put_int(i);
+; 0000 028F //        my_putstr(":max:");
+; 0000 0290 //        my_put_int(ir_max_min_calibrate[0][i]);
+; 0000 0291 //        my_putstr("\t");
+; 0000 0292 //        my_putstr("min:");
+; 0000 0293 //        my_put_int(ir_max_min_calibrate[1][i]);
+; 0000 0294 //        putchar('\n');
+; 0000 0295 //    }
+; 0000 0296 
+; 0000 0297 
+; 0000 0298     Stop();
+;PCODE: $0000052D VOL: 0
+; 0000 0299 
+; 0000 029A }
+;PCODE: $0000052E VOL: 0
+;PCODE: $0000052F VOL: 0
+;PCODE: $00000530 VOL: 0
+;PCODE: $00000531 VOL: 0
 ;//void my_put_int(int data)
 ;//{
 ;//    unsigned char f[50];

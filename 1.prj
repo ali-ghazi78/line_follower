@@ -127,8 +127,8 @@ WatchAVR8LAutoVariables=0
 UseEEPROMLocation0=1
 RebuildAll=0
 LinkageInformationPresent=1
-COFFileTimeStamp=1293911926
-Build=124
+COFFileTimeStamp=1293912886
+Build=130
 [DefinedSymbolsDebug]
 Count=0
 [Compiler]
@@ -230,7 +230,7 @@ UseEEPROMLocation0=1
 RebuildAll=1
 LinkageInformationPresent=0
 COFFileTimeStamp=-1
-Build=124
+Build=130
 [DefinedSymbols]
 Count=0
 [StartUp]
@@ -368,10 +368,10 @@ L13=Enhanced function parameters passing: Yes
 L14=Automatic register allocation: Yes
 L15=Smart register allocation: Yes
 L16=
-L17=Build: 124
-L18=10759 line(s) compiled
+L17=Build: 130
+L18=10761 line(s) compiled
 L19=No errors
-L20=13 warning(s)
+L20=14 warning(s)
 L21=
 L22=Bit variables size: 0 byte(s)
 L23=
@@ -389,19 +389,19 @@ L34=Heap size: 0 byte(s)
 L35=
 Lines=38
 L36=EEPROM usage: 0 byte(s), 0.0% of EEPROM
-L37=Program size: 1462 words (2924 bytes), 4.5% of FLASH
-L38=113 words (226 bytes), 7.2% reduced by Code Compression
+L37=Program size: 1477 words (2954 bytes), 4.5% of FLASH
+L38=111 words (222 bytes), 7.0% reduced by Code Compression
 [BuildInfoAssembler]
 Lines=12
 L1=AVRASM: AVR macro assembler 2.1.30 (build 592 Nov  7 2008 12:38:17)
 L2=Copyright (C) 1995-2008 ATMEL Corporation
 L3=
-L4=C:\Users\ali\Desktop\line_follower_barman_97\Debug\List\1.asm(3390): No EEPROM data, deleting C:\Users\ali\Desktop\line_follower_barman_97\Debug\Exe\1.eep
+L4=C:\Users\ali\Desktop\line_follower_barman_97\Debug\List\1.asm(3401): No EEPROM data, deleting C:\Users\ali\Desktop\line_follower_barman_97\Debug\Exe\1.eep
 L5=
 L6=ATmega64 memory use summary [bytes]:
 L7=Segment   Begin    End      Code   Data   Used    Size   Use%
 L8=---------------------------------------------------------------
-L9=[.cseg] 0x000000 0x000b6c   2886     38   2924   65536   4.5%
+L9=[.cseg] 0x000000 0x000b8a   2916     38   2954   65536   4.5%
 L10=[.dseg] 0x000100 0x00056a      0    106    106    4096   2.6%
 L11=[.eseg] 0x000000 0x000000      0      0      0    2048   0.0%
 L12=

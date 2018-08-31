@@ -1,4 +1,4 @@
-VERSION:3 SOURCE_TIMESTAMP:4D1F8775
+VERSION:3 SOURCE_TIMESTAMP:4D1F8B36
 NODE:I LEVEL:0 LINE:24 "C:\cvavr\inc\mega64.h"
 NODE:I LEVEL:0 LINE:25 "C:\cvavr\inc\delay.h"
 NODE:I LEVEL:0 LINE:26 "C:\cvavr\inc\alcd.h"
@@ -103,5 +103,5 @@ NODE:F LEVEL:0 LINE:503 "lcd_put_int(int Data)"
 NODE:F LEVEL:0 LINE:509 "lcd_show_sensor(void)"
 NODE:F LEVEL:0 LINE:545 "controller(void)"
 NODE:V LEVEL:0 LINE:547 "last_error_S000000D000 -> RAM:????"
-NODE:F LEVEL:0 LINE:590 "digitalize(void)"
-NODE:F LEVEL:0 LINE:601 "calibrate(void)"
+NODE:F LEVEL:0 LINE:592 "digitalize(void)"
+NODE:F LEVEL:0 LINE:603 "calibrate(void)"
