@@ -1,0 +1,2033 @@
+;/*******************************************************
+;This program was created by the
+;CodeWizardAVR V3.12 Advanced
+;Automatic Program Generator
+;© Copyright 1998-2014 Pavel Haiduc, HP InfoTech s.r.l.
+;http://www.hpinfotech.com
+;
+;Project :
+;Version :
+;Date    : 8/30/2018
+;Author  :
+;Company :
+;Comments:
+;
+;
+;Chip type               : ATmega64
+;Program type            : Application
+;AVR Core Clock frequency: 8.000000 MHz
+;Memory model            : Small
+;External RAM size       : 0
+;Data Stack size         : 1024
+;*******************************************************/
+;
+;#include <mega64.h>
+;PCODE: $00000000 VOL: 0
+	#ifndef __SLEEP_DEFINED__
+;PCODE: $00000001 VOL: 0
+	#define __SLEEP_DEFINED__
+;PCODE: $00000002 VOL: 0
+	.EQU __se_bit=0x20
+;PCODE: $00000003 VOL: 0
+	.EQU __sm_mask=0x1C
+;PCODE: $00000004 VOL: 0
+	.EQU __sm_powerdown=0x10
+;PCODE: $00000005 VOL: 0
+	.EQU __sm_powersave=0x18
+;PCODE: $00000006 VOL: 0
+	.EQU __sm_standby=0x14
+;PCODE: $00000007 VOL: 0
+	.EQU __sm_ext_standby=0x1C
+;PCODE: $00000008 VOL: 0
+	.EQU __sm_adc_noise_red=0x08
+;PCODE: $00000009 VOL: 0
+	.SET power_ctrl_reg=mcucr
+;PCODE: $0000000A VOL: 0
+	#endif
+;PCODE: $0000000B VOL: 0
+;PCODE: $0000000C VOL: 0
+;#include <delay.h>
+;#include <alcd.h>
+;#include <delay.h>
+;#include <stdlib.h>
+;#define ADC_VREF_TYPE ((0<<REFS1) | (1<<REFS0) | (1<<ADLAR))
+;
+;unsigned char read_adc(unsigned char adc_input)
+; 0000 0020 {
+
+	.CSEG
+;PCODE: $0000000D VOL: 0
+;PCODE: $0000000E VOL: 0
+; 0000 0021 ADMUX=adc_input | ADC_VREF_TYPE;
+;PCODE: $0000000F VOL: 0
+;	adc_input -> Y+0
+;PCODE: $00000010 VOL: 0
+;PCODE: $00000011 VOL: 0
+;PCODE: $00000012 VOL: 0
+; 0000 0022 // Delay needed for the stabilization of the ADC input voltage
+; 0000 0023 delay_us(10);
+;PCODE: $00000013 VOL: 0
+; 0000 0024 // Start the AD conversion
+; 0000 0025 ADCSRA|=(1<<ADSC);
+;PCODE: $00000014 VOL: 0
+;PCODE: $00000015 VOL: 0
+; 0000 0026 // Wait for the AD conversion to complete
+; 0000 0027 while ((ADCSRA & (1<<ADIF))==0);
+;PCODE: $00000016 VOL: 0
+;PCODE: $00000017 VOL: 0
+;PCODE: $00000018 VOL: 0
+;PCODE: $00000019 VOL: 0
+;PCODE: $0000001A VOL: 0
+;PCODE: $0000001B VOL: 0
+; 0000 0028 ADCSRA|=(1<<ADIF);
+;PCODE: $0000001C VOL: 0
+;PCODE: $0000001D VOL: 0
+; 0000 0029 return ADCH;
+;PCODE: $0000001E VOL: 0
+;PCODE: $0000001F VOL: 0
+;PCODE: $00000020 VOL: 0
+; 0000 002A }
+;PCODE: $00000021 VOL: 0
+;
+;#define S_A PORTC.0
+;#define S_B PORTC.1
+;#define S_C PORTC.2
+;
+;#define IN1 PORTB.4
+;#define IN2 PORTB.7
+;
+;#define BLACK 120
+;
+;#define R_12 sen[19]
+;#define R_11 sen[16]
+;#define R_10 sen[17]
+;#define R_9 sen[18]
+;#define R_8 sen[20]
+;#define R_7 sen[22]
+;#define R_6 sen[23]
+;#define R_5 sen[21]
+;#define R_4 sen[12]
+;#define R_3 sen[14]
+;#define R_2 sen[15]
+;#define R_1 sen[13]
+;#define L_1 sen[11]
+;#define L_2 sen[8]
+;#define L_3 sen[9]
+;#define L_4 sen[10]
+;#define L_5 sen[4]
+;#define L_6 sen[6]
+;#define L_7 sen[7]
+;#define L_8 sen[5]
+;#define L_9 sen[3]
+;#define L_10 sen[0]
+;#define L_11 sen[1]
+;#define L_12 sen[2]
+;
+;#define SEN_R_12 ir_sensor[19]
+;#define SEN_R_11 ir_sensor[16]
+;#define SEN_R_10 ir_sensor[17]
+;#define SEN_R_9 ir_sensor[18]
+;#define SEN_R_8 ir_sensor[20]
+;#define SEN_R_7 ir_sensor[22]
+;#define SEN_R_6 ir_sensor[23]
+;#define SEN_R_5 ir_sensor[21]
+;#define SEN_R_4 ir_sensor[12]
+;#define SEN_R_3 ir_sensor[14]
+;#define SEN_R_2 ir_sensor[15]
+;#define SEN_R_1 ir_sensor[13]
+;#define SEN_L_1 ir_sensor[11]
+;#define SEN_L_2 ir_sensor[8]
+;#define SEN_L_3 ir_sensor[9]
+;#define SEN_L_4 ir_sensor[10]
+;#define SEN_L_5 ir_sensor[4]
+;#define SEN_L_6 ir_sensor[6]
+;#define SEN_L_7 ir_sensor[7]
+;#define SEN_L_8 ir_sensor[5]
+;#define SEN_L_9 ir_sensor[3]
+;#define SEN_L_10 ir_sensor[0]
+;#define SEN_L_11 ir_sensor[1]
+;#define SEN_L_12 ir_sensor[2]
+;
+;
+;
+;
+;
+;#define E_R_1 5
+;#define E_R_2 15
+;#define E_R_3 60
+;#define E_R_4 60
+;#define E_R_5 70
+;#define E_R_6 90
+;#define E_R_7 300
+;#define E_R_8 300
+;#define E_R_9 450
+;#define E_R_10 500
+;#define E_R_11 600
+;#define E_R_12 700
+;
+;#define E_L_1 -5
+;#define E_L_2 -15
+;#define E_L_3 -60
+;#define E_L_4 -60
+;#define E_L_5 -70
+;#define E_L_6 -90
+;#define E_L_7 -300
+;#define E_L_8 -300
+;#define E_L_9 -450
+;#define E_L_10 -500
+;#define E_L_11 -600
+;#define E_L_12 -700
+;
+;
+;unsigned char ir_sensor[24];
+;unsigned char sen[24];
+;unsigned char black[24];
+;unsigned char ir_max_min_calibrate[2][24];
+;
+;void ReadMp();
+;void Back(unsigned char motor_r_speed,unsigned char motor_l_speed);
+;void Left(unsigned char motor_r_speed,unsigned char motor_l_speed);
+;void Right(unsigned char motor_r_speed,unsigned char motor_l_speed);
+;void Go(unsigned char motor_r_speed,unsigned char motor_l_speed);
+;void Move(int motor_r_speed,int motor_l_speed);
+;void Stop();
+;void lcd_put_int(int Data);
+;void lcd_show_sensor();
+;void init();
+;void digitalize();
+;void my_put_int(int data);
+;void my_putstr( char *f);
+;void controller();
+;void calibrate();
+;
+;
+;
+;
+;void main(void)
+; 0000 009F {
+;PCODE: $00000022 VOL: 0
+; 0000 00A0 // Declare your local variables here
+; 0000 00A1 
+; 0000 00A2 // Input/Output Ports initialization
+; 0000 00A3 // Port A initialization
+; 0000 00A4 // Function: Bit7=In Bit6=In Bit5=In Bit4=In Bit3=In Bit2=In Bit1=In Bit0=In
+; 0000 00A5 DDRA=(0<<DDA7) | (0<<DDA6) | (0<<DDA5) | (0<<DDA4) | (0<<DDA3) | (0<<DDA2) | (0<<DDA1) | (0<<DDA0);
+;PCODE: $00000023 VOL: 0
+;PCODE: $00000024 VOL: 0
+; 0000 00A6 // State: Bit7=T Bit6=T Bit5=T Bit4=T Bit3=T Bit2=T Bit1=T Bit0=T
+; 0000 00A7 PORTA=(0<<PORTA7) | (0<<PORTA6) | (0<<PORTA5) | (0<<PORTA4) | (0<<PORTA3) | (0<<PORTA2) | (0<<PORTA1) | (0<<PORTA0);
+;PCODE: $00000025 VOL: 0
+;PCODE: $00000026 VOL: 0
+; 0000 00A8 
+; 0000 00A9 // Port B initialization
+; 0000 00AA // Function: Bit7=In Bit6=Out Bit5=Out Bit4=In Bit3=In Bit2=In Bit1=In Bit0=In
+; 0000 00AB DDRB=(0<<DDB7) | (1<<DDB6) | (1<<DDB5) | (0<<DDB4) | (0<<DDB3) | (0<<DDB2) | (0<<DDB1) | (0<<DDB0);
+;PCODE: $00000027 VOL: 0
+;PCODE: $00000028 VOL: 0
+; 0000 00AC // State: Bit7=T Bit6=0 Bit5=0 Bit4=T Bit3=T Bit2=T Bit1=T Bit0=T
+; 0000 00AD PORTB=(0<<PORTB7) | (0<<PORTB6) | (0<<PORTB5) | (0<<PORTB4) | (0<<PORTB3) | (0<<PORTB2) | (0<<PORTB1) | (0<<PORTB0);
+;PCODE: $00000029 VOL: 0
+;PCODE: $0000002A VOL: 0
+; 0000 00AE 
+; 0000 00AF // Port C initialization
+; 0000 00B0 // Function: Bit7=In Bit6=In Bit5=In Bit4=In Bit3=In Bit2=In Bit1=In Bit0=In
+; 0000 00B1 DDRC=(0<<DDC7) | (0<<DDC6) | (0<<DDC5) | (0<<DDC4) | (0<<DDC3) | (0<<DDC2) | (0<<DDC1) | (0<<DDC0);
+;PCODE: $0000002B VOL: 0
+;PCODE: $0000002C VOL: 0
+; 0000 00B2 // State: Bit7=T Bit6=T Bit5=T Bit4=T Bit3=T Bit2=T Bit1=T Bit0=T
+; 0000 00B3 PORTC=(0<<PORTC7) | (0<<PORTC6) | (0<<PORTC5) | (0<<PORTC4) | (0<<PORTC3) | (0<<PORTC2) | (0<<PORTC1) | (0<<PORTC0);
+;PCODE: $0000002D VOL: 0
+;PCODE: $0000002E VOL: 0
+; 0000 00B4 
+; 0000 00B5 // Port D initialization
+; 0000 00B6 // Function: Bit7=In Bit6=In Bit5=In Bit4=In Bit3=In Bit2=In Bit1=In Bit0=In
+; 0000 00B7 DDRD=(0<<DDD7) | (0<<DDD6) | (0<<DDD5) | (0<<DDD4) | (0<<DDD3) | (0<<DDD2) | (0<<DDD1) | (0<<DDD0);
+;PCODE: $0000002F VOL: 0
+;PCODE: $00000030 VOL: 0
+; 0000 00B8 // State: Bit7=T Bit6=T Bit5=T Bit4=T Bit3=T Bit2=T Bit1=T Bit0=T
+; 0000 00B9 PORTD=(0<<PORTD7) | (0<<PORTD6) | (0<<PORTD5) | (0<<PORTD4) | (0<<PORTD3) | (0<<PORTD2) | (0<<PORTD1) | (0<<PORTD0);
+;PCODE: $00000031 VOL: 0
+;PCODE: $00000032 VOL: 0
+; 0000 00BA 
+; 0000 00BB // Port E initialization
+; 0000 00BC // Function: Bit7=In Bit6=In Bit5=In Bit4=In Bit3=In Bit2=In Bit1=In Bit0=In
+; 0000 00BD DDRE=(0<<DDE7) | (0<<DDE6) | (0<<DDE5) | (0<<DDE4) | (0<<DDE3) | (0<<DDE2) | (0<<DDE1) | (0<<DDE0);
+;PCODE: $00000033 VOL: 0
+;PCODE: $00000034 VOL: 0
+; 0000 00BE // State: Bit7=T Bit6=T Bit5=T Bit4=T Bit3=T Bit2=T Bit1=T Bit0=T
+; 0000 00BF PORTE=(0<<PORTE7) | (0<<PORTE6) | (0<<PORTE5) | (0<<PORTE4) | (0<<PORTE3) | (0<<PORTE2) | (0<<PORTE1) | (0<<PORTE0);
+;PCODE: $00000035 VOL: 0
+;PCODE: $00000036 VOL: 0
+; 0000 00C0 
+; 0000 00C1 // Port F initialization
+; 0000 00C2 // Function: Bit7=In Bit6=In Bit5=In Bit4=In Bit3=In Bit2=In Bit1=In Bit0=In
+; 0000 00C3 DDRF=(0<<DDF7) | (0<<DDF6) | (0<<DDF5) | (0<<DDF4) | (0<<DDF3) | (0<<DDF2) | (0<<DDF1) | (0<<DDF0);
+;PCODE: $00000037 VOL: 0
+;PCODE: $00000038 VOL: 0
+; 0000 00C4 // State: Bit7=T Bit6=T Bit5=T Bit4=T Bit3=T Bit2=T Bit1=T Bit0=T
+; 0000 00C5 PORTF=(0<<PORTF7) | (0<<PORTF6) | (0<<PORTF5) | (0<<PORTF4) | (0<<PORTF3) | (0<<PORTF2) | (0<<PORTF1) | (0<<PORTF0);
+;PCODE: $00000039 VOL: 0
+;PCODE: $0000003A VOL: 0
+; 0000 00C6 
+; 0000 00C7 // Port G initialization
+; 0000 00C8 // Function: Bit4=In Bit3=In Bit2=In Bit1=In Bit0=In
+; 0000 00C9 DDRG=(0<<DDG4) | (0<<DDG3) | (0<<DDG2) | (0<<DDG1) | (0<<DDG0);
+;PCODE: $0000003B VOL: 0
+;PCODE: $0000003C VOL: 0
+; 0000 00CA // State: Bit4=T Bit3=T Bit2=T Bit1=T Bit0=T
+; 0000 00CB PORTG=(0<<PORTG4) | (0<<PORTG3) | (0<<PORTG2) | (0<<PORTG1) | (0<<PORTG0);
+;PCODE: $0000003D VOL: 0
+;PCODE: $0000003E VOL: 0
+; 0000 00CC 
+; 0000 00CD // Timer/Counter 0 initialization
+; 0000 00CE // Clock source: System Clock
+; 0000 00CF // Clock value: Timer 0 Stopped
+; 0000 00D0 // Mode: Normal top=0xFF
+; 0000 00D1 // OC0 output: Disconnected
+; 0000 00D2 ASSR=0<<AS0;
+;PCODE: $0000003F VOL: 0
+;PCODE: $00000040 VOL: 0
+; 0000 00D3 TCCR0=(0<<WGM00) | (0<<COM01) | (0<<COM00) | (0<<WGM01) | (0<<CS02) | (0<<CS01) | (0<<CS00);
+;PCODE: $00000041 VOL: 0
+;PCODE: $00000042 VOL: 0
+; 0000 00D4 TCNT0=0x00;
+;PCODE: $00000043 VOL: 0
+;PCODE: $00000044 VOL: 0
+; 0000 00D5 OCR0=0x00;
+;PCODE: $00000045 VOL: 0
+;PCODE: $00000046 VOL: 0
+; 0000 00D6 
+; 0000 00D7 // Timer/Counter 1 initialization
+; 0000 00D8 // Clock source: System Clock
+; 0000 00D9 // Clock value: 125.000 kHz
+; 0000 00DA // Mode: Fast PWM top=0x00FF
+; 0000 00DB // OC1A output: Non-Inverted PWM
+; 0000 00DC // OC1B output: Non-Inverted PWM
+; 0000 00DD // OC1C output: Disconnected
+; 0000 00DE // Noise Canceler: Off
+; 0000 00DF // Input Capture on Falling Edge
+; 0000 00E0 // Timer Period: 2.048 ms
+; 0000 00E1 // Output Pulse(s):
+; 0000 00E2 // OC1A Period: 2.048 ms Width: 0 us// OC1B Period: 2.048 ms Width: 0 us
+; 0000 00E3 // Timer1 Overflow Interrupt: Off
+; 0000 00E4 // Input Capture Interrupt: Off
+; 0000 00E5 // Compare A Match Interrupt: Off
+; 0000 00E6 // Compare B Match Interrupt: Off
+; 0000 00E7 // Compare C Match Interrupt: Off
+; 0000 00E8 TCCR1A=(1<<COM1A1) | (0<<COM1A0) | (1<<COM1B1) | (0<<COM1B0) | (0<<COM1C1) | (0<<COM1C0) | (0<<WGM11) | (1<<WGM10);
+;PCODE: $00000047 VOL: 0
+;PCODE: $00000048 VOL: 0
+; 0000 00E9 TCCR1B=(0<<ICNC1) | (0<<ICES1) | (0<<WGM13) | (1<<WGM12) | (0<<CS12) | (1<<CS11) | (1<<CS10);
+;PCODE: $00000049 VOL: 0
+;PCODE: $0000004A VOL: 0
+; 0000 00EA TCNT1H=0x00;
+;PCODE: $0000004B VOL: 0
+;PCODE: $0000004C VOL: 0
+; 0000 00EB TCNT1L=0x00;
+;PCODE: $0000004D VOL: 0
+;PCODE: $0000004E VOL: 0
+; 0000 00EC ICR1H=0x00;
+;PCODE: $0000004F VOL: 0
+;PCODE: $00000050 VOL: 0
+; 0000 00ED ICR1L=0x00;
+;PCODE: $00000051 VOL: 0
+;PCODE: $00000052 VOL: 0
+; 0000 00EE OCR1AH=0x00;
+;PCODE: $00000053 VOL: 0
+;PCODE: $00000054 VOL: 0
+; 0000 00EF OCR1AL=0x00;
+;PCODE: $00000055 VOL: 0
+;PCODE: $00000056 VOL: 0
+; 0000 00F0 OCR1BH=0x00;
+;PCODE: $00000057 VOL: 0
+;PCODE: $00000058 VOL: 0
+; 0000 00F1 OCR1BL=0x00;
+;PCODE: $00000059 VOL: 0
+;PCODE: $0000005A VOL: 0
+; 0000 00F2 OCR1CH=0x00;
+;PCODE: $0000005B VOL: 0
+;PCODE: $0000005C VOL: 0
+; 0000 00F3 OCR1CL=0x00;
+;PCODE: $0000005D VOL: 0
+;PCODE: $0000005E VOL: 0
+; 0000 00F4 
+; 0000 00F5 // Timer/Counter 2 initialization
+; 0000 00F6 // Clock source: System Clock
+; 0000 00F7 // Clock value: Timer2 Stopped
+; 0000 00F8 // Mode: Normal top=0xFF
+; 0000 00F9 // OC2 output: Disconnected
+; 0000 00FA TCCR2=(0<<WGM20) | (0<<COM21) | (0<<COM20) | (0<<WGM21) | (0<<CS22) | (0<<CS21) | (0<<CS20);
+;PCODE: $0000005F VOL: 0
+;PCODE: $00000060 VOL: 0
+; 0000 00FB TCNT2=0x00;
+;PCODE: $00000061 VOL: 0
+;PCODE: $00000062 VOL: 0
+; 0000 00FC OCR2=0x00;
+;PCODE: $00000063 VOL: 0
+;PCODE: $00000064 VOL: 0
+; 0000 00FD 
+; 0000 00FE // Timer/Counter 3 initialization
+; 0000 00FF // Clock source: System Clock
+; 0000 0100 // Clock value: Timer3 Stopped
+; 0000 0101 // Mode: Normal top=0xFFFF
+; 0000 0102 // OC3A output: Disconnected
+; 0000 0103 // OC3B output: Disconnected
+; 0000 0104 // OC3C output: Disconnected
+; 0000 0105 // Noise Canceler: Off
+; 0000 0106 // Input Capture on Falling Edge
+; 0000 0107 // Timer3 Overflow Interrupt: Off
+; 0000 0108 // Input Capture Interrupt: Off
+; 0000 0109 // Compare A Match Interrupt: Off
+; 0000 010A // Compare B Match Interrupt: Off
+; 0000 010B // Compare C Match Interrupt: Off
+; 0000 010C TCCR3A=(0<<COM3A1) | (0<<COM3A0) | (0<<COM3B1) | (0<<COM3B0) | (0<<COM3C1) | (0<<COM3C0) | (0<<WGM31) | (0<<WGM30);
+;PCODE: $00000065 VOL: 0
+;PCODE: $00000066 VOL: 0
+; 0000 010D TCCR3B=(0<<ICNC3) | (0<<ICES3) | (0<<WGM33) | (0<<WGM32) | (0<<CS32) | (0<<CS31) | (0<<CS30);
+;PCODE: $00000067 VOL: 0
+;PCODE: $00000068 VOL: 0
+; 0000 010E TCNT3H=0x00;
+;PCODE: $00000069 VOL: 0
+;PCODE: $0000006A VOL: 0
+; 0000 010F TCNT3L=0x00;
+;PCODE: $0000006B VOL: 0
+;PCODE: $0000006C VOL: 0
+; 0000 0110 ICR3H=0x00;
+;PCODE: $0000006D VOL: 0
+;PCODE: $0000006E VOL: 0
+; 0000 0111 ICR3L=0x00;
+;PCODE: $0000006F VOL: 0
+;PCODE: $00000070 VOL: 0
+; 0000 0112 OCR3AH=0x00;
+;PCODE: $00000071 VOL: 0
+;PCODE: $00000072 VOL: 0
+; 0000 0113 OCR3AL=0x00;
+;PCODE: $00000073 VOL: 0
+;PCODE: $00000074 VOL: 0
+; 0000 0114 OCR3BH=0x00;
+;PCODE: $00000075 VOL: 0
+;PCODE: $00000076 VOL: 0
+; 0000 0115 OCR3BL=0x00;
+;PCODE: $00000077 VOL: 0
+;PCODE: $00000078 VOL: 0
+; 0000 0116 OCR3CH=0x00;
+;PCODE: $00000079 VOL: 0
+;PCODE: $0000007A VOL: 0
+; 0000 0117 OCR3CL=0x00;
+;PCODE: $0000007B VOL: 0
+;PCODE: $0000007C VOL: 0
+; 0000 0118 
+; 0000 0119 // Timer(s)/Counter(s) Interrupt(s) initialization
+; 0000 011A TIMSK=(0<<OCIE2) | (0<<TOIE2) | (0<<TICIE1) | (0<<OCIE1A) | (0<<OCIE1B) | (0<<TOIE1) | (0<<OCIE0) | (0<<TOIE0);
+;PCODE: $0000007D VOL: 0
+;PCODE: $0000007E VOL: 0
+; 0000 011B ETIMSK=(0<<TICIE3) | (0<<OCIE3A) | (0<<OCIE3B) | (0<<TOIE3) | (0<<OCIE3C) | (0<<OCIE1C);
+;PCODE: $0000007F VOL: 0
+;PCODE: $00000080 VOL: 0
+; 0000 011C 
+; 0000 011D // External Interrupt(s) initialization
+; 0000 011E // INT0: Off
+; 0000 011F // INT1: Off
+; 0000 0120 // INT2: Off
+; 0000 0121 // INT3: Off
+; 0000 0122 // INT4: Off
+; 0000 0123 // INT5: Off
+; 0000 0124 // INT6: Off
+; 0000 0125 // INT7: Off
+; 0000 0126 EICRA=(0<<ISC31) | (0<<ISC30) | (0<<ISC21) | (0<<ISC20) | (0<<ISC11) | (0<<ISC10) | (0<<ISC01) | (0<<ISC00);
+;PCODE: $00000081 VOL: 0
+;PCODE: $00000082 VOL: 0
+; 0000 0127 EICRB=(0<<ISC71) | (0<<ISC70) | (0<<ISC61) | (0<<ISC60) | (0<<ISC51) | (0<<ISC50) | (0<<ISC41) | (0<<ISC40);
+;PCODE: $00000083 VOL: 0
+;PCODE: $00000084 VOL: 0
+; 0000 0128 EIMSK=(0<<INT7) | (0<<INT6) | (0<<INT5) | (0<<INT4) | (0<<INT3) | (0<<INT2) | (0<<INT1) | (0<<INT0);
+;PCODE: $00000085 VOL: 0
+;PCODE: $00000086 VOL: 0
+; 0000 0129 
+; 0000 012A // USART0 initialization
+; 0000 012B // USART0 disabled
+; 0000 012C UCSR0B=(0<<RXCIE0) | (0<<TXCIE0) | (0<<UDRIE0) | (0<<RXEN0) | (0<<TXEN0) | (0<<UCSZ02) | (0<<RXB80) | (0<<TXB80);
+;PCODE: $00000087 VOL: 0
+;PCODE: $00000088 VOL: 0
+; 0000 012D 
+; 0000 012E // USART1 initialization
+; 0000 012F // USART1 disabled
+; 0000 0130 UCSR1B=(0<<RXCIE1) | (0<<TXCIE1) | (0<<UDRIE1) | (0<<RXEN1) | (0<<TXEN1) | (0<<UCSZ12) | (0<<RXB81) | (0<<TXB81);
+;PCODE: $00000089 VOL: 0
+;PCODE: $0000008A VOL: 0
+; 0000 0131 
+; 0000 0132 // Analog Comparator initialization
+; 0000 0133 // Analog Comparator: Off
+; 0000 0134 // The Analog Comparator's positive input is
+; 0000 0135 // connected to the AIN0 pin
+; 0000 0136 // The Analog Comparator's negative input is
+; 0000 0137 // connected to the AIN1 pin
+; 0000 0138 ACSR=(1<<ACD) | (0<<ACBG) | (0<<ACO) | (0<<ACI) | (0<<ACIE) | (0<<ACIC) | (0<<ACIS1) | (0<<ACIS0);
+;PCODE: $0000008B VOL: 0
+;PCODE: $0000008C VOL: 0
+; 0000 0139 
+; 0000 013A // ADC initialization
+; 0000 013B // ADC Clock frequency: 125.000 kHz
+; 0000 013C // ADC Voltage Reference: AREF pin
+; 0000 013D // Only the 8 most significant bits of
+; 0000 013E // the AD conversion result are used
+; 0000 013F ADMUX=ADC_VREF_TYPE;
+;PCODE: $0000008D VOL: 0
+;PCODE: $0000008E VOL: 0
+; 0000 0140 ADCSRA=(1<<ADEN) | (0<<ADSC) | (0<<ADFR) | (0<<ADIF) | (0<<ADIE) | (1<<ADPS2) | (1<<ADPS1) | (0<<ADPS0);
+;PCODE: $0000008F VOL: 0
+;PCODE: $00000090 VOL: 0
+; 0000 0141 SFIOR=(0<<ACME);
+;PCODE: $00000091 VOL: 0
+;PCODE: $00000092 VOL: 0
+; 0000 0142 
+; 0000 0143 // SPI initialization
+; 0000 0144 // SPI disabled
+; 0000 0145 SPCR=(0<<SPIE) | (0<<SPE) | (0<<DORD) | (0<<MSTR) | (0<<CPOL) | (0<<CPHA) | (0<<SPR1) | (0<<SPR0);
+;PCODE: $00000093 VOL: 0
+;PCODE: $00000094 VOL: 0
+; 0000 0146 
+; 0000 0147 // TWI initialization
+; 0000 0148 // TWI disabled
+; 0000 0149 TWCR=(0<<TWEA) | (0<<TWSTA) | (0<<TWSTO) | (0<<TWEN) | (0<<TWIE);
+;PCODE: $00000095 VOL: 0
+;PCODE: $00000096 VOL: 0
+; 0000 014A 
+; 0000 014B // Alphanumeric LCD initialization
+; 0000 014C // Connections are specified in the
+; 0000 014D // Project|Configure|C Compiler|Libraries|Alphanumeric LCD menu:
+; 0000 014E // RS - PORTA Bit 0
+; 0000 014F // RD - PORTA Bit 1
+; 0000 0150 // EN - PORTA Bit 2
+; 0000 0151 // D4 - PORTA Bit 4
+; 0000 0152 // D5 - PORTA Bit 5
+; 0000 0153 // D6 - PORTA Bit 6
+; 0000 0154 // D7 - PORTA Bit 7
+; 0000 0155 // Characters/line: 16
+; 0000 0156 lcd_init(16);
+;PCODE: $00000097 VOL: 0
+;PCODE: $00000098 VOL: 0
+; 0000 0157 //mp-----
+; 0000 0158 DDRC.0=1;
+;PCODE: $00000099 VOL: 0
+;PCODE: $0000009A VOL: 0
+; 0000 0159 DDRC.1=1;
+;PCODE: $0000009B VOL: 0
+;PCODE: $0000009C VOL: 0
+; 0000 015A DDRC.2=1;
+;PCODE: $0000009D VOL: 0
+;PCODE: $0000009E VOL: 0
+; 0000 015B //------
+; 0000 015C //---motor
+; 0000 015D DDRB.4=1;
+;PCODE: $0000009F VOL: 0
+;PCODE: $000000A0 VOL: 0
+; 0000 015E DDRB.7=1;
+;PCODE: $000000A1 VOL: 0
+;PCODE: $000000A2 VOL: 0
+; 0000 015F //-----
+; 0000 0160 
+; 0000 0161 init();
+;PCODE: $000000A3 VOL: 0
+; 0000 0162 //calibrate();
+; 0000 0163     while (1)
+;PCODE: $000000A4 VOL: 0
+; 0000 0164     {
+; 0000 0165         controller();
+;PCODE: $000000A5 VOL: 0
+; 0000 0166    //       lcd_show_sensor();
+; 0000 0167  //       ReadMp();
+; 0000 0168 
+; 0000 0169 
+; 0000 016A 
+; 0000 016B     }
+;PCODE: $000000A6 VOL: 0
+;PCODE: $000000A7 VOL: 0
+; 0000 016C }
+;PCODE: $000000A8 VOL: 0
+;PCODE: $000000A9 VOL: 0
+;PCODE: $000000AA VOL: 0
+;void init()
+; 0000 016E {
+;PCODE: $000000AB VOL: 0
+;PCODE: $000000AC VOL: 0
+; 0000 016F     lcd_clear();
+;PCODE: $000000AD VOL: 0
+; 0000 0170 //    Back(200,200);
+; 0000 0171 //    delay_ms(1000);
+; 0000 0172 //    Right(100,100);
+; 0000 0173 //    delay_ms(1000);
+; 0000 0174 //    Left(100,100);
+; 0000 0175 //    delay_ms(1000);
+; 0000 0176 //    Stop();
+; 0000 0177 //    lcd_putsf("salam");
+; 0000 0178 //    delay_ms(1000);
+; 0000 0179 //    lcd_clear();
+; 0000 017A }
+;PCODE: $000000AE VOL: 0
+;PCODE: $000000AF VOL: 0
+;void ReadMp()
+; 0000 017C {
+;PCODE: $000000B0 VOL: 0
+;PCODE: $000000B1 VOL: 0
+; 0000 017D     static unsigned int ir_sensor_back[24];
+; 0000 017E     unsigned char i=0;
+; 0000 017F     for(;i<8;i++)
+;PCODE: $000000B2 VOL: 0
+;	i -> R17
+;PCODE: $000000B3 VOL: 0
+;PCODE: $000000B4 VOL: 0
+;PCODE: $000000B5 VOL: 0
+;PCODE: $000000B6 VOL: 0
+;PCODE: $000000B7 VOL: 0
+;PCODE: $000000B8 VOL: 0
+;PCODE: $000000B9 VOL: 0
+;PCODE: $000000BA VOL: 0
+;PCODE: $000000BB VOL: 0
+; 0000 0180     {
+; 0000 0181         S_A=i%2;
+;PCODE: $000000BC VOL: 0
+;PCODE: $000000BD VOL: 0
+;PCODE: $000000BE VOL: 0
+;PCODE: $000000BF VOL: 0
+;PCODE: $000000C0 VOL: 0
+;PCODE: $000000C1 VOL: 0
+;PCODE: $000000C2 VOL: 0
+;PCODE: $000000C3 VOL: 0
+;PCODE: $000000C4 VOL: 0
+;PCODE: $000000C5 VOL: 0
+;PCODE: $000000C6 VOL: 0
+;PCODE: $000000C7 VOL: 0
+;PCODE: $000000C8 VOL: 0
+; 0000 0182         S_B=(i%4)/2;
+;PCODE: $000000C9 VOL: 0
+;PCODE: $000000CA VOL: 0
+;PCODE: $000000CB VOL: 0
+;PCODE: $000000CC VOL: 0
+;PCODE: $000000CD VOL: 0
+;PCODE: $000000CE VOL: 0
+;PCODE: $000000CF VOL: 0
+;PCODE: $000000D0 VOL: 0
+;PCODE: $000000D1 VOL: 0
+;PCODE: $000000D2 VOL: 0
+;PCODE: $000000D3 VOL: 0
+;PCODE: $000000D4 VOL: 0
+;PCODE: $000000D5 VOL: 0
+;PCODE: $000000D6 VOL: 0
+;PCODE: $000000D7 VOL: 0
+;PCODE: $000000D8 VOL: 0
+; 0000 0183         S_C=(i%8)/4;
+;PCODE: $000000D9 VOL: 0
+;PCODE: $000000DA VOL: 0
+;PCODE: $000000DB VOL: 0
+;PCODE: $000000DC VOL: 0
+;PCODE: $000000DD VOL: 0
+;PCODE: $000000DE VOL: 0
+;PCODE: $000000DF VOL: 0
+;PCODE: $000000E0 VOL: 0
+;PCODE: $000000E1 VOL: 0
+;PCODE: $000000E2 VOL: 0
+;PCODE: $000000E3 VOL: 0
+;PCODE: $000000E4 VOL: 0
+;PCODE: $000000E5 VOL: 0
+;PCODE: $000000E6 VOL: 0
+;PCODE: $000000E7 VOL: 0
+;PCODE: $000000E8 VOL: 0
+; 0000 0184         i++;
+;PCODE: $000000E9 VOL: 0
+;PCODE: $000000EA VOL: 0
+; 0000 0185         i--;
+;PCODE: $000000EB VOL: 0
+;PCODE: $000000EC VOL: 0
+; 0000 0186         i++;
+;PCODE: $000000ED VOL: 0
+;PCODE: $000000EE VOL: 0
+; 0000 0187         i--;
+;PCODE: $000000EF VOL: 0
+;PCODE: $000000F0 VOL: 0
+; 0000 0188 
+; 0000 0189         ir_sensor[i]=read_adc(0);
+;PCODE: $000000F1 VOL: 0
+;PCODE: $000000F2 VOL: 0
+;PCODE: $000000F3 VOL: 0
+;PCODE: $000000F4 VOL: 0
+;PCODE: $000000F5 VOL: 0
+;PCODE: $000000F6 VOL: 0
+;PCODE: $000000F7 VOL: 0
+;PCODE: $000000F8 VOL: 0
+; 0000 018A     }
+;PCODE: $000000F9 VOL: 0
+;PCODE: $000000FA VOL: 0
+;PCODE: $000000FB VOL: 0
+;PCODE: $000000FC VOL: 0
+;PCODE: $000000FD VOL: 0
+; 0000 018B     i=0;
+;PCODE: $000000FE VOL: 0
+;PCODE: $000000FF VOL: 0
+; 0000 018C     for(;i<8;i++)
+;PCODE: $00000100 VOL: 0
+;PCODE: $00000101 VOL: 0
+;PCODE: $00000102 VOL: 0
+;PCODE: $00000103 VOL: 0
+;PCODE: $00000104 VOL: 0
+;PCODE: $00000105 VOL: 0
+;PCODE: $00000106 VOL: 0
+; 0000 018D     {
+; 0000 018E         S_A=i%2;
+;PCODE: $00000107 VOL: 0
+;PCODE: $00000108 VOL: 0
+;PCODE: $00000109 VOL: 0
+;PCODE: $0000010A VOL: 0
+;PCODE: $0000010B VOL: 0
+;PCODE: $0000010C VOL: 0
+;PCODE: $0000010D VOL: 0
+;PCODE: $0000010E VOL: 0
+;PCODE: $0000010F VOL: 0
+;PCODE: $00000110 VOL: 0
+;PCODE: $00000111 VOL: 0
+;PCODE: $00000112 VOL: 0
+;PCODE: $00000113 VOL: 0
+; 0000 018F         S_B=(i%4)/2;
+;PCODE: $00000114 VOL: 0
+;PCODE: $00000115 VOL: 0
+;PCODE: $00000116 VOL: 0
+;PCODE: $00000117 VOL: 0
+;PCODE: $00000118 VOL: 0
+;PCODE: $00000119 VOL: 0
+;PCODE: $0000011A VOL: 0
+;PCODE: $0000011B VOL: 0
+;PCODE: $0000011C VOL: 0
+;PCODE: $0000011D VOL: 0
+;PCODE: $0000011E VOL: 0
+;PCODE: $0000011F VOL: 0
+;PCODE: $00000120 VOL: 0
+;PCODE: $00000121 VOL: 0
+;PCODE: $00000122 VOL: 0
+;PCODE: $00000123 VOL: 0
+; 0000 0190         S_C=(i%8)/4;
+;PCODE: $00000124 VOL: 0
+;PCODE: $00000125 VOL: 0
+;PCODE: $00000126 VOL: 0
+;PCODE: $00000127 VOL: 0
+;PCODE: $00000128 VOL: 0
+;PCODE: $00000129 VOL: 0
+;PCODE: $0000012A VOL: 0
+;PCODE: $0000012B VOL: 0
+;PCODE: $0000012C VOL: 0
+;PCODE: $0000012D VOL: 0
+;PCODE: $0000012E VOL: 0
+;PCODE: $0000012F VOL: 0
+;PCODE: $00000130 VOL: 0
+;PCODE: $00000131 VOL: 0
+;PCODE: $00000132 VOL: 0
+;PCODE: $00000133 VOL: 0
+; 0000 0191         i++;
+;PCODE: $00000134 VOL: 0
+;PCODE: $00000135 VOL: 0
+; 0000 0192         i--;
+;PCODE: $00000136 VOL: 0
+;PCODE: $00000137 VOL: 0
+; 0000 0193         i++;
+;PCODE: $00000138 VOL: 0
+;PCODE: $00000139 VOL: 0
+; 0000 0194         i--;
+;PCODE: $0000013A VOL: 0
+;PCODE: $0000013B VOL: 0
+; 0000 0195 
+; 0000 0196         ir_sensor[i+8]=read_adc(1);
+;PCODE: $0000013C VOL: 0
+;PCODE: $0000013D VOL: 0
+;PCODE: $0000013E VOL: 0
+;PCODE: $0000013F VOL: 0
+;PCODE: $00000140 VOL: 0
+;PCODE: $00000141 VOL: 0
+;PCODE: $00000142 VOL: 0
+;PCODE: $00000143 VOL: 0
+;PCODE: $00000144 VOL: 0
+; 0000 0197     }
+;PCODE: $00000145 VOL: 0
+;PCODE: $00000146 VOL: 0
+;PCODE: $00000147 VOL: 0
+;PCODE: $00000148 VOL: 0
+;PCODE: $00000149 VOL: 0
+; 0000 0198     i=0;
+;PCODE: $0000014A VOL: 0
+;PCODE: $0000014B VOL: 0
+; 0000 0199     for(;i<8;i++)
+;PCODE: $0000014C VOL: 0
+;PCODE: $0000014D VOL: 0
+;PCODE: $0000014E VOL: 0
+;PCODE: $0000014F VOL: 0
+;PCODE: $00000150 VOL: 0
+;PCODE: $00000151 VOL: 0
+;PCODE: $00000152 VOL: 0
+; 0000 019A     {
+; 0000 019B         S_A=i%2;
+;PCODE: $00000153 VOL: 0
+;PCODE: $00000154 VOL: 0
+;PCODE: $00000155 VOL: 0
+;PCODE: $00000156 VOL: 0
+;PCODE: $00000157 VOL: 0
+;PCODE: $00000158 VOL: 0
+;PCODE: $00000159 VOL: 0
+;PCODE: $0000015A VOL: 0
+;PCODE: $0000015B VOL: 0
+;PCODE: $0000015C VOL: 0
+;PCODE: $0000015D VOL: 0
+;PCODE: $0000015E VOL: 0
+;PCODE: $0000015F VOL: 0
+; 0000 019C         S_B=(i%4)/2;
+;PCODE: $00000160 VOL: 0
+;PCODE: $00000161 VOL: 0
+;PCODE: $00000162 VOL: 0
+;PCODE: $00000163 VOL: 0
+;PCODE: $00000164 VOL: 0
+;PCODE: $00000165 VOL: 0
+;PCODE: $00000166 VOL: 0
+;PCODE: $00000167 VOL: 0
+;PCODE: $00000168 VOL: 0
+;PCODE: $00000169 VOL: 0
+;PCODE: $0000016A VOL: 0
+;PCODE: $0000016B VOL: 0
+;PCODE: $0000016C VOL: 0
+;PCODE: $0000016D VOL: 0
+;PCODE: $0000016E VOL: 0
+;PCODE: $0000016F VOL: 0
+; 0000 019D         S_C=(i%8)/4;
+;PCODE: $00000170 VOL: 0
+;PCODE: $00000171 VOL: 0
+;PCODE: $00000172 VOL: 0
+;PCODE: $00000173 VOL: 0
+;PCODE: $00000174 VOL: 0
+;PCODE: $00000175 VOL: 0
+;PCODE: $00000176 VOL: 0
+;PCODE: $00000177 VOL: 0
+;PCODE: $00000178 VOL: 0
+;PCODE: $00000179 VOL: 0
+;PCODE: $0000017A VOL: 0
+;PCODE: $0000017B VOL: 0
+;PCODE: $0000017C VOL: 0
+;PCODE: $0000017D VOL: 0
+;PCODE: $0000017E VOL: 0
+;PCODE: $0000017F VOL: 0
+; 0000 019E         i++;
+;PCODE: $00000180 VOL: 0
+;PCODE: $00000181 VOL: 0
+; 0000 019F         i--;
+;PCODE: $00000182 VOL: 0
+;PCODE: $00000183 VOL: 0
+; 0000 01A0         i++;
+;PCODE: $00000184 VOL: 0
+;PCODE: $00000185 VOL: 0
+; 0000 01A1         i--;
+;PCODE: $00000186 VOL: 0
+;PCODE: $00000187 VOL: 0
+; 0000 01A2         ir_sensor[i+16]=read_adc(2);
+;PCODE: $00000188 VOL: 0
+;PCODE: $00000189 VOL: 0
+;PCODE: $0000018A VOL: 0
+;PCODE: $0000018B VOL: 0
+;PCODE: $0000018C VOL: 0
+;PCODE: $0000018D VOL: 0
+;PCODE: $0000018E VOL: 0
+;PCODE: $0000018F VOL: 0
+;PCODE: $00000190 VOL: 0
+; 0000 01A3     }
+;PCODE: $00000191 VOL: 0
+;PCODE: $00000192 VOL: 0
+;PCODE: $00000193 VOL: 0
+;PCODE: $00000194 VOL: 0
+;PCODE: $00000195 VOL: 0
+; 0000 01A4     digitalize();
+;PCODE: $00000196 VOL: 0
+; 0000 01A5 
+; 0000 01A6 }
+;PCODE: $00000197 VOL: 0
+;PCODE: $00000198 VOL: 0
+;PCODE: $00000199 VOL: 0
+;void Back(unsigned char motor_r_speed,unsigned char motor_l_speed)
+; 0000 01A8 {
+;PCODE: $0000019A VOL: 0
+;PCODE: $0000019B VOL: 0
+; 0000 01A9     IN1=1;
+;PCODE: $0000019C VOL: 0
+;	motor_r_speed -> Y+1
+;	motor_l_speed -> Y+0
+;PCODE: $0000019D VOL: 0
+;PCODE: $0000019E VOL: 0
+; 0000 01AA     IN2=0;
+;PCODE: $0000019F VOL: 0
+;PCODE: $000001A0 VOL: 0
+; 0000 01AB 
+; 0000 01AC     OCR1AH=0x00;
+;PCODE: $000001A1 VOL: 0
+;PCODE: $000001A2 VOL: 0
+; 0000 01AD     OCR1AL=255-motor_l_speed;
+;PCODE: $000001A3 VOL: 0
+;PCODE: $000001A4 VOL: 0
+;PCODE: $000001A5 VOL: 0
+;PCODE: $000001A6 VOL: 0
+; 0000 01AE 
+; 0000 01AF     OCR1BH=0x00;
+;PCODE: $000001A7 VOL: 0
+;PCODE: $000001A8 VOL: 0
+; 0000 01B0     OCR1BL=motor_r_speed;
+;PCODE: $000001A9 VOL: 0
+;PCODE: $000001AA VOL: 0
+; 0000 01B1 }
+;PCODE: $000001AB VOL: 0
+;PCODE: $000001AC VOL: 0
+;PCODE: $000001AD VOL: 0
+;void Right(unsigned char motor_r_speed,unsigned char motor_l_speed)
+; 0000 01B3 {
+;PCODE: $000001AE VOL: 0
+;PCODE: $000001AF VOL: 0
+; 0000 01B4     IN1=0;
+;PCODE: $000001B0 VOL: 0
+;	motor_r_speed -> Y+1
+;	motor_l_speed -> Y+0
+;PCODE: $000001B1 VOL: 0
+;PCODE: $000001B2 VOL: 0
+; 0000 01B5     IN2=0;
+;PCODE: $000001B3 VOL: 0
+;PCODE: $000001B4 VOL: 0
+; 0000 01B6 
+; 0000 01B7     OCR1AH=0x00;
+;PCODE: $000001B5 VOL: 0
+;PCODE: $000001B6 VOL: 0
+; 0000 01B8     OCR1AL=motor_l_speed;
+;PCODE: $000001B7 VOL: 0
+;PCODE: $000001B8 VOL: 0
+; 0000 01B9 
+; 0000 01BA     OCR1BH=0x00;
+;PCODE: $000001B9 VOL: 0
+;PCODE: $000001BA VOL: 0
+; 0000 01BB     OCR1BL=motor_r_speed;
+;PCODE: $000001BB VOL: 0
+;PCODE: $000001BC VOL: 0
+; 0000 01BC }
+;PCODE: $000001BD VOL: 0
+;PCODE: $000001BE VOL: 0
+;PCODE: $000001BF VOL: 0
+;void Left(unsigned char motor_r_speed,unsigned char motor_l_speed)
+; 0000 01BE {
+;PCODE: $000001C0 VOL: 0
+;PCODE: $000001C1 VOL: 0
+; 0000 01BF     IN1=1;
+;PCODE: $000001C2 VOL: 0
+;	motor_r_speed -> Y+1
+;	motor_l_speed -> Y+0
+;PCODE: $000001C3 VOL: 0
+;PCODE: $000001C4 VOL: 0
+; 0000 01C0     IN2=1;
+;PCODE: $000001C5 VOL: 0
+;PCODE: $000001C6 VOL: 0
+; 0000 01C1 
+; 0000 01C2     OCR1AH=0x00;
+;PCODE: $000001C7 VOL: 0
+;PCODE: $000001C8 VOL: 0
+; 0000 01C3     OCR1AL=255-motor_l_speed;
+;PCODE: $000001C9 VOL: 0
+;PCODE: $000001CA VOL: 0
+;PCODE: $000001CB VOL: 0
+;PCODE: $000001CC VOL: 0
+; 0000 01C4 
+; 0000 01C5     OCR1BH=0x00;
+;PCODE: $000001CD VOL: 0
+;PCODE: $000001CE VOL: 0
+; 0000 01C6     OCR1BL=255-motor_r_speed;
+;PCODE: $000001CF VOL: 0
+;PCODE: $000001D0 VOL: 0
+;PCODE: $000001D1 VOL: 0
+;PCODE: $000001D2 VOL: 0
+; 0000 01C7 }
+;PCODE: $000001D3 VOL: 0
+;PCODE: $000001D4 VOL: 0
+;PCODE: $000001D5 VOL: 0
+;void Go(unsigned char motor_r_speed,unsigned char motor_l_speed)
+; 0000 01C9 {
+;PCODE: $000001D6 VOL: 0
+;PCODE: $000001D7 VOL: 0
+; 0000 01CA     IN1=0;
+;PCODE: $000001D8 VOL: 0
+;	motor_r_speed -> Y+1
+;	motor_l_speed -> Y+0
+;PCODE: $000001D9 VOL: 0
+;PCODE: $000001DA VOL: 0
+; 0000 01CB     IN2=1;
+;PCODE: $000001DB VOL: 0
+;PCODE: $000001DC VOL: 0
+; 0000 01CC 
+; 0000 01CD     OCR1AH=0x00;
+;PCODE: $000001DD VOL: 0
+;PCODE: $000001DE VOL: 0
+; 0000 01CE     OCR1AL=motor_l_speed;
+;PCODE: $000001DF VOL: 0
+;PCODE: $000001E0 VOL: 0
+; 0000 01CF 
+; 0000 01D0     OCR1BH=0x00;
+;PCODE: $000001E1 VOL: 0
+;PCODE: $000001E2 VOL: 0
+; 0000 01D1     OCR1BL=255-motor_r_speed;
+;PCODE: $000001E3 VOL: 0
+;PCODE: $000001E4 VOL: 0
+;PCODE: $000001E5 VOL: 0
+;PCODE: $000001E6 VOL: 0
+; 0000 01D2 }
+;PCODE: $000001E7 VOL: 0
+;PCODE: $000001E8 VOL: 0
+;PCODE: $000001E9 VOL: 0
+;void Stop()
+; 0000 01D4 {
+;PCODE: $000001EA VOL: 0
+;PCODE: $000001EB VOL: 0
+; 0000 01D5     IN1=0;
+;PCODE: $000001EC VOL: 0
+;PCODE: $000001ED VOL: 0
+; 0000 01D6     IN2=0;
+;PCODE: $000001EE VOL: 0
+;PCODE: $000001EF VOL: 0
+; 0000 01D7 
+; 0000 01D8     OCR1AH=0x00;
+;PCODE: $000001F0 VOL: 0
+;PCODE: $000001F1 VOL: 0
+; 0000 01D9     OCR1AL=0;
+;PCODE: $000001F2 VOL: 0
+;PCODE: $000001F3 VOL: 0
+; 0000 01DA 
+; 0000 01DB     OCR1BH=0x00;
+;PCODE: $000001F4 VOL: 0
+;PCODE: $000001F5 VOL: 0
+; 0000 01DC     OCR1BL=0;
+;PCODE: $000001F6 VOL: 0
+;PCODE: $000001F7 VOL: 0
+; 0000 01DD }
+;PCODE: $000001F8 VOL: 0
+;PCODE: $000001F9 VOL: 0
+;void Move(int motor_r_speed,int motor_l_speed)
+; 0000 01DF {
+;PCODE: $000001FA VOL: 0
+;PCODE: $000001FB VOL: 0
+; 0000 01E0     if(motor_r_speed>255)
+;PCODE: $000001FC VOL: 0
+;	motor_r_speed -> Y+2
+;	motor_l_speed -> Y+0
+;PCODE: $000001FD VOL: 0
+;PCODE: $000001FE VOL: 0
+;PCODE: $000001FF VOL: 0
+; 0000 01E1         motor_r_speed=250;
+;PCODE: $00000200 VOL: 0
+;PCODE: $00000201 VOL: 0
+; 0000 01E2     if(motor_l_speed>255)
+;PCODE: $00000202 VOL: 0
+;PCODE: $00000203 VOL: 0
+;PCODE: $00000204 VOL: 0
+;PCODE: $00000205 VOL: 0
+; 0000 01E3         motor_l_speed=250;
+;PCODE: $00000206 VOL: 0
+;PCODE: $00000207 VOL: 0
+; 0000 01E4     if(motor_r_speed<-255)
+;PCODE: $00000208 VOL: 0
+;PCODE: $00000209 VOL: 0
+;PCODE: $0000020A VOL: 0
+;PCODE: $0000020B VOL: 0
+; 0000 01E5         motor_r_speed=-250;
+;PCODE: $0000020C VOL: 0
+;PCODE: $0000020D VOL: 0
+; 0000 01E6     if(motor_l_speed<-255)
+;PCODE: $0000020E VOL: 0
+;PCODE: $0000020F VOL: 0
+;PCODE: $00000210 VOL: 0
+;PCODE: $00000211 VOL: 0
+; 0000 01E7         motor_l_speed=-250;
+;PCODE: $00000212 VOL: 0
+;PCODE: $00000213 VOL: 0
+; 0000 01E8 
+; 0000 01E9 
+; 0000 01EA     if(motor_r_speed>=0&&motor_l_speed>=0)
+;PCODE: $00000214 VOL: 0
+;PCODE: $00000215 VOL: 0
+;PCODE: $00000216 VOL: 0
+;PCODE: $00000217 VOL: 0
+;PCODE: $00000218 VOL: 0
+;PCODE: $00000219 VOL: 0
+;PCODE: $0000021A VOL: 0
+;PCODE: $0000021B VOL: 0
+;PCODE: $0000021C VOL: 0
+;PCODE: $0000021D VOL: 0
+;PCODE: $0000021E VOL: 0
+; 0000 01EB        Go(motor_r_speed,motor_l_speed);
+;PCODE: $0000021F VOL: 0
+;PCODE: $00000220 VOL: 0
+;PCODE: $00000221 VOL: 0
+;PCODE: $00000222 VOL: 0
+; 0000 01EC     else if(motor_r_speed<=0&&motor_l_speed>=0)
+;PCODE: $00000223 VOL: 0
+;PCODE: $00000224 VOL: 0
+;PCODE: $00000225 VOL: 0
+;PCODE: $00000226 VOL: 0
+;PCODE: $00000227 VOL: 0
+;PCODE: $00000228 VOL: 0
+;PCODE: $00000229 VOL: 0
+;PCODE: $0000022A VOL: 0
+;PCODE: $0000022B VOL: 0
+;PCODE: $0000022C VOL: 0
+;PCODE: $0000022D VOL: 0
+;PCODE: $0000022E VOL: 0
+; 0000 01ED         Right(motor_r_speed*-1,motor_l_speed);
+;PCODE: $0000022F VOL: 0
+;PCODE: $00000230 VOL: 0
+;PCODE: $00000231 VOL: 0
+;PCODE: $00000232 VOL: 0
+;PCODE: $00000233 VOL: 0
+;PCODE: $00000234 VOL: 0
+; 0000 01EE     else if(motor_r_speed>=0&&motor_l_speed<=0)
+;PCODE: $00000235 VOL: 0
+;PCODE: $00000236 VOL: 0
+;PCODE: $00000237 VOL: 0
+;PCODE: $00000238 VOL: 0
+;PCODE: $00000239 VOL: 0
+;PCODE: $0000023A VOL: 0
+;PCODE: $0000023B VOL: 0
+;PCODE: $0000023C VOL: 0
+;PCODE: $0000023D VOL: 0
+;PCODE: $0000023E VOL: 0
+;PCODE: $0000023F VOL: 0
+;PCODE: $00000240 VOL: 0
+; 0000 01EF         Left(motor_r_speed,motor_l_speed*-1);
+;PCODE: $00000241 VOL: 0
+;PCODE: $00000242 VOL: 0
+;PCODE: $00000243 VOL: 0
+;PCODE: $00000244 VOL: 0
+;PCODE: $00000245 VOL: 0
+;PCODE: $00000246 VOL: 0
+;PCODE: $00000247 VOL: 0
+; 0000 01F0     else
+;PCODE: $00000248 VOL: 0
+;PCODE: $00000249 VOL: 0
+; 0000 01F1         Back(motor_r_speed*-1,motor_r_speed*-1);
+;PCODE: $0000024A VOL: 0
+;PCODE: $0000024B VOL: 0
+;PCODE: $0000024C VOL: 0
+;PCODE: $0000024D VOL: 0
+;PCODE: $0000024E VOL: 0
+;PCODE: $0000024F VOL: 0
+;PCODE: $00000250 VOL: 0
+;PCODE: $00000251 VOL: 0
+;PCODE: $00000252 VOL: 0
+; 0000 01F2 }
+;PCODE: $00000253 VOL: 0
+;PCODE: $00000254 VOL: 0
+;PCODE: $00000255 VOL: 0
+;PCODE: $00000256 VOL: 0
+;PCODE: $00000257 VOL: 0
+;PCODE: $00000258 VOL: 0
+;void omeg(int omega)
+; 0000 01F4 {
+;PCODE: $00000259 VOL: 0
+;PCODE: $0000025A VOL: 0
+; 0000 01F5 
+; 0000 01F6 }
+;PCODE: $0000025B VOL: 0
+;PCODE: $0000025C VOL: 0
+;void lcd_put_int(int Data)
+; 0000 01F8 {
+;PCODE: $0000025D VOL: 0
+;PCODE: $0000025E VOL: 0
+; 0000 01F9     unsigned char f[50];
+; 0000 01FA     itoa(Data,f);
+;PCODE: $0000025F VOL: 0
+;PCODE: $00000260 VOL: 0
+;	Data -> Y+50
+;	f -> Y+0
+;PCODE: $00000261 VOL: 0
+;PCODE: $00000262 VOL: 0
+;PCODE: $00000263 VOL: 0
+;PCODE: $00000264 VOL: 0
+; 0000 01FB     lcd_puts(f);
+;PCODE: $00000265 VOL: 0
+;PCODE: $00000266 VOL: 0
+; 0000 01FC }
+;PCODE: $00000267 VOL: 0
+;PCODE: $00000268 VOL: 0
+;PCODE: $00000269 VOL: 0
+;void lcd_show_sensor()
+; 0000 01FE {
+;PCODE: $0000026A VOL: 0
+;PCODE: $0000026B VOL: 0
+; 0000 01FF     lcd_clear();
+;PCODE: $0000026C VOL: 0
+; 0000 0200     ReadMp();
+;PCODE: $0000026D VOL: 0
+; 0000 0201 
+; 0000 0202     lcd_put_int(R_1);
+;PCODE: $0000026E VOL: 0
+;PCODE: $0000026F VOL: 0
+;PCODE: $00000270 VOL: 0
+;PCODE: $00000271 VOL: 0
+; 0000 0203     lcd_put_int(L_1);
+;PCODE: $00000272 VOL: 0
+;PCODE: $00000273 VOL: 0
+;PCODE: $00000274 VOL: 0
+;PCODE: $00000275 VOL: 0
+; 0000 0204     lcd_put_int(R_2);
+;PCODE: $00000276 VOL: 0
+;PCODE: $00000277 VOL: 0
+;PCODE: $00000278 VOL: 0
+;PCODE: $00000279 VOL: 0
+; 0000 0205     lcd_put_int(L_2);
+;PCODE: $0000027A VOL: 0
+;PCODE: $0000027B VOL: 0
+;PCODE: $0000027C VOL: 0
+;PCODE: $0000027D VOL: 0
+; 0000 0206     lcd_put_int(R_3);
+;PCODE: $0000027E VOL: 0
+;PCODE: $0000027F VOL: 0
+;PCODE: $00000280 VOL: 0
+;PCODE: $00000281 VOL: 0
+; 0000 0207     lcd_put_int(L_3);
+;PCODE: $00000282 VOL: 0
+;PCODE: $00000283 VOL: 0
+;PCODE: $00000284 VOL: 0
+;PCODE: $00000285 VOL: 0
+; 0000 0208     lcd_put_int(R_4);
+;PCODE: $00000286 VOL: 0
+;PCODE: $00000287 VOL: 0
+;PCODE: $00000288 VOL: 0
+;PCODE: $00000289 VOL: 0
+; 0000 0209     lcd_put_int(L_4);
+;PCODE: $0000028A VOL: 0
+;PCODE: $0000028B VOL: 0
+;PCODE: $0000028C VOL: 0
+;PCODE: $0000028D VOL: 0
+; 0000 020A     lcd_put_int(R_5);
+;PCODE: $0000028E VOL: 0
+;PCODE: $0000028F VOL: 0
+;PCODE: $00000290 VOL: 0
+;PCODE: $00000291 VOL: 0
+; 0000 020B     lcd_put_int(L_5);
+;PCODE: $00000292 VOL: 0
+;PCODE: $00000293 VOL: 0
+;PCODE: $00000294 VOL: 0
+;PCODE: $00000295 VOL: 0
+; 0000 020C     lcd_put_int(R_6);
+;PCODE: $00000296 VOL: 0
+;PCODE: $00000297 VOL: 0
+;PCODE: $00000298 VOL: 0
+;PCODE: $00000299 VOL: 0
+; 0000 020D     lcd_put_int(L_6);
+;PCODE: $0000029A VOL: 0
+;PCODE: $0000029B VOL: 0
+;PCODE: $0000029C VOL: 0
+;PCODE: $0000029D VOL: 0
+; 0000 020E     lcd_put_int(R_7);
+;PCODE: $0000029E VOL: 0
+;PCODE: $0000029F VOL: 0
+;PCODE: $000002A0 VOL: 0
+;PCODE: $000002A1 VOL: 0
+; 0000 020F     lcd_put_int(L_7);
+;PCODE: $000002A2 VOL: 0
+;PCODE: $000002A3 VOL: 0
+;PCODE: $000002A4 VOL: 0
+;PCODE: $000002A5 VOL: 0
+; 0000 0210     lcd_put_int(R_8);
+;PCODE: $000002A6 VOL: 0
+;PCODE: $000002A7 VOL: 0
+;PCODE: $000002A8 VOL: 0
+;PCODE: $000002A9 VOL: 0
+; 0000 0211     lcd_put_int(L_8);
+;PCODE: $000002AA VOL: 0
+;PCODE: $000002AB VOL: 0
+;PCODE: $000002AC VOL: 0
+;PCODE: $000002AD VOL: 0
+; 0000 0212     lcd_put_int(R_9);
+;PCODE: $000002AE VOL: 0
+;PCODE: $000002AF VOL: 0
+;PCODE: $000002B0 VOL: 0
+;PCODE: $000002B1 VOL: 0
+; 0000 0213     lcd_put_int(L_9);
+;PCODE: $000002B2 VOL: 0
+;PCODE: $000002B3 VOL: 0
+;PCODE: $000002B4 VOL: 0
+;PCODE: $000002B5 VOL: 0
+; 0000 0214     lcd_put_int(R_10);
+;PCODE: $000002B6 VOL: 0
+;PCODE: $000002B7 VOL: 0
+;PCODE: $000002B8 VOL: 0
+;PCODE: $000002B9 VOL: 0
+; 0000 0215     lcd_put_int(L_10);
+;PCODE: $000002BA VOL: 0
+;PCODE: $000002BB VOL: 0
+;PCODE: $000002BC VOL: 0
+; 0000 0216     lcd_put_int(R_11);
+;PCODE: $000002BD VOL: 0
+;PCODE: $000002BE VOL: 0
+;PCODE: $000002BF VOL: 0
+;PCODE: $000002C0 VOL: 0
+; 0000 0217     lcd_put_int(L_11);
+;PCODE: $000002C1 VOL: 0
+;PCODE: $000002C2 VOL: 0
+;PCODE: $000002C3 VOL: 0
+;PCODE: $000002C4 VOL: 0
+; 0000 0218     lcd_put_int(R_12);
+;PCODE: $000002C5 VOL: 0
+;PCODE: $000002C6 VOL: 0
+;PCODE: $000002C7 VOL: 0
+;PCODE: $000002C8 VOL: 0
+; 0000 0219     lcd_put_int(L_12);
+;PCODE: $000002C9 VOL: 0
+;PCODE: $000002CA VOL: 0
+;PCODE: $000002CB VOL: 0
+;PCODE: $000002CC VOL: 0
+; 0000 021A 
+; 0000 021B 
+; 0000 021C 
+; 0000 021D     delay_ms(200);
+;PCODE: $000002CD VOL: 0
+;PCODE: $000002CE VOL: 0
+;PCODE: $000002CF VOL: 0
+; 0000 021E 
+; 0000 021F 
+; 0000 0220 }
+;PCODE: $000002D0 VOL: 0
+;PCODE: $000002D1 VOL: 0
+;void controller()
+; 0000 0222 {
+;PCODE: $000002D2 VOL: 0
+;PCODE: $000002D3 VOL: 0
+; 0000 0223     static int last_error=0;
+; 0000 0224     float kp=.6;
+; 0000 0225     int motor_speed=0;
+; 0000 0226     int sum_r=0;
+; 0000 0227     int sum_l=0;
+; 0000 0228     int error=0;
+; 0000 0229     int m_r=0;
+; 0000 022A     int m_l=0;
+; 0000 022B     ReadMp();
+;PCODE: $000002D4 VOL: 0
+;PCODE: $000002D5 VOL: 0
+;PCODE: $000002D6 VOL: 0
+;PCODE: $000002D7 VOL: 0
+;PCODE: $000002D8 VOL: 0
+;PCODE: $000002D9 VOL: 0
+;	kp -> Y+12
+;	motor_speed -> R16,R17
+;	sum_r -> R18,R19
+;	sum_l -> R20,R21
+;	error -> Y+10
+;	m_r -> Y+8
+;	m_l -> Y+6
+;PCODE: $000002DA VOL: 0
+;PCODE: $000002DB VOL: 0
+;PCODE: $000002DC VOL: 0
+;PCODE: $000002DD VOL: 0
+;PCODE: $000002DE VOL: 0
+;PCODE: $000002DF VOL: 0
+;PCODE: $000002E0 VOL: 0
+; 0000 022C 
+; 0000 022D     if(R_1||R_2||L_2||R_2||L_3||R_3)
+;PCODE: $000002E1 VOL: 0
+;PCODE: $000002E2 VOL: 0
+;PCODE: $000002E3 VOL: 0
+;PCODE: $000002E4 VOL: 0
+;PCODE: $000002E5 VOL: 0
+;PCODE: $000002E6 VOL: 0
+;PCODE: $000002E7 VOL: 0
+;PCODE: $000002E8 VOL: 0
+;PCODE: $000002E9 VOL: 0
+;PCODE: $000002EA VOL: 0
+;PCODE: $000002EB VOL: 0
+;PCODE: $000002EC VOL: 0
+;PCODE: $000002ED VOL: 0
+;PCODE: $000002EE VOL: 0
+;PCODE: $000002EF VOL: 0
+;PCODE: $000002F0 VOL: 0
+;PCODE: $000002F1 VOL: 0
+;PCODE: $000002F2 VOL: 0
+;PCODE: $000002F3 VOL: 0
+;PCODE: $000002F4 VOL: 0
+;PCODE: $000002F5 VOL: 0
+;PCODE: $000002F6 VOL: 0
+;PCODE: $000002F7 VOL: 0
+;PCODE: $000002F8 VOL: 0
+;PCODE: $000002F9 VOL: 0
+;PCODE: $000002FA VOL: 0
+; 0000 022E     {
+; 0000 022F         last_error=0;
+;PCODE: $000002FB VOL: 0
+;PCODE: $000002FC VOL: 0
+; 0000 0230         sum_l=(L_1*E_L_1)+(L_2*E_L_2)+(L_3*E_L_3);
+;PCODE: $000002FD VOL: 0
+;PCODE: $000002FE VOL: 0
+;PCODE: $000002FF VOL: 0
+;PCODE: $00000300 VOL: 0
+;PCODE: $00000301 VOL: 0
+;PCODE: $00000302 VOL: 0
+;PCODE: $00000303 VOL: 0
+;PCODE: $00000304 VOL: 0
+;PCODE: $00000305 VOL: 0
+;PCODE: $00000306 VOL: 0
+;PCODE: $00000307 VOL: 0
+;PCODE: $00000308 VOL: 0
+;PCODE: $00000309 VOL: 0
+;PCODE: $0000030A VOL: 0
+;PCODE: $0000030B VOL: 0
+;PCODE: $0000030C VOL: 0
+;PCODE: $0000030D VOL: 0
+;PCODE: $0000030E VOL: 0
+;PCODE: $0000030F VOL: 0
+;PCODE: $00000310 VOL: 0
+; 0000 0231         sum_r=(R_1*E_R_1)+(R_2*E_R_2)+(R_3*E_R_3);
+;PCODE: $00000311 VOL: 0
+;PCODE: $00000312 VOL: 0
+;PCODE: $00000313 VOL: 0
+;PCODE: $00000314 VOL: 0
+;PCODE: $00000315 VOL: 0
+;PCODE: $00000316 VOL: 0
+;PCODE: $00000317 VOL: 0
+;PCODE: $00000318 VOL: 0
+;PCODE: $00000319 VOL: 0
+;PCODE: $0000031A VOL: 0
+;PCODE: $0000031B VOL: 0
+;PCODE: $0000031C VOL: 0
+;PCODE: $0000031D VOL: 0
+;PCODE: $0000031E VOL: 0
+;PCODE: $0000031F VOL: 0
+;PCODE: $00000320 VOL: 0
+;PCODE: $00000321 VOL: 0
+; 0000 0232     }
+; 0000 0233     else
+;PCODE: $00000322 VOL: 0
+;PCODE: $00000323 VOL: 0
+; 0000 0234     {
+; 0000 0235         sum_l=(L_1*E_L_1)+(L_2*E_L_2)+(L_3*E_L_3)+(L_4*E_L_4)+(L_5*E_L_5)+(L_6*E_L_6)+(L_7*E_L_7)+(L_8*E_L_8)+(L_9*E_L_9 ...
+;PCODE: $00000324 VOL: 0
+;PCODE: $00000325 VOL: 0
+;PCODE: $00000326 VOL: 0
+;PCODE: $00000327 VOL: 0
+;PCODE: $00000328 VOL: 0
+;PCODE: $00000329 VOL: 0
+;PCODE: $0000032A VOL: 0
+;PCODE: $0000032B VOL: 0
+;PCODE: $0000032C VOL: 0
+;PCODE: $0000032D VOL: 0
+;PCODE: $0000032E VOL: 0
+;PCODE: $0000032F VOL: 0
+;PCODE: $00000330 VOL: 0
+;PCODE: $00000331 VOL: 0
+;PCODE: $00000332 VOL: 0
+;PCODE: $00000333 VOL: 0
+;PCODE: $00000334 VOL: 0
+;PCODE: $00000335 VOL: 0
+;PCODE: $00000336 VOL: 0
+;PCODE: $00000337 VOL: 0
+;PCODE: $00000338 VOL: 0
+;PCODE: $00000339 VOL: 0
+;PCODE: $0000033A VOL: 0
+;PCODE: $0000033B VOL: 0
+;PCODE: $0000033C VOL: 0
+;PCODE: $0000033D VOL: 0
+;PCODE: $0000033E VOL: 0
+;PCODE: $0000033F VOL: 0
+;PCODE: $00000340 VOL: 0
+;PCODE: $00000341 VOL: 0
+;PCODE: $00000342 VOL: 0
+;PCODE: $00000343 VOL: 0
+;PCODE: $00000344 VOL: 0
+;PCODE: $00000345 VOL: 0
+;PCODE: $00000346 VOL: 0
+;PCODE: $00000347 VOL: 0
+;PCODE: $00000348 VOL: 0
+;PCODE: $00000349 VOL: 0
+;PCODE: $0000034A VOL: 0
+;PCODE: $0000034B VOL: 0
+;PCODE: $0000034C VOL: 0
+;PCODE: $0000034D VOL: 0
+;PCODE: $0000034E VOL: 0
+;PCODE: $0000034F VOL: 0
+;PCODE: $00000350 VOL: 0
+;PCODE: $00000351 VOL: 0
+;PCODE: $00000352 VOL: 0
+;PCODE: $00000353 VOL: 0
+;PCODE: $00000354 VOL: 0
+;PCODE: $00000355 VOL: 0
+;PCODE: $00000356 VOL: 0
+;PCODE: $00000357 VOL: 0
+;PCODE: $00000358 VOL: 0
+;PCODE: $00000359 VOL: 0
+;PCODE: $0000035A VOL: 0
+;PCODE: $0000035B VOL: 0
+;PCODE: $0000035C VOL: 0
+;PCODE: $0000035D VOL: 0
+;PCODE: $0000035E VOL: 0
+;PCODE: $0000035F VOL: 0
+;PCODE: $00000360 VOL: 0
+;PCODE: $00000361 VOL: 0
+;PCODE: $00000362 VOL: 0
+;PCODE: $00000363 VOL: 0
+;PCODE: $00000364 VOL: 0
+;PCODE: $00000365 VOL: 0
+;PCODE: $00000366 VOL: 0
+;PCODE: $00000367 VOL: 0
+;PCODE: $00000368 VOL: 0
+;PCODE: $00000369 VOL: 0
+;PCODE: $0000036A VOL: 0
+;PCODE: $0000036B VOL: 0
+;PCODE: $0000036C VOL: 0
+;PCODE: $0000036D VOL: 0
+;PCODE: $0000036E VOL: 0
+;PCODE: $0000036F VOL: 0
+;PCODE: $00000370 VOL: 0
+;PCODE: $00000371 VOL: 0
+;PCODE: $00000372 VOL: 0
+;PCODE: $00000373 VOL: 0
+;PCODE: $00000374 VOL: 0
+;PCODE: $00000375 VOL: 0
+; 0000 0236         sum_r=(R_1*E_R_1)+(R_2*E_R_2)+(R_3*E_R_3)+(R_4*E_R_4)+(R_5*E_R_5)+(R_6*E_R_6)+(R_7*E_R_7)+(R_8*E_R_8)+(R_9*E_R_9 ...
+;PCODE: $00000376 VOL: 0
+;PCODE: $00000377 VOL: 0
+;PCODE: $00000378 VOL: 0
+;PCODE: $00000379 VOL: 0
+;PCODE: $0000037A VOL: 0
+;PCODE: $0000037B VOL: 0
+;PCODE: $0000037C VOL: 0
+;PCODE: $0000037D VOL: 0
+;PCODE: $0000037E VOL: 0
+;PCODE: $0000037F VOL: 0
+;PCODE: $00000380 VOL: 0
+;PCODE: $00000381 VOL: 0
+;PCODE: $00000382 VOL: 0
+;PCODE: $00000383 VOL: 0
+;PCODE: $00000384 VOL: 0
+;PCODE: $00000385 VOL: 0
+;PCODE: $00000386 VOL: 0
+;PCODE: $00000387 VOL: 0
+;PCODE: $00000388 VOL: 0
+;PCODE: $00000389 VOL: 0
+;PCODE: $0000038A VOL: 0
+;PCODE: $0000038B VOL: 0
+;PCODE: $0000038C VOL: 0
+;PCODE: $0000038D VOL: 0
+;PCODE: $0000038E VOL: 0
+;PCODE: $0000038F VOL: 0
+;PCODE: $00000390 VOL: 0
+;PCODE: $00000391 VOL: 0
+;PCODE: $00000392 VOL: 0
+;PCODE: $00000393 VOL: 0
+;PCODE: $00000394 VOL: 0
+;PCODE: $00000395 VOL: 0
+;PCODE: $00000396 VOL: 0
+;PCODE: $00000397 VOL: 0
+;PCODE: $00000398 VOL: 0
+;PCODE: $00000399 VOL: 0
+;PCODE: $0000039A VOL: 0
+;PCODE: $0000039B VOL: 0
+;PCODE: $0000039C VOL: 0
+;PCODE: $0000039D VOL: 0
+;PCODE: $0000039E VOL: 0
+;PCODE: $0000039F VOL: 0
+;PCODE: $000003A0 VOL: 0
+;PCODE: $000003A1 VOL: 0
+;PCODE: $000003A2 VOL: 0
+;PCODE: $000003A3 VOL: 0
+;PCODE: $000003A4 VOL: 0
+;PCODE: $000003A5 VOL: 0
+;PCODE: $000003A6 VOL: 0
+;PCODE: $000003A7 VOL: 0
+;PCODE: $000003A8 VOL: 0
+;PCODE: $000003A9 VOL: 0
+;PCODE: $000003AA VOL: 0
+;PCODE: $000003AB VOL: 0
+;PCODE: $000003AC VOL: 0
+;PCODE: $000003AD VOL: 0
+;PCODE: $000003AE VOL: 0
+;PCODE: $000003AF VOL: 0
+;PCODE: $000003B0 VOL: 0
+;PCODE: $000003B1 VOL: 0
+;PCODE: $000003B2 VOL: 0
+;PCODE: $000003B3 VOL: 0
+;PCODE: $000003B4 VOL: 0
+;PCODE: $000003B5 VOL: 0
+;PCODE: $000003B6 VOL: 0
+;PCODE: $000003B7 VOL: 0
+;PCODE: $000003B8 VOL: 0
+;PCODE: $000003B9 VOL: 0
+;PCODE: $000003BA VOL: 0
+;PCODE: $000003BB VOL: 0
+;PCODE: $000003BC VOL: 0
+;PCODE: $000003BD VOL: 0
+;PCODE: $000003BE VOL: 0
+;PCODE: $000003BF VOL: 0
+;PCODE: $000003C0 VOL: 0
+;PCODE: $000003C1 VOL: 0
+;PCODE: $000003C2 VOL: 0
+; 0000 0237 
+; 0000 0238     }
+;PCODE: $000003C3 VOL: 0
+; 0000 0239 
+; 0000 023A     error=sum_r+sum_l;
+;PCODE: $000003C4 VOL: 0
+;PCODE: $000003C5 VOL: 0
+;PCODE: $000003C6 VOL: 0
+; 0000 023B     if(L_1||R_1||L_2||R_2||L_3||R_3||L_4||R_4||L_5||R_5||L_6||R_6||L_7||R_7||L_8||R_8||L_9||R_9||L_10||R_10||L_11||R_11| ...
+;PCODE: $000003C7 VOL: 0
+;PCODE: $000003C8 VOL: 0
+;PCODE: $000003C9 VOL: 0
+;PCODE: $000003CA VOL: 0
+;PCODE: $000003CB VOL: 0
+;PCODE: $000003CC VOL: 0
+;PCODE: $000003CD VOL: 0
+;PCODE: $000003CE VOL: 0
+;PCODE: $000003CF VOL: 0
+;PCODE: $000003D0 VOL: 0
+;PCODE: $000003D1 VOL: 0
+;PCODE: $000003D2 VOL: 0
+;PCODE: $000003D3 VOL: 0
+;PCODE: $000003D4 VOL: 0
+;PCODE: $000003D5 VOL: 0
+;PCODE: $000003D6 VOL: 0
+;PCODE: $000003D7 VOL: 0
+;PCODE: $000003D8 VOL: 0
+;PCODE: $000003D9 VOL: 0
+;PCODE: $000003DA VOL: 0
+;PCODE: $000003DB VOL: 0
+;PCODE: $000003DC VOL: 0
+;PCODE: $000003DD VOL: 0
+;PCODE: $000003DE VOL: 0
+;PCODE: $000003DF VOL: 0
+;PCODE: $000003E0 VOL: 0
+;PCODE: $000003E1 VOL: 0
+;PCODE: $000003E2 VOL: 0
+;PCODE: $000003E3 VOL: 0
+;PCODE: $000003E4 VOL: 0
+;PCODE: $000003E5 VOL: 0
+;PCODE: $000003E6 VOL: 0
+;PCODE: $000003E7 VOL: 0
+;PCODE: $000003E8 VOL: 0
+;PCODE: $000003E9 VOL: 0
+;PCODE: $000003EA VOL: 0
+;PCODE: $000003EB VOL: 0
+;PCODE: $000003EC VOL: 0
+;PCODE: $000003ED VOL: 0
+;PCODE: $000003EE VOL: 0
+;PCODE: $000003EF VOL: 0
+;PCODE: $000003F0 VOL: 0
+;PCODE: $000003F1 VOL: 0
+;PCODE: $000003F2 VOL: 0
+;PCODE: $000003F3 VOL: 0
+;PCODE: $000003F4 VOL: 0
+;PCODE: $000003F5 VOL: 0
+;PCODE: $000003F6 VOL: 0
+;PCODE: $000003F7 VOL: 0
+;PCODE: $000003F8 VOL: 0
+;PCODE: $000003F9 VOL: 0
+;PCODE: $000003FA VOL: 0
+;PCODE: $000003FB VOL: 0
+;PCODE: $000003FC VOL: 0
+;PCODE: $000003FD VOL: 0
+;PCODE: $000003FE VOL: 0
+;PCODE: $000003FF VOL: 0
+;PCODE: $00000400 VOL: 0
+;PCODE: $00000401 VOL: 0
+;PCODE: $00000402 VOL: 0
+;PCODE: $00000403 VOL: 0
+;PCODE: $00000404 VOL: 0
+;PCODE: $00000405 VOL: 0
+;PCODE: $00000406 VOL: 0
+;PCODE: $00000407 VOL: 0
+;PCODE: $00000408 VOL: 0
+;PCODE: $00000409 VOL: 0
+;PCODE: $0000040A VOL: 0
+;PCODE: $0000040B VOL: 0
+;PCODE: $0000040C VOL: 0
+;PCODE: $0000040D VOL: 0
+;PCODE: $0000040E VOL: 0
+;PCODE: $0000040F VOL: 0
+;PCODE: $00000410 VOL: 0
+;PCODE: $00000411 VOL: 0
+;PCODE: $00000412 VOL: 0
+;PCODE: $00000413 VOL: 0
+;PCODE: $00000414 VOL: 0
+;PCODE: $00000415 VOL: 0
+;PCODE: $00000416 VOL: 0
+;PCODE: $00000417 VOL: 0
+;PCODE: $00000418 VOL: 0
+;PCODE: $00000419 VOL: 0
+;PCODE: $0000041A VOL: 0
+;PCODE: $0000041B VOL: 0
+;PCODE: $0000041C VOL: 0
+;PCODE: $0000041D VOL: 0
+;PCODE: $0000041E VOL: 0
+;PCODE: $0000041F VOL: 0
+;PCODE: $00000420 VOL: 0
+;PCODE: $00000421 VOL: 0
+;PCODE: $00000422 VOL: 0
+;PCODE: $00000423 VOL: 0
+;PCODE: $00000424 VOL: 0
+;PCODE: $00000425 VOL: 0
+;PCODE: $00000426 VOL: 0
+;PCODE: $00000427 VOL: 0
+; 0000 023C         last_error=error;
+;PCODE: $00000428 VOL: 0
+;PCODE: $00000429 VOL: 0
+; 0000 023D     else
+;PCODE: $0000042A VOL: 0
+;PCODE: $0000042B VOL: 0
+; 0000 023E     {
+; 0000 023F         error=last_error;
+;PCODE: $0000042C VOL: 0
+;PCODE: $0000042D VOL: 0
+; 0000 0240     }
+;PCODE: $0000042E VOL: 0
+; 0000 0241     motor_speed=error*kp;
+;PCODE: $0000042F VOL: 0
+;PCODE: $00000430 VOL: 0
+;PCODE: $00000431 VOL: 0
+;PCODE: $00000432 VOL: 0
+;PCODE: $00000433 VOL: 0
+;PCODE: $00000434 VOL: 0
+; 0000 0242 
+; 0000 0243 //    lcd_clear();
+; 0000 0244 //    lcd_put_int(motor_speed);
+; 0000 0245 //    lcd_gotoxy(0,1);
+; 0000 0246 //    lcd_put_int(error);
+; 0000 0247     if(error==0)
+;PCODE: $00000435 VOL: 0
+;PCODE: $00000436 VOL: 0
+;PCODE: $00000437 VOL: 0
+; 0000 0248         Stop();
+;PCODE: $00000438 VOL: 0
+; 0000 0249     else
+;PCODE: $00000439 VOL: 0
+;PCODE: $0000043A VOL: 0
+; 0000 024A         Move(140-motor_speed,140+motor_speed);
+;PCODE: $0000043B VOL: 0
+;PCODE: $0000043C VOL: 0
+;PCODE: $0000043D VOL: 0
+;PCODE: $0000043E VOL: 0
+;PCODE: $0000043F VOL: 0
+;PCODE: $00000440 VOL: 0
+; 0000 024B 
+; 0000 024C 
+; 0000 024D }
+;PCODE: $00000441 VOL: 0
+;PCODE: $00000442 VOL: 0
+;PCODE: $00000443 VOL: 0
+;PCODE: $00000444 VOL: 0
+;PCODE: $00000445 VOL: 0
+;void digitalize()
+; 0000 024F {
+;PCODE: $00000446 VOL: 0
+;PCODE: $00000447 VOL: 0
+; 0000 0250     int i=0;
+; 0000 0251     for(;i<24;i++)
+;PCODE: $00000448 VOL: 0
+;PCODE: $00000449 VOL: 0
+;	i -> R16,R17
+;PCODE: $0000044A VOL: 0
+;PCODE: $0000044B VOL: 0
+;PCODE: $0000044C VOL: 0
+;PCODE: $0000044D VOL: 0
+;PCODE: $0000044E VOL: 0
+;PCODE: $0000044F VOL: 0
+;PCODE: $00000450 VOL: 0
+;PCODE: $00000451 VOL: 0
+;PCODE: $00000452 VOL: 0
+; 0000 0252     {
+; 0000 0253         if(ir_sensor[i]>BLACK)//ir_max_min_calibrate[0][i]-60)
+;PCODE: $00000453 VOL: 0
+;PCODE: $00000454 VOL: 0
+;PCODE: $00000455 VOL: 0
+;PCODE: $00000456 VOL: 0
+;PCODE: $00000457 VOL: 0
+; 0000 0254             sen[i]=1;
+;PCODE: $00000458 VOL: 0
+;PCODE: $00000459 VOL: 0
+;PCODE: $0000045A VOL: 0
+;PCODE: $0000045B VOL: 0
+; 0000 0255         else
+;PCODE: $0000045C VOL: 0
+;PCODE: $0000045D VOL: 0
+; 0000 0256             sen[i]=0;
+;PCODE: $0000045E VOL: 0
+;PCODE: $0000045F VOL: 0
+;PCODE: $00000460 VOL: 0
+;PCODE: $00000461 VOL: 0
+; 0000 0257     }
+;PCODE: $00000462 VOL: 0
+;PCODE: $00000463 VOL: 0
+;PCODE: $00000464 VOL: 0
+;PCODE: $00000465 VOL: 0
+;PCODE: $00000466 VOL: 0
+;PCODE: $00000467 VOL: 0
+; 0000 0258 }
+;PCODE: $00000468 VOL: 0
+;PCODE: $00000469 VOL: 0
+;PCODE: $0000046A VOL: 0
+;void calibrate()
+; 0000 025A {
+;PCODE: $0000046B VOL: 0
+;PCODE: $0000046C VOL: 0
+; 0000 025B     int count=0;
+; 0000 025C     unsigned char i=0;
+; 0000 025D     for(i=0;i<24;i++)
+;PCODE: $0000046D VOL: 0
+;	count -> R16,R17
+;	i -> R19
+;PCODE: $0000046E VOL: 0
+;PCODE: $0000046F VOL: 0
+;PCODE: $00000470 VOL: 0
+;PCODE: $00000471 VOL: 0
+;PCODE: $00000472 VOL: 0
+;PCODE: $00000473 VOL: 0
+;PCODE: $00000474 VOL: 0
+;PCODE: $00000475 VOL: 0
+;PCODE: $00000476 VOL: 0
+;PCODE: $00000477 VOL: 0
+;PCODE: $00000478 VOL: 0
+;PCODE: $00000479 VOL: 0
+;PCODE: $0000047A VOL: 0
+; 0000 025E     {
+; 0000 025F          ir_max_min_calibrate[0][i]=40;
+;PCODE: $0000047B VOL: 0
+;PCODE: $0000047C VOL: 0
+;PCODE: $0000047D VOL: 0
+;PCODE: $0000047E VOL: 0
+;PCODE: $0000047F VOL: 0
+; 0000 0260          ir_max_min_calibrate[1][i]=40;
+;PCODE: $00000480 VOL: 0
+;PCODE: $00000481 VOL: 0
+;PCODE: $00000482 VOL: 0
+;PCODE: $00000483 VOL: 0
+;PCODE: $00000484 VOL: 0
+; 0000 0261     }
+;PCODE: $00000485 VOL: 0
+;PCODE: $00000486 VOL: 0
+;PCODE: $00000487 VOL: 0
+;PCODE: $00000488 VOL: 0
+;PCODE: $00000489 VOL: 0
+; 0000 0262     Go(50,50);
+;PCODE: $0000048A VOL: 0
+;PCODE: $0000048B VOL: 0
+;PCODE: $0000048C VOL: 0
+;PCODE: $0000048D VOL: 0
+; 0000 0263     while(count<5)
+;PCODE: $0000048E VOL: 0
+;PCODE: $0000048F VOL: 0
+;PCODE: $00000490 VOL: 0
+;PCODE: $00000491 VOL: 0
+; 0000 0264     {
+; 0000 0265         for(i=0;i<24;i++)
+;PCODE: $00000492 VOL: 0
+;PCODE: $00000493 VOL: 0
+;PCODE: $00000494 VOL: 0
+;PCODE: $00000495 VOL: 0
+;PCODE: $00000496 VOL: 0
+;PCODE: $00000497 VOL: 0
+;PCODE: $00000498 VOL: 0
+;PCODE: $00000499 VOL: 0
+;PCODE: $0000049A VOL: 0
+; 0000 0266         {   int temp=0;
+; 0000 0267             ReadMp();
+;PCODE: $0000049B VOL: 0
+;PCODE: $0000049C VOL: 0
+;PCODE: $0000049D VOL: 0
+;PCODE: $0000049E VOL: 0
+;PCODE: $0000049F VOL: 0
+;	temp -> Y+0
+;PCODE: $000004A0 VOL: 0
+; 0000 0268             if(ir_sensor[i]>ir_max_min_calibrate[0][i])
+;PCODE: $000004A1 VOL: 0
+;PCODE: $000004A2 VOL: 0
+;PCODE: $000004A3 VOL: 0
+;PCODE: $000004A4 VOL: 0
+;PCODE: $000004A5 VOL: 0
+;PCODE: $000004A6 VOL: 0
+;PCODE: $000004A7 VOL: 0
+;PCODE: $000004A8 VOL: 0
+;PCODE: $000004A9 VOL: 0
+;PCODE: $000004AA VOL: 0
+; 0000 0269             {
+; 0000 026A               ir_max_min_calibrate[0][i]=ir_sensor[i];
+;PCODE: $000004AB VOL: 0
+;PCODE: $000004AC VOL: 0
+;PCODE: $000004AD VOL: 0
+;PCODE: $000004AE VOL: 0
+;PCODE: $000004AF VOL: 0
+;PCODE: $000004B0 VOL: 0
+;PCODE: $000004B1 VOL: 0
+;PCODE: $000004B2 VOL: 0
+; 0000 026B             }
+; 0000 026C             if(ir_sensor[i]<ir_max_min_calibrate[1][i])
+;PCODE: $000004B3 VOL: 0
+;PCODE: $000004B4 VOL: 0
+;PCODE: $000004B5 VOL: 0
+;PCODE: $000004B6 VOL: 0
+;PCODE: $000004B7 VOL: 0
+;PCODE: $000004B8 VOL: 0
+;PCODE: $000004B9 VOL: 0
+;PCODE: $000004BA VOL: 0
+;PCODE: $000004BB VOL: 0
+;PCODE: $000004BC VOL: 0
+;PCODE: $000004BD VOL: 0
+; 0000 026D             {
+; 0000 026E               ir_max_min_calibrate[1][i]=ir_sensor[i];
+;PCODE: $000004BE VOL: 0
+;PCODE: $000004BF VOL: 0
+;PCODE: $000004C0 VOL: 0
+;PCODE: $000004C1 VOL: 0
+;PCODE: $000004C2 VOL: 0
+;PCODE: $000004C3 VOL: 0
+;PCODE: $000004C4 VOL: 0
+;PCODE: $000004C5 VOL: 0
+; 0000 026F             }
+; 0000 0270 
+; 0000 0271         }
+;PCODE: $000004C6 VOL: 0
+;PCODE: $000004C7 VOL: 0
+;PCODE: $000004C8 VOL: 0
+;PCODE: $000004C9 VOL: 0
+;PCODE: $000004CA VOL: 0
+;PCODE: $000004CB VOL: 0
+;PCODE: $000004CC VOL: 0
+; 0000 0272         count++;
+;PCODE: $000004CD VOL: 0
+;PCODE: $000004CE VOL: 0
+; 0000 0273     }
+;PCODE: $000004CF VOL: 0
+;PCODE: $000004D0 VOL: 0
+; 0000 0274     Stop();
+;PCODE: $000004D1 VOL: 0
+; 0000 0275     delay_ms(100);
+;PCODE: $000004D2 VOL: 0
+;PCODE: $000004D3 VOL: 0
+;PCODE: $000004D4 VOL: 0
+; 0000 0276     Back(50,50);
+;PCODE: $000004D5 VOL: 0
+;PCODE: $000004D6 VOL: 0
+;PCODE: $000004D7 VOL: 0
+;PCODE: $000004D8 VOL: 0
+; 0000 0277     count=0;
+;PCODE: $000004D9 VOL: 0
+;PCODE: $000004DA VOL: 0
+; 0000 0278     while(count<5)
+;PCODE: $000004DB VOL: 0
+;PCODE: $000004DC VOL: 0
+;PCODE: $000004DD VOL: 0
+;PCODE: $000004DE VOL: 0
+; 0000 0279     {
+; 0000 027A         for(i=0;i<24;i++)
+;PCODE: $000004DF VOL: 0
+;PCODE: $000004E0 VOL: 0
+;PCODE: $000004E1 VOL: 0
+;PCODE: $000004E2 VOL: 0
+;PCODE: $000004E3 VOL: 0
+;PCODE: $000004E4 VOL: 0
+;PCODE: $000004E5 VOL: 0
+;PCODE: $000004E6 VOL: 0
+;PCODE: $000004E7 VOL: 0
+; 0000 027B         {   int temp=0;
+; 0000 027C             ReadMp();
+;PCODE: $000004E8 VOL: 0
+;PCODE: $000004E9 VOL: 0
+;PCODE: $000004EA VOL: 0
+;PCODE: $000004EB VOL: 0
+;PCODE: $000004EC VOL: 0
+;	temp -> Y+0
+;PCODE: $000004ED VOL: 0
+; 0000 027D             if(ir_sensor[i]>ir_max_min_calibrate[0][i])
+;PCODE: $000004EE VOL: 0
+;PCODE: $000004EF VOL: 0
+;PCODE: $000004F0 VOL: 0
+;PCODE: $000004F1 VOL: 0
+;PCODE: $000004F2 VOL: 0
+;PCODE: $000004F3 VOL: 0
+;PCODE: $000004F4 VOL: 0
+;PCODE: $000004F5 VOL: 0
+;PCODE: $000004F6 VOL: 0
+;PCODE: $000004F7 VOL: 0
+; 0000 027E             {
+; 0000 027F               ir_max_min_calibrate[0][i]=ir_sensor[i];
+;PCODE: $000004F8 VOL: 0
+;PCODE: $000004F9 VOL: 0
+;PCODE: $000004FA VOL: 0
+;PCODE: $000004FB VOL: 0
+;PCODE: $000004FC VOL: 0
+;PCODE: $000004FD VOL: 0
+;PCODE: $000004FE VOL: 0
+;PCODE: $000004FF VOL: 0
+; 0000 0280             }
+; 0000 0281             if(ir_sensor[i]<ir_max_min_calibrate[1][i])
+;PCODE: $00000500 VOL: 0
+;PCODE: $00000501 VOL: 0
+;PCODE: $00000502 VOL: 0
+;PCODE: $00000503 VOL: 0
+;PCODE: $00000504 VOL: 0
+;PCODE: $00000505 VOL: 0
+;PCODE: $00000506 VOL: 0
+;PCODE: $00000507 VOL: 0
+;PCODE: $00000508 VOL: 0
+;PCODE: $00000509 VOL: 0
+;PCODE: $0000050A VOL: 0
+; 0000 0282             {
+; 0000 0283               ir_max_min_calibrate[1][i]=ir_sensor[i];
+;PCODE: $0000050B VOL: 0
+;PCODE: $0000050C VOL: 0
+;PCODE: $0000050D VOL: 0
+;PCODE: $0000050E VOL: 0
+;PCODE: $0000050F VOL: 0
+;PCODE: $00000510 VOL: 0
+;PCODE: $00000511 VOL: 0
+;PCODE: $00000512 VOL: 0
+; 0000 0284             }
+; 0000 0285 
+; 0000 0286         }
+;PCODE: $00000513 VOL: 0
+;PCODE: $00000514 VOL: 0
+;PCODE: $00000515 VOL: 0
+;PCODE: $00000516 VOL: 0
+;PCODE: $00000517 VOL: 0
+;PCODE: $00000518 VOL: 0
+;PCODE: $00000519 VOL: 0
+; 0000 0287         count++;
+;PCODE: $0000051A VOL: 0
+;PCODE: $0000051B VOL: 0
+; 0000 0288     }
+;PCODE: $0000051C VOL: 0
+;PCODE: $0000051D VOL: 0
+; 0000 0289 
+; 0000 028A //    for(i=0;i<24;i++)
+; 0000 028B //    {
+; 0000 028C //        my_put_int(i);
+; 0000 028D //        my_putstr(":max:");
+; 0000 028E //        my_put_int(ir_max_min_calibrate[0][i]);
+; 0000 028F //        my_putstr("\t");
+; 0000 0290 //        my_putstr("min:");
+; 0000 0291 //        my_put_int(ir_max_min_calibrate[1][i]);
+; 0000 0292 //        putchar('\n');
+; 0000 0293 //    }
+; 0000 0294 
+; 0000 0295 
+; 0000 0296     Stop();
+;PCODE: $0000051E VOL: 0
+; 0000 0297 
+; 0000 0298 }
+;PCODE: $0000051F VOL: 0
+;PCODE: $00000520 VOL: 0
+;PCODE: $00000521 VOL: 0
+;PCODE: $00000522 VOL: 0
+;//void my_put_int(int data)
+;//{
+;//    unsigned char f[50];
+;//    sprintf(f,”%d”,data);
+;//    my_putstr(f);
+;//}
+;//void my_putstr( char *f)
+;//{
+;//     int i=0;
+;//      while(f[i]!=‘\0’)
+;//      {
+;//           putchar(f[i]);
+;//           i++;
+;//       }
+;//}

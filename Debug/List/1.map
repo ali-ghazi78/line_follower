@@ -1,0 +1,39 @@
+RAM Allocation [bytes]
+Variable                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+ir_sensor                                                                         0x0500      24
+sen                                                                               0x0518      24
+ir_max_min_calibrate                                                              0x0530      48
+last_error                                                                        0x0560       2
+_base_y                                                                           0x0562       4
+_seed                                                                             0x0566       4
+
+EEPROM Allocation [bytes]
+Variable                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+
+Register Allocation
+Variable                                                                          Register  Size
+------------------------------------------------------------------------------------------------
+_lcd_x                                                                            R5           1
+_lcd_y                                                                            R4           1
+_lcd_maxx                                                                         R7           1
+
+FLASH Allocation [words]
+Function                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+read_adc                                                                          0x00088     14
+main                                                                              0x00096    101
+init                                                                              0x000FB      3
+ReadMp                                                                            0x000FE    106
+Back                                                                              0x00168     13
+Right                                                                             0x00175     11
+Go                                                                                0x00189     15
+Stop                                                                              0x00198      5
+Move                                                                              0x0019D     99
+controller                                                                        0x00200    339
+digitalize                                                                        0x00353     33
+_lcd_write_nibble_G100                                                            0x00374     20
+_lcd_write_data                                                                   0x00388     12
+lcd_clear                                                                         0x00394     12
+lcd_init                                                                          0x003A0     46
