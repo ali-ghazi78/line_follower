@@ -27,8 +27,9 @@ Active0=0
 EditorPanel0=0
 PageIndex0=0
 EditorPanel1=0
-TimeStamp1=1293882667
+TimeStamp1=1293916339
 PageIndex1=1
+TimeStamp0=1293916339
 [CompilerDebug]
 Chip=ATmega64
 CPUClock=8000000
@@ -127,8 +128,8 @@ WatchAVR8LAutoVariables=0
 UseEEPROMLocation0=1
 RebuildAll=0
 LinkageInformationPresent=1
-COFFileTimeStamp=1293912886
-Build=130
+COFFileTimeStamp=1293916210
+Build=142
 [DefinedSymbolsDebug]
 Count=0
 [Compiler]
@@ -230,7 +231,7 @@ UseEEPROMLocation0=1
 RebuildAll=1
 LinkageInformationPresent=0
 COFFileTimeStamp=-1
-Build=130
+Build=142
 [DefinedSymbols]
 Count=0
 [StartUp]
@@ -327,20 +328,20 @@ VerifyProgramming=1
 ProgrammingCounter=0
 RunUserProg=0
 [Bookmarks0]
-Row=49
-Column=2
+Row=25
+Column=10
 ScrollPosX=0
-ScrollPosY=19
-TimeStamp=1293882956
+ScrollPosY=20
+TimeStamp=1293916356
 [BookmarksFoldedCode]
 Files=1
 F1=1.c
 [Bookmarks1]
-TimeStamp=1293882667
-Row=490
-Column=48
+TimeStamp=1293916339
+Row=351
+Column=103
 ScrollPosX=0
-ScrollPosY=468
+ScrollPosY=345
 BK0=-1
 BK1=-1
 BK2=-1
@@ -368,45 +369,43 @@ L13=Enhanced function parameters passing: Yes
 L14=Automatic register allocation: Yes
 L15=Smart register allocation: Yes
 L16=
-L17=Build: 130
+L17=Build: 141
 L18=10761 line(s) compiled
 L19=No errors
-L20=14 warning(s)
+L20=18 warning(s)
 L21=
 L22=Bit variables size: 0 byte(s)
 L23=
 L24=Data Stack area: 0x100 to 0x4FF
 L25=Data Stack size: 1024 byte(s)
-L26=Estimated Data Stack usage: 22 byte(s)
+L26=Estimated Data Stack usage: 60 byte(s)
 L27=
-L28=RAM Global variables area: 0x500 to 0x569
-L29=RAM Global variables size: 106 byte(s)
+L28=RAM Global variables area: 0x500 to 0x567
+L29=RAM Global variables size: 104 byte(s)
 L30=
-L31=Hardware Stack area: 0x56A to 0x10FF
-L32=Hardware Stack size: 2966 byte(s)
+L31=Hardware Stack area: 0x568 to 0x10FF
+L32=Hardware Stack size: 2968 byte(s)
 L33=
 L34=Heap size: 0 byte(s)
 L35=
 Lines=38
 L36=EEPROM usage: 0 byte(s), 0.0% of EEPROM
-L37=Program size: 1477 words (2954 bytes), 4.5% of FLASH
-L38=111 words (222 bytes), 7.0% reduced by Code Compression
+L37=Program size: 829 words (1658 bytes), 2.5% of FLASH
+L38=54 words (108 bytes), 6.1% reduced by Code Compression
 [BuildInfoAssembler]
 Lines=12
 L1=AVRASM: AVR macro assembler 2.1.30 (build 592 Nov  7 2008 12:38:17)
 L2=Copyright (C) 1995-2008 ATMEL Corporation
 L3=
-L4=C:\Users\ali\Desktop\line_follower_barman_97\Debug\List\1.asm(3401): No EEPROM data, deleting C:\Users\ali\Desktop\line_follower_barman_97\Debug\Exe\1.eep
+L4=C:\Users\ali\Desktop\line_follower_barman_97\Debug\List\1.asm(2723): No EEPROM data, deleting C:\Users\ali\Desktop\line_follower_barman_97\Debug\Exe\1.eep
 L5=
 L6=ATmega64 memory use summary [bytes]:
 L7=Segment   Begin    End      Code   Data   Used    Size   Use%
 L8=---------------------------------------------------------------
-L9=[.cseg] 0x000000 0x000b8a   2916     38   2954   65536   4.5%
-L10=[.dseg] 0x000100 0x00056a      0    106    106    4096   2.6%
+L9=[.cseg] 0x000000 0x00067a   1620     38   1658   65536   2.5%
+L10=[.dseg] 0x000100 0x000568      0    104    104    4096   2.5%
 L11=[.eseg] 0x000000 0x000000      0      0      0    2048   0.0%
 L12=
-[FoldedCode1]
-Blocks=0
 [HeadersList]
 Files=1
 F1=C:\Users\ali\Desktop\line_follower_barman_97\1.c
@@ -417,3 +416,5 @@ F2=C:\cvavr\inc\mega128_bits.h
 F3=C:\cvavr\inc\delay.h
 F4=C:\cvavr\inc\alcd.h
 F5=C:\cvavr\inc\stdlib.h
+[FoldedCode1]
+Blocks=0

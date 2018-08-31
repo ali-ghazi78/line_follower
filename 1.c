@@ -110,12 +110,12 @@ return ADCH;
 #define E_R_4 60
 #define E_R_5 70
 #define E_R_6 90
-#define E_R_7 300
-#define E_R_8 300
-#define E_R_9 450
-#define E_R_10 500
-#define E_R_11 600
-#define E_R_12 700
+#define E_R_7 450
+#define E_R_8 450
+#define E_R_9 550
+#define E_R_10 550
+#define E_R_11 550
+#define E_R_12 550
 
 #define E_L_1 -5
 #define E_L_2 -15
@@ -123,12 +123,12 @@ return ADCH;
 #define E_L_4 -60
 #define E_L_5 -70
 #define E_L_6 -90
-#define E_L_7 -300
-#define E_L_8 -300
-#define E_L_9 -450
-#define E_L_10 -500
-#define E_L_11 -600
-#define E_L_12 -700
+#define E_L_7 -450
+#define E_L_8 -450
+#define E_L_9 -550
+#define E_L_10 -550
+#define E_L_11 -550
+#define E_L_12 -550
 
 
 unsigned char ir_sensor[24];
@@ -354,7 +354,7 @@ init();
 //calibrate();
     while (1)
     {
-        controller();
+        //controller();
    //       lcd_show_sensor();
  //       ReadMp();
 
