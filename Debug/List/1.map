@@ -4,8 +4,9 @@ Variable                                                                        
 ir_sensor                                                                         0x0500      24
 sen                                                                               0x0518      24
 ir_max_min_calibrate                                                              0x0530      48
-_base_y                                                                           0x0560       4
-_seed                                                                             0x0564       4
+last_error                                                                        0x0560       2
+_base_y                                                                           0x0562       4
+_seed                                                                             0x0566       4
 
 EEPROM Allocation [bytes]
 Variable                                                                          Address   Size
@@ -23,16 +24,15 @@ Function                                                                        
 ------------------------------------------------------------------------------------------------
 read_adc                                                                          0x00088     14
 main                                                                              0x00096    102
-init                                                                              0x000FC      2
-ReadMp                                                                            0x000FE    106
-lcd_put_int                                                                       0x00168     15
-lcd_show_sensor                                                                   0x00177    103
-digitalize                                                                        0x001DE     33
-_lcd_write_nibble_G100                                                            0x001FF     20
-_lcd_write_data                                                                   0x00213     12
-lcd_gotoxy                                                                        0x0021F     13
-lcd_clear                                                                         0x0022C     12
-lcd_putchar                                                                       0x00238     21
-lcd_puts                                                                          0x0024D     17
-lcd_init                                                                          0x0025E     46
-itoa                                                                              0x0028C     46
+init                                                                              0x000FC      3
+ReadMp                                                                            0x000FF    106
+Back                                                                              0x00169     13
+Right                                                                             0x00176     11
+Go                                                                                0x0018A     15
+Move                                                                              0x00199     99
+controller                                                                        0x001FC    341
+digitalize                                                                        0x00351     33
+_lcd_write_nibble_G100                                                            0x00372     20
+_lcd_write_data                                                                   0x00386     12
+lcd_clear                                                                         0x00392     12
+lcd_init                                                                          0x0039E     46

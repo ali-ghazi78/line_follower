@@ -354,7 +354,7 @@ init();
 //calibrate();
     while (1)
     {
-        //controller();
+        controller();
    //       lcd_show_sensor();
  //       ReadMp();
 
@@ -478,13 +478,13 @@ void Stop()
 void Move(int motor_r_speed,int motor_l_speed)
 {
     if(motor_r_speed>255)
-        motor_r_speed=250;
+        motor_r_speed=100;
     if(motor_l_speed>255)
-        motor_l_speed=250;
+        motor_l_speed=100;
     if(motor_r_speed<-255)
-        motor_r_speed=-250;
+        motor_r_speed=-100;
     if(motor_l_speed<-255)
-        motor_l_speed=-250;
+        motor_l_speed=-100;
 
 
     if(motor_r_speed>=0&&motor_l_speed>=0)
@@ -585,7 +585,7 @@ void controller()
 //    if(error==0&&(!(R_1||R_2||L_2||R_2||L_3||R_3||L_4||R_4||L_5||R_5||L_6||R_6)))
 //        Stop();
 //    else
-    Move(140-motor_speed,140+motor_speed);
+    Move(100-motor_speed,100+motor_speed);
 
 
 }
