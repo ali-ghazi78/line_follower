@@ -135,6 +135,8 @@ unsigned char ir_sensor[24];
 unsigned char sen[24];
 unsigned char black[24];
 unsigned char ir_max_min_calibrate[2][24];
+unsigned int counter_speed=0;
+
 
 void ReadMp();
 void Back(unsigned char motor_r_speed,unsigned char motor_l_speed);
@@ -482,9 +484,9 @@ void Move(int motor_r_speed,int motor_l_speed)
     if(motor_l_speed>255)
         motor_l_speed=100;
     if(motor_r_speed<-255)
-        motor_r_speed=-100;
+        motor_r_speed=-(100);
     if(motor_l_speed<-255)
-        motor_l_speed=-100;
+        motor_l_speed=-(100);
 
 
     if(motor_r_speed>=0&&motor_l_speed>=0)
@@ -559,12 +561,13 @@ void controller()
         last_error=0;
         sum_l=(L_1*E_L_1)+(L_2*E_L_2)+(L_3*E_L_3);
         sum_r=(R_1*E_R_1)+(R_2*E_R_2)+(R_3*E_R_3);
+        counter_speed+=1;
     }
     else
     {
         sum_l=(L_1*E_L_1)+(L_2*E_L_2)+(L_3*E_L_3)+(L_4*E_L_4)+(L_5*E_L_5)+(L_6*E_L_6)+(L_7*E_L_7)+(L_8*E_L_8)+(L_9*E_L_9)+(L_10*E_L_10)+(L_11*E_L_11)+(L_12*E_L_12);
         sum_r=(R_1*E_R_1)+(R_2*E_R_2)+(R_3*E_R_3)+(R_4*E_R_4)+(R_5*E_R_5)+(R_6*E_R_6)+(R_7*E_R_7)+(R_8*E_R_8)+(R_9*E_R_9)+(R_10*E_R_10)+(R_11*E_R_11)+(R_12*E_R_12);
-
+        counter_speed=0;
     }
 
     error=sum_r+sum_l;
@@ -585,8 +588,11 @@ void controller()
 //    if(error==0&&(!(R_1||R_2||L_2||R_2||L_3||R_3||L_4||R_4||L_5||R_5||L_6||R_6)))
 //        Stop();
 //    else
-    Move(100-motor_speed,100+motor_speed);
-
+    Move((100+counter_speed)-motor_speed,(100+counter_speed)+motor_speed);
+   if(counter_speed>300)
+   {
+    counter_speed=300;
+   }
 
 }
 void digitalize()
