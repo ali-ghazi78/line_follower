@@ -136,8 +136,8 @@ unsigned char sen[24];
 unsigned char black[24];
 unsigned char ir_max_min_calibrate[2][24];
 unsigned int counter_speed=0;
-int MAX_STRAIGHT=160;
-int MAX_TURN=210;
+int MAX_STRAIGHT=170;
+int MAX_TURN=230;
 
 
 void ReadMp();
@@ -356,11 +356,6 @@ DDRB.7=1;
 //-----
 
 init();
-Right(0,100);
-delay_ms(2000);
-
-Left(100,0);
-delay_ms(2000);
 //calibrate();
     while (1)
     {
