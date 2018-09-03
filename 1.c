@@ -136,6 +136,8 @@ unsigned char sen[24];
 unsigned char black[24];
 unsigned char ir_max_min_calibrate[2][24];
 unsigned int counter_speed=0;
+int MAX_STRAIGHT=140;
+int MAX_TURN=180;
 
 
 void ReadMp();
@@ -479,14 +481,22 @@ void Stop()
 }
 void Move(int motor_r_speed,int motor_l_speed)
 {
-    if(motor_r_speed>255)
-        motor_r_speed=100;
-    if(motor_l_speed>255)
-        motor_l_speed=100;
-    if(motor_r_speed<-255)
-        motor_r_speed=-(100);
-    if(motor_l_speed<-255)
-        motor_l_speed=-(100);
+    if(motor_r_speed<0||motor_l_speed<0)
+    {
+        if(motor_r_speed<(-1*(MAX_TURN)))
+            motor_r_speed=-1*(MAX_TURN);
+        if(motor_l_speed<(-1*(MAX_TURN)))
+            motor_l_speed=-1*(MAX_TURN);
+    }
+    else
+    {
+        if(motor_r_speed>MAX_STRAIGHT)
+            motor_r_speed=MAX_STRAIGHT;
+        if(motor_l_speed>MAX_STRAIGHT)
+            motor_l_speed=MAX_STRAIGHT;
+
+    }
+
 
 
     if(motor_r_speed>=0&&motor_l_speed>=0)
@@ -578,6 +588,7 @@ void controller()
         error=last_error;
         if((last_error<299&&last_error>0)||(last_error>-299&&last_error<0))
             error=0;
+
     }
     motor_speed=error*kp;
 
@@ -588,10 +599,11 @@ void controller()
 //    if(error==0&&(!(R_1||R_2||L_2||R_2||L_3||R_3||L_4||R_4||L_5||R_5||L_6||R_6)))
 //        Stop();
 //    else
-    Move((100+counter_speed)-motor_speed,(100+counter_speed)+motor_speed);
-   if(counter_speed>300)
+
+    Move((MAX_STRAIGHT+motor_speed),(MAX_STRAIGHT+motor_speed));
+   if(counter_speed>20)
    {
-    counter_speed=300;
+    counter_speed=20;
    }
 
 }

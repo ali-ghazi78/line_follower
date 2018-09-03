@@ -16,22 +16,24 @@ Register Allocation
 Variable                                                                          Register  Size
 ------------------------------------------------------------------------------------------------
 counter_speed                                                                     R4,R5        2
-_lcd_x                                                                            R7           1
-_lcd_y                                                                            R6           1
-_lcd_maxx                                                                         R9           1
+MAX_STRAIGHT                                                                      R6,R7        2
+MAX_TURN                                                                          R8,R9        2
+_lcd_x                                                                            R11          1
+_lcd_y                                                                            R10          1
+_lcd_maxx                                                                         R13          1
 
 FLASH Allocation [words]
 Function                                                                          Address   Size
 ------------------------------------------------------------------------------------------------
-read_adc                                                                          0x0008C     14
-main                                                                              0x0009A    102
-init                                                                              0x00100      3
-ReadMp                                                                            0x00103    106
-Back                                                                              0x0016D     13
-Right                                                                             0x0017A     11
-Go                                                                                0x0018E     15
-Move                                                                              0x0019D     99
-controller                                                                        0x00200    358
+read_adc                                                                          0x0008E     14
+main                                                                              0x0009C    102
+init                                                                              0x00102      3
+ReadMp                                                                            0x00105    106
+Back                                                                              0x0016F     13
+Right                                                                             0x0017C     11
+Go                                                                                0x00190     15
+Move                                                                              0x0019F    102
+controller                                                                        0x00205    353
 digitalize                                                                        0x00366     33
 _lcd_write_nibble_G100                                                            0x00387     20
 _lcd_write_data                                                                   0x0039B     12
