@@ -356,6 +356,11 @@ DDRB.7=1;
 //-----
 
 init();
+Right(0,100);
+delay_ms(2000);
+
+Left(100,0);
+delay_ms(2000);
 //calibrate();
     while (1)
     {
@@ -451,7 +456,7 @@ void ReadMp()
     digitalize();
 
 }
-void Back(unsigned char motor_r_speed,unsigned char motor_l_speed)
+void Go(unsigned char motor_r_speed,unsigned char motor_l_speed)
 {
     IN1=1;
     IN2=0;
@@ -462,7 +467,7 @@ void Back(unsigned char motor_r_speed,unsigned char motor_l_speed)
     OCR1BH=0x00;
     OCR1BL=motor_r_speed;
 }
-void Right(unsigned char motor_r_speed,unsigned char motor_l_speed)
+void Left(unsigned char motor_r_speed,unsigned char motor_l_speed)
 {
     IN1=0;
     IN2=0;
@@ -473,7 +478,7 @@ void Right(unsigned char motor_r_speed,unsigned char motor_l_speed)
     OCR1BH=0x00;
     OCR1BL=motor_r_speed;
 }
-void Left(unsigned char motor_r_speed,unsigned char motor_l_speed)
+void Right(unsigned char motor_r_speed,unsigned char motor_l_speed)
 {
     IN1=1;
     IN2=1;
@@ -484,7 +489,7 @@ void Left(unsigned char motor_r_speed,unsigned char motor_l_speed)
     OCR1BH=0x00;
     OCR1BL=255-motor_r_speed;
 }
-void Go(unsigned char motor_r_speed,unsigned char motor_l_speed)
+void Back(unsigned char motor_r_speed,unsigned char motor_l_speed)
 {
     IN1=0;
     IN2=1;

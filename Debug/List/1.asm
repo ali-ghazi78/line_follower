@@ -1711,66 +1711,85 @@ _main:
 ; 0000 0165 
 ; 0000 0166 init();
 	RCALL _init
-; 0000 0167 //calibrate();
-; 0000 0168     while (1)
+; 0000 0167 Right(0,100);
+	LDI  R30,LOW(0)
+	ST   -Y,R30
+	LDI  R26,LOW(100)
+	RCALL _Right
+; 0000 0168 delay_ms(2000);
+	LDI  R26,LOW(2000)
+	LDI  R27,HIGH(2000)
+	CALL _delay_ms
+; 0000 0169 
+; 0000 016A Left(100,0);
+	LDI  R30,LOW(100)
+	ST   -Y,R30
+	LDI  R26,LOW(0)
+	RCALL _Left
+; 0000 016B delay_ms(2000);
+	LDI  R26,LOW(2000)
+	LDI  R27,HIGH(2000)
+	CALL _delay_ms
+; 0000 016C //calibrate();
+; 0000 016D     while (1)
 _0x10:
-; 0000 0169     {
-; 0000 016A         ReadMp();
+; 0000 016E     {
+; 0000 016F         ReadMp();
 	RCALL _ReadMp
-; 0000 016B         if(Inverse_is_black())//if bc was black
+; 0000 0170         if(Inverse_is_black())//if bc was black
 	RCALL _Inverse_is_black
 	SBIW R30,0
 	BREQ _0x13
-; 0000 016C         {
-; 0000 016D             controller(1);
+; 0000 0171         {
+; 0000 0172             controller(1);
 	LDI  R26,LOW(1)
 	RJMP _0x91
-; 0000 016E         }
-; 0000 016F         else
+; 0000 0173         }
+; 0000 0174         else
 _0x13:
-; 0000 0170         {
-; 0000 0171             controller(0);
+; 0000 0175         {
+; 0000 0176             controller(0);
 	LDI  R26,LOW(0)
 _0x91:
 	RCALL _controller
-; 0000 0172         }
-; 0000 0173    //       lcd_show_sensor();
-; 0000 0174  //       ReadMp();
-; 0000 0175 
-; 0000 0176 
-; 0000 0177 
-; 0000 0178     }
+; 0000 0177         }
+; 0000 0178    //       lcd_show_sensor();
+; 0000 0179  //       ReadMp();
+; 0000 017A 
+; 0000 017B 
+; 0000 017C 
+; 0000 017D     }
 	RJMP _0x10
-; 0000 0179 }
+; 0000 017E }
 _0x15:
 	RJMP _0x15
 ; .FEND
 ;void init()
-; 0000 017B {
+; 0000 0180 {
 _init:
 ; .FSTART _init
-; 0000 017C     lcd_clear();
+; 0000 0181     lcd_clear();
 	CALL _lcd_clear
-; 0000 017D //    Back(200,200);
-; 0000 017E //    delay_ms(1000);
-; 0000 017F //    Right(100,100);
-; 0000 0180 //    delay_ms(1000);
-; 0000 0181 //    Left(100,100);
-; 0000 0182 //    delay_ms(1000);
-; 0000 0183 //    Stop();
-; 0000 0184 //    lcd_putsf("salam");
+; 0000 0182 //    Back(200,200);
+; 0000 0183 //    delay_ms(1000);
+; 0000 0184 //    Right(100,100);
 ; 0000 0185 //    delay_ms(1000);
-; 0000 0186 //    lcd_clear();
-; 0000 0187 }
+; 0000 0186 //    Left(100,100);
+; 0000 0187 //    delay_ms(1000);
+; 0000 0188 //    Stop();
+; 0000 0189 //    lcd_putsf("salam");
+; 0000 018A //    delay_ms(1000);
+; 0000 018B //    lcd_clear();
+; 0000 018C }
 	RET
 ; .FEND
 ;int Inverse_is_black()
-; 0000 0189 {
+; 0000 018E {
 _Inverse_is_black:
 ; .FSTART _Inverse_is_black
-; 0000 018A     int black_counter=0;
-; 0000 018B     int i=0;
-; 0000 018C     for(i=0;i<24;i++)
+; 0000 018F     int black_counter=0;
+; 0000 0190     int i=0;
+; 0000 0191     for(i=0;i<24;i++)
 	CALL __SAVELOCR4
 ;	black_counter -> R16,R17
 ;	i -> R18,R19
@@ -1780,8 +1799,8 @@ _Inverse_is_black:
 _0x17:
 	__CPWRN 18,19,24
 	BRGE _0x18
-; 0000 018D     {
-; 0000 018E         if(sen[i])
+; 0000 0192     {
+; 0000 0193         if(sen[i])
 	LDI  R26,LOW(_sen)
 	LDI  R27,HIGH(_sen)
 	ADD  R26,R18
@@ -1789,49 +1808,49 @@ _0x17:
 	LD   R30,X
 	CPI  R30,0
 	BREQ _0x19
-; 0000 018F             black_counter++;
+; 0000 0194             black_counter++;
 	__ADDWRN 16,17,1
-; 0000 0190     }
+; 0000 0195     }
 _0x19:
 	__ADDWRN 18,19,1
 	RJMP _0x17
 _0x18:
-; 0000 0191     if(black_counter>=12)
+; 0000 0196     if(black_counter>=12)
 	__CPWRN 16,17,12
 	BRLT _0x1A
-; 0000 0192     {
-; 0000 0193         return 1;
+; 0000 0197     {
+; 0000 0198         return 1;
 	LDI  R30,LOW(1)
 	LDI  R31,HIGH(1)
 	CALL __LOADLOCR4
 	RJMP _0x20A0002
-; 0000 0194     }
-; 0000 0195     else
+; 0000 0199     }
+; 0000 019A     else
 _0x1A:
-; 0000 0196     {
-; 0000 0197         return 0;
+; 0000 019B     {
+; 0000 019C         return 0;
 	LDI  R30,LOW(0)
 	LDI  R31,HIGH(0)
 	CALL __LOADLOCR4
 	RJMP _0x20A0002
-; 0000 0198     }
-; 0000 0199 }
+; 0000 019D     }
+; 0000 019E }
 ; .FEND
 ;void ReadMp()
-; 0000 019B {
+; 0000 01A0 {
 _ReadMp:
 ; .FSTART _ReadMp
-; 0000 019C     static unsigned int ir_sensor_back[24];
-; 0000 019D     unsigned char i=0;
-; 0000 019E     for(;i<8;i++)
+; 0000 01A1     static unsigned int ir_sensor_back[24];
+; 0000 01A2     unsigned char i=0;
+; 0000 01A3     for(;i<8;i++)
 	ST   -Y,R17
 ;	i -> R17
 	LDI  R17,0
 _0x1D:
 	CPI  R17,8
 	BRSH _0x1E
-; 0000 019F     {
-; 0000 01A0         S_A=i%2;
+; 0000 01A4     {
+; 0000 01A5         S_A=i%2;
 	CALL SUBOPT_0x0
 	BRNE _0x1F
 	CBI  0x15,0
@@ -1839,7 +1858,7 @@ _0x1D:
 _0x1F:
 	SBI  0x15,0
 _0x20:
-; 0000 01A1         S_B=(i%4)/2;
+; 0000 01A6         S_B=(i%4)/2;
 	CALL SUBOPT_0x1
 	BRNE _0x21
 	CBI  0x15,1
@@ -1847,7 +1866,7 @@ _0x20:
 _0x21:
 	SBI  0x15,1
 _0x22:
-; 0000 01A2         S_C=(i%8)/4;
+; 0000 01A7         S_C=(i%8)/4;
 	CALL SUBOPT_0x2
 	BRNE _0x23
 	CBI  0x15,2
@@ -1855,13 +1874,13 @@ _0x22:
 _0x23:
 	SBI  0x15,2
 _0x24:
-; 0000 01A3         i++;
+; 0000 01A8         i++;
 	CALL SUBOPT_0x3
-; 0000 01A4         i--;
-; 0000 01A5         i++;
-; 0000 01A6         i--;
-; 0000 01A7 
-; 0000 01A8         ir_sensor[i]=read_adc(0);
+; 0000 01A9         i--;
+; 0000 01AA         i++;
+; 0000 01AB         i--;
+; 0000 01AC 
+; 0000 01AD         ir_sensor[i]=read_adc(0);
 	SUBI R30,LOW(-_ir_sensor)
 	SBCI R31,HIGH(-_ir_sensor)
 	PUSH R31
@@ -1871,18 +1890,18 @@ _0x24:
 	POP  R26
 	POP  R27
 	ST   X,R30
-; 0000 01A9     }
+; 0000 01AE     }
 	SUBI R17,-1
 	RJMP _0x1D
 _0x1E:
-; 0000 01AA     i=0;
+; 0000 01AF     i=0;
 	LDI  R17,LOW(0)
-; 0000 01AB     for(;i<8;i++)
+; 0000 01B0     for(;i<8;i++)
 _0x26:
 	CPI  R17,8
 	BRSH _0x27
-; 0000 01AC     {
-; 0000 01AD         S_A=i%2;
+; 0000 01B1     {
+; 0000 01B2         S_A=i%2;
 	CALL SUBOPT_0x0
 	BRNE _0x28
 	CBI  0x15,0
@@ -1890,7 +1909,7 @@ _0x26:
 _0x28:
 	SBI  0x15,0
 _0x29:
-; 0000 01AE         S_B=(i%4)/2;
+; 0000 01B3         S_B=(i%4)/2;
 	CALL SUBOPT_0x1
 	BRNE _0x2A
 	CBI  0x15,1
@@ -1898,7 +1917,7 @@ _0x29:
 _0x2A:
 	SBI  0x15,1
 _0x2B:
-; 0000 01AF         S_C=(i%8)/4;
+; 0000 01B4         S_C=(i%8)/4;
 	CALL SUBOPT_0x2
 	BRNE _0x2C
 	CBI  0x15,2
@@ -1906,13 +1925,13 @@ _0x2B:
 _0x2C:
 	SBI  0x15,2
 _0x2D:
-; 0000 01B0         i++;
+; 0000 01B5         i++;
 	CALL SUBOPT_0x3
-; 0000 01B1         i--;
-; 0000 01B2         i++;
-; 0000 01B3         i--;
-; 0000 01B4 
-; 0000 01B5         ir_sensor[i+8]=read_adc(1);
+; 0000 01B6         i--;
+; 0000 01B7         i++;
+; 0000 01B8         i--;
+; 0000 01B9 
+; 0000 01BA         ir_sensor[i+8]=read_adc(1);
 	__ADDW1MN _ir_sensor,8
 	PUSH R31
 	PUSH R30
@@ -1921,18 +1940,18 @@ _0x2D:
 	POP  R26
 	POP  R27
 	ST   X,R30
-; 0000 01B6     }
+; 0000 01BB     }
 	SUBI R17,-1
 	RJMP _0x26
 _0x27:
-; 0000 01B7     i=0;
+; 0000 01BC     i=0;
 	LDI  R17,LOW(0)
-; 0000 01B8     for(;i<8;i++)
+; 0000 01BD     for(;i<8;i++)
 _0x2F:
 	CPI  R17,8
 	BRSH _0x30
-; 0000 01B9     {
-; 0000 01BA         S_A=i%2;
+; 0000 01BE     {
+; 0000 01BF         S_A=i%2;
 	CALL SUBOPT_0x0
 	BRNE _0x31
 	CBI  0x15,0
@@ -1940,7 +1959,7 @@ _0x2F:
 _0x31:
 	SBI  0x15,0
 _0x32:
-; 0000 01BB         S_B=(i%4)/2;
+; 0000 01C0         S_B=(i%4)/2;
 	CALL SUBOPT_0x1
 	BRNE _0x33
 	CBI  0x15,1
@@ -1948,7 +1967,7 @@ _0x32:
 _0x33:
 	SBI  0x15,1
 _0x34:
-; 0000 01BC         S_C=(i%8)/4;
+; 0000 01C1         S_C=(i%8)/4;
 	CALL SUBOPT_0x2
 	BRNE _0x35
 	CBI  0x15,2
@@ -1956,12 +1975,12 @@ _0x34:
 _0x35:
 	SBI  0x15,2
 _0x36:
-; 0000 01BD         i++;
+; 0000 01C2         i++;
 	CALL SUBOPT_0x3
-; 0000 01BE         i--;
-; 0000 01BF         i++;
-; 0000 01C0         i--;
-; 0000 01C1         ir_sensor[i+16]=read_adc(2);
+; 0000 01C3         i--;
+; 0000 01C4         i++;
+; 0000 01C5         i--;
+; 0000 01C6         ir_sensor[i+16]=read_adc(2);
 	__ADDW1MN _ir_sensor,16
 	PUSH R31
 	PUSH R30
@@ -1970,147 +1989,147 @@ _0x36:
 	POP  R26
 	POP  R27
 	ST   X,R30
-; 0000 01C2     }
+; 0000 01C7     }
 	SUBI R17,-1
 	RJMP _0x2F
 _0x30:
-; 0000 01C3     digitalize();
+; 0000 01C8     digitalize();
 	RCALL _digitalize
-; 0000 01C4 
-; 0000 01C5 }
+; 0000 01C9 
+; 0000 01CA }
 	LD   R17,Y+
 	RET
 ; .FEND
-;void Back(unsigned char motor_r_speed,unsigned char motor_l_speed)
-; 0000 01C7 {
-_Back:
-; .FSTART _Back
-; 0000 01C8     IN1=1;
+;void Go(unsigned char motor_r_speed,unsigned char motor_l_speed)
+; 0000 01CC {
+_Go:
+; .FSTART _Go
+; 0000 01CD     IN1=1;
 	ST   -Y,R26
 ;	motor_r_speed -> Y+1
 ;	motor_l_speed -> Y+0
 	SBI  0x18,4
-; 0000 01C9     IN2=0;
+; 0000 01CE     IN2=0;
 	CBI  0x18,7
-; 0000 01CA 
-; 0000 01CB     OCR1AH=0x00;
+; 0000 01CF 
+; 0000 01D0     OCR1AH=0x00;
 	LDI  R30,LOW(0)
 	OUT  0x2B,R30
-; 0000 01CC     OCR1AL=255-motor_l_speed;
+; 0000 01D1     OCR1AL=255-motor_l_speed;
 	LD   R26,Y
 	LDI  R30,LOW(255)
 	SUB  R30,R26
 	OUT  0x2A,R30
-; 0000 01CD 
-; 0000 01CE     OCR1BH=0x00;
+; 0000 01D2 
+; 0000 01D3     OCR1BH=0x00;
 	LDI  R30,LOW(0)
 	OUT  0x29,R30
-; 0000 01CF     OCR1BL=motor_r_speed;
+; 0000 01D4     OCR1BL=motor_r_speed;
 	LDD  R30,Y+1
 	RJMP _0x20A0004
-; 0000 01D0 }
+; 0000 01D5 }
 ; .FEND
-;void Right(unsigned char motor_r_speed,unsigned char motor_l_speed)
-; 0000 01D2 {
-_Right:
-; .FSTART _Right
-; 0000 01D3     IN1=0;
+;void Left(unsigned char motor_r_speed,unsigned char motor_l_speed)
+; 0000 01D7 {
+_Left:
+; .FSTART _Left
+; 0000 01D8     IN1=0;
 	ST   -Y,R26
 ;	motor_r_speed -> Y+1
 ;	motor_l_speed -> Y+0
 	CBI  0x18,4
-; 0000 01D4     IN2=0;
+; 0000 01D9     IN2=0;
 	CBI  0x18,7
-; 0000 01D5 
-; 0000 01D6     OCR1AH=0x00;
+; 0000 01DA 
+; 0000 01DB     OCR1AH=0x00;
 	LDI  R30,LOW(0)
 	OUT  0x2B,R30
-; 0000 01D7     OCR1AL=motor_l_speed;
+; 0000 01DC     OCR1AL=motor_l_speed;
 	LD   R30,Y
 	OUT  0x2A,R30
-; 0000 01D8 
-; 0000 01D9     OCR1BH=0x00;
+; 0000 01DD 
+; 0000 01DE     OCR1BH=0x00;
 	LDI  R30,LOW(0)
 	OUT  0x29,R30
-; 0000 01DA     OCR1BL=motor_r_speed;
+; 0000 01DF     OCR1BL=motor_r_speed;
 	LDD  R30,Y+1
 	RJMP _0x20A0004
-; 0000 01DB }
+; 0000 01E0 }
 ; .FEND
-;void Left(unsigned char motor_r_speed,unsigned char motor_l_speed)
-; 0000 01DD {
-_Left:
-; .FSTART _Left
-; 0000 01DE     IN1=1;
+;void Right(unsigned char motor_r_speed,unsigned char motor_l_speed)
+; 0000 01E2 {
+_Right:
+; .FSTART _Right
+; 0000 01E3     IN1=1;
 	ST   -Y,R26
 ;	motor_r_speed -> Y+1
 ;	motor_l_speed -> Y+0
 	SBI  0x18,4
-; 0000 01DF     IN2=1;
+; 0000 01E4     IN2=1;
 	SBI  0x18,7
-; 0000 01E0 
-; 0000 01E1     OCR1AH=0x00;
+; 0000 01E5 
+; 0000 01E6     OCR1AH=0x00;
 	LDI  R30,LOW(0)
 	OUT  0x2B,R30
-; 0000 01E2     OCR1AL=255-motor_l_speed;
+; 0000 01E7     OCR1AL=255-motor_l_speed;
 	LD   R26,Y
 	LDI  R30,LOW(255)
 	SUB  R30,R26
 	RJMP _0x20A0003
-; 0000 01E3 
-; 0000 01E4     OCR1BH=0x00;
-; 0000 01E5     OCR1BL=255-motor_r_speed;
-; 0000 01E6 }
+; 0000 01E8 
+; 0000 01E9     OCR1BH=0x00;
+; 0000 01EA     OCR1BL=255-motor_r_speed;
+; 0000 01EB }
 ; .FEND
-;void Go(unsigned char motor_r_speed,unsigned char motor_l_speed)
-; 0000 01E8 {
-_Go:
-; .FSTART _Go
-; 0000 01E9     IN1=0;
+;void Back(unsigned char motor_r_speed,unsigned char motor_l_speed)
+; 0000 01ED {
+_Back:
+; .FSTART _Back
+; 0000 01EE     IN1=0;
 	ST   -Y,R26
 ;	motor_r_speed -> Y+1
 ;	motor_l_speed -> Y+0
 	CBI  0x18,4
-; 0000 01EA     IN2=1;
+; 0000 01EF     IN2=1;
 	SBI  0x18,7
-; 0000 01EB 
-; 0000 01EC     OCR1AH=0x00;
+; 0000 01F0 
+; 0000 01F1     OCR1AH=0x00;
 	LDI  R30,LOW(0)
 	OUT  0x2B,R30
-; 0000 01ED     OCR1AL=motor_l_speed;
+; 0000 01F2     OCR1AL=motor_l_speed;
 	LD   R30,Y
 _0x20A0003:
 	OUT  0x2A,R30
-; 0000 01EE 
-; 0000 01EF     OCR1BH=0x00;
+; 0000 01F3 
+; 0000 01F4     OCR1BH=0x00;
 	LDI  R30,LOW(0)
 	OUT  0x29,R30
-; 0000 01F0     OCR1BL=255-motor_r_speed;
+; 0000 01F5     OCR1BL=255-motor_r_speed;
 	LDD  R26,Y+1
 	LDI  R30,LOW(255)
 	SUB  R30,R26
 _0x20A0004:
 	OUT  0x28,R30
-; 0000 01F1 }
+; 0000 01F6 }
 	ADIW R28,2
 	RET
 ; .FEND
 ;void Stop()
-; 0000 01F3 {
-; 0000 01F4     IN1=0;
-; 0000 01F5     IN2=0;
-; 0000 01F6 
-; 0000 01F7     OCR1AH=0x00;
-; 0000 01F8     OCR1AL=0;
-; 0000 01F9 
-; 0000 01FA     OCR1BH=0x00;
-; 0000 01FB     OCR1BL=0;
-; 0000 01FC }
+; 0000 01F8 {
+; 0000 01F9     IN1=0;
+; 0000 01FA     IN2=0;
+; 0000 01FB 
+; 0000 01FC     OCR1AH=0x00;
+; 0000 01FD     OCR1AL=0;
+; 0000 01FE 
+; 0000 01FF     OCR1BH=0x00;
+; 0000 0200     OCR1BL=0;
+; 0000 0201 }
 ;void Move(int motor_r_speed,int motor_l_speed)
-; 0000 01FE {
+; 0000 0203 {
 _Move:
 ; .FSTART _Move
-; 0000 01FF     if(motor_r_speed<0)
+; 0000 0204     if(motor_r_speed<0)
 	ST   -Y,R27
 	ST   -Y,R26
 ;	motor_r_speed -> Y+2
@@ -2118,87 +2137,87 @@ _Move:
 	LDD  R26,Y+3
 	TST  R26
 	BRPL _0x4B
-; 0000 0200     {
-; 0000 0201         if(motor_r_speed<(-1*(MAX_TURN)))
+; 0000 0205     {
+; 0000 0206         if(motor_r_speed<(-1*(MAX_TURN)))
 	CALL SUBOPT_0x4
 	LDD  R26,Y+2
 	LDD  R27,Y+2+1
 	CP   R26,R30
 	CPC  R27,R31
 	BRGE _0x4C
-; 0000 0202             motor_r_speed=-1*(MAX_TURN);
+; 0000 0207             motor_r_speed=-1*(MAX_TURN);
 	CALL SUBOPT_0x4
 	STD  Y+2,R30
 	STD  Y+2+1,R31
-; 0000 0203         if(motor_l_speed>MAX_TURN)
+; 0000 0208         if(motor_l_speed>MAX_TURN)
 _0x4C:
 	LD   R26,Y
 	LDD  R27,Y+1
 	CP   R8,R26
 	CPC  R9,R27
 	BRGE _0x4D
-; 0000 0204             motor_l_speed=MAX_TURN;
+; 0000 0209             motor_l_speed=MAX_TURN;
 	__PUTWSR 8,9,0
-; 0000 0205     }
+; 0000 020A     }
 _0x4D:
-; 0000 0206     else if(motor_l_speed<0)
+; 0000 020B     else if(motor_l_speed<0)
 	RJMP _0x4E
 _0x4B:
 	LDD  R26,Y+1
 	TST  R26
 	BRPL _0x4F
-; 0000 0207     {
-; 0000 0208         if(motor_l_speed<(-1*(MAX_TURN)))
+; 0000 020C     {
+; 0000 020D         if(motor_l_speed<(-1*(MAX_TURN)))
 	CALL SUBOPT_0x4
 	LD   R26,Y
 	LDD  R27,Y+1
 	CP   R26,R30
 	CPC  R27,R31
 	BRGE _0x50
-; 0000 0209             motor_l_speed=-1*(MAX_TURN);
+; 0000 020E             motor_l_speed=-1*(MAX_TURN);
 	CALL SUBOPT_0x4
 	ST   Y,R30
 	STD  Y+1,R31
-; 0000 020A         if(motor_r_speed>MAX_TURN)
+; 0000 020F         if(motor_r_speed>MAX_TURN)
 _0x50:
 	LDD  R26,Y+2
 	LDD  R27,Y+2+1
 	CP   R8,R26
 	CPC  R9,R27
 	BRGE _0x51
-; 0000 020B             motor_r_speed=MAX_TURN;
+; 0000 0210             motor_r_speed=MAX_TURN;
 	__PUTWSR 8,9,2
-; 0000 020C    }
+; 0000 0211    }
 _0x51:
-; 0000 020D    else
+; 0000 0212    else
 	RJMP _0x52
 _0x4F:
-; 0000 020E    {
-; 0000 020F         if(motor_r_speed>MAX_STRAIGHT)
+; 0000 0213    {
+; 0000 0214         if(motor_r_speed>MAX_STRAIGHT)
 	LDD  R26,Y+2
 	LDD  R27,Y+2+1
 	CP   R6,R26
 	CPC  R7,R27
 	BRGE _0x53
-; 0000 0210             motor_r_speed=MAX_STRAIGHT;
+; 0000 0215             motor_r_speed=MAX_STRAIGHT;
 	__PUTWSR 6,7,2
-; 0000 0211         if(motor_l_speed>MAX_STRAIGHT)
+; 0000 0216         if(motor_l_speed>MAX_STRAIGHT)
 _0x53:
 	LD   R26,Y
 	LDD  R27,Y+1
 	CP   R6,R26
 	CPC  R7,R27
 	BRGE _0x54
-; 0000 0212             motor_l_speed=MAX_STRAIGHT;
+; 0000 0217             motor_l_speed=MAX_STRAIGHT;
 	__PUTWSR 6,7,0
-; 0000 0213    }
+; 0000 0218    }
 _0x54:
 _0x52:
 _0x4E:
-; 0000 0214 
-; 0000 0215 
-; 0000 0216 
-; 0000 0217     if(motor_r_speed>=0&&motor_l_speed>=0)
+; 0000 0219 
+; 0000 021A 
+; 0000 021B 
+; 0000 021C     if(motor_r_speed>=0&&motor_l_speed>=0)
 	LDD  R26,Y+3
 	TST  R26
 	BRMI _0x56
@@ -2208,12 +2227,12 @@ _0x4E:
 _0x56:
 	RJMP _0x55
 _0x57:
-; 0000 0218        Go(motor_r_speed,motor_l_speed);
+; 0000 021D        Go(motor_r_speed,motor_l_speed);
 	LDD  R30,Y+2
 	ST   -Y,R30
 	LDD  R26,Y+1
 	RCALL _Go
-; 0000 0219     else if(motor_r_speed<=0&&motor_l_speed>=0)
+; 0000 021E     else if(motor_r_speed<=0&&motor_l_speed>=0)
 	RJMP _0x58
 _0x55:
 	LDD  R26,Y+2
@@ -2226,14 +2245,14 @@ _0x55:
 _0x5A:
 	RJMP _0x59
 _0x5B:
-; 0000 021A         Right(motor_r_speed*-1,motor_l_speed);
+; 0000 021F         Right(motor_r_speed*-1,motor_l_speed);
 	LDD  R30,Y+2
 	LDI  R26,LOW(255)
 	MULS R30,R26
 	ST   -Y,R0
 	LDD  R26,Y+1
 	RCALL _Right
-; 0000 021B     else if(motor_r_speed>=0&&motor_l_speed<=0)
+; 0000 0220     else if(motor_r_speed>=0&&motor_l_speed<=0)
 	RJMP _0x5C
 _0x59:
 	LDD  R26,Y+3
@@ -2246,7 +2265,7 @@ _0x59:
 _0x5E:
 	RJMP _0x5D
 _0x5F:
-; 0000 021C         Left(motor_r_speed,motor_l_speed*-1);
+; 0000 0221         Left(motor_r_speed,motor_l_speed*-1);
 	LDD  R30,Y+2
 	ST   -Y,R30
 	LDD  R30,Y+1
@@ -2255,10 +2274,10 @@ _0x5F:
 	MOVW R30,R0
 	MOV  R26,R30
 	RCALL _Left
-; 0000 021D     else
+; 0000 0222     else
 	RJMP _0x60
 _0x5D:
-; 0000 021E         Back(motor_r_speed*-1,motor_r_speed*-1);
+; 0000 0223         Back(motor_r_speed*-1,motor_r_speed*-1);
 	LDD  R30,Y+2
 	LDI  R26,LOW(255)
 	MULS R30,R26
@@ -2268,7 +2287,7 @@ _0x5D:
 	MOVW R30,R0
 	MOV  R26,R30
 	RCALL _Back
-; 0000 021F }
+; 0000 0224 }
 _0x60:
 _0x5C:
 _0x58:
@@ -2277,62 +2296,62 @@ _0x20A0002:
 	RET
 ; .FEND
 ;void lcd_put_int(int Data)
-; 0000 0221 {
-; 0000 0222     unsigned char f[50];
-; 0000 0223     itoa(Data,f);
+; 0000 0226 {
+; 0000 0227     unsigned char f[50];
+; 0000 0228     itoa(Data,f);
 ;	Data -> Y+50
 ;	f -> Y+0
-; 0000 0224     lcd_puts(f);
-; 0000 0225 }
+; 0000 0229     lcd_puts(f);
+; 0000 022A }
 ;void lcd_show_sensor()
-; 0000 0227 {
-; 0000 0228     lcd_clear();
-; 0000 0229     ReadMp();
-; 0000 022A 
-; 0000 022B     lcd_put_int(R_1);
-; 0000 022C     lcd_put_int(L_1);
-; 0000 022D     lcd_put_int(R_2);
-; 0000 022E     lcd_put_int(L_2);
-; 0000 022F     lcd_put_int(R_3);
-; 0000 0230     lcd_put_int(L_3);
-; 0000 0231     lcd_put_int(R_4);
-; 0000 0232     lcd_put_int(L_4);
-; 0000 0233     lcd_put_int(R_5);
-; 0000 0234     lcd_put_int(L_5);
-; 0000 0235     lcd_put_int(R_6);
-; 0000 0236     lcd_put_int(L_6);
-; 0000 0237     lcd_put_int(R_7);
-; 0000 0238     lcd_put_int(L_7);
-; 0000 0239     lcd_put_int(R_8);
-; 0000 023A     lcd_put_int(L_8);
-; 0000 023B     lcd_put_int(R_9);
-; 0000 023C     lcd_put_int(L_9);
-; 0000 023D     lcd_put_int(R_10);
-; 0000 023E     lcd_put_int(L_10);
-; 0000 023F     lcd_put_int(R_11);
-; 0000 0240     lcd_put_int(L_11);
-; 0000 0241     lcd_put_int(R_12);
-; 0000 0242     lcd_put_int(L_12);
-; 0000 0243 
-; 0000 0244 
-; 0000 0245 
-; 0000 0246     delay_ms(200);
-; 0000 0247 
+; 0000 022C {
+; 0000 022D     lcd_clear();
+; 0000 022E     ReadMp();
+; 0000 022F 
+; 0000 0230     lcd_put_int(R_1);
+; 0000 0231     lcd_put_int(L_1);
+; 0000 0232     lcd_put_int(R_2);
+; 0000 0233     lcd_put_int(L_2);
+; 0000 0234     lcd_put_int(R_3);
+; 0000 0235     lcd_put_int(L_3);
+; 0000 0236     lcd_put_int(R_4);
+; 0000 0237     lcd_put_int(L_4);
+; 0000 0238     lcd_put_int(R_5);
+; 0000 0239     lcd_put_int(L_5);
+; 0000 023A     lcd_put_int(R_6);
+; 0000 023B     lcd_put_int(L_6);
+; 0000 023C     lcd_put_int(R_7);
+; 0000 023D     lcd_put_int(L_7);
+; 0000 023E     lcd_put_int(R_8);
+; 0000 023F     lcd_put_int(L_8);
+; 0000 0240     lcd_put_int(R_9);
+; 0000 0241     lcd_put_int(L_9);
+; 0000 0242     lcd_put_int(R_10);
+; 0000 0243     lcd_put_int(L_10);
+; 0000 0244     lcd_put_int(R_11);
+; 0000 0245     lcd_put_int(L_11);
+; 0000 0246     lcd_put_int(R_12);
+; 0000 0247     lcd_put_int(L_12);
 ; 0000 0248 
-; 0000 0249 }
+; 0000 0249 
+; 0000 024A 
+; 0000 024B     delay_ms(200);
+; 0000 024C 
+; 0000 024D 
+; 0000 024E }
 ;void controller(char f)
-; 0000 024B {
+; 0000 0250 {
 _controller:
 ; .FSTART _controller
-; 0000 024C     static int last_error=0;
-; 0000 024D     float kp=.6;
-; 0000 024E     int motor_speed=0;
-; 0000 024F     int sum_r=0;
-; 0000 0250     int sum_l=0;
-; 0000 0251     int error=0;
-; 0000 0252     int m_r=0;
-; 0000 0253     int m_l=0;
-; 0000 0254     if(f)//if bg was black
+; 0000 0251     static int last_error=0;
+; 0000 0252     float kp=.6;
+; 0000 0253     int motor_speed=0;
+; 0000 0254     int sum_r=0;
+; 0000 0255     int sum_l=0;
+; 0000 0256     int error=0;
+; 0000 0257     int m_r=0;
+; 0000 0258     int m_l=0;
+; 0000 0259     if(f)//if bg was black
 	ST   -Y,R26
 	SBIW R28,10
 	LDI  R24,10
@@ -2356,9 +2375,9 @@ _controller:
 	LDD  R30,Y+16
 	CPI  R30,0
 	BREQ _0x62
-; 0000 0255     {
-; 0000 0256         int i=0;
-; 0000 0257         for(;i<24;i++)
+; 0000 025A     {
+; 0000 025B         int i=0;
+; 0000 025C         for(;i<24;i++)
 	SBIW R28,2
 	LDI  R30,LOW(0)
 	ST   Y,R30
@@ -2374,8 +2393,8 @@ _0x64:
 	LDD  R27,Y+1
 	SBIW R26,24
 	BRGE _0x65
-; 0000 0258         {
-; 0000 0259             if(ir_sensor[i]<BLACK)//ir_max_min_calibrate[0][i]-60)
+; 0000 025D         {
+; 0000 025E             if(ir_sensor[i]<BLACK)//ir_max_min_calibrate[0][i]-60)
 	LD   R30,Y
 	LDD  R31,Y+1
 	SUBI R30,LOW(-_ir_sensor)
@@ -2383,16 +2402,16 @@ _0x64:
 	LD   R26,Z
 	CPI  R26,LOW(0x78)
 	BRSH _0x66
-; 0000 025A                 sen[i]=1;
+; 0000 025F                 sen[i]=1;
 	LD   R30,Y
 	LDD  R31,Y+1
 	SUBI R30,LOW(-_sen)
 	SBCI R31,HIGH(-_sen)
 	LDI  R26,LOW(1)
 	RJMP _0x92
-; 0000 025B             else
+; 0000 0260             else
 _0x66:
-; 0000 025C                 sen[i]=0;
+; 0000 0261                 sen[i]=0;
 	LD   R30,Y
 	LDD  R31,Y+1
 	SUBI R30,LOW(-_sen)
@@ -2400,7 +2419,7 @@ _0x66:
 	LDI  R26,LOW(0)
 _0x92:
 	STD  Z+0,R26
-; 0000 025D         }
+; 0000 0262         }
 	LD   R30,Y
 	LDD  R31,Y+1
 	ADIW R30,1
@@ -2408,14 +2427,14 @@ _0x92:
 	STD  Y+1,R31
 	RJMP _0x64
 _0x65:
-; 0000 025E 
-; 0000 025F     }
+; 0000 0263 
+; 0000 0264     }
 	ADIW R28,2
-; 0000 0260     else//bg is white
+; 0000 0265     else//bg is white
 _0x62:
-; 0000 0261     {
-; 0000 0262     }
-; 0000 0263     if(R_1||R_2||L_2||R_2||L_3||R_3)
+; 0000 0266     {
+; 0000 0267     }
+; 0000 0268     if(R_1||R_2||L_2||R_2||L_3||R_3)
 	__GETB1MN _sen,13
 	CPI  R30,0
 	BRNE _0x6A
@@ -2435,28 +2454,28 @@ _0x62:
 	CPI  R30,0
 	BREQ _0x69
 _0x6A:
-; 0000 0264     {
-; 0000 0265         last_error=0;
+; 0000 0269     {
+; 0000 026A         last_error=0;
 	LDI  R30,LOW(0)
 	STS  _last_error_S000000D000,R30
 	STS  _last_error_S000000D000+1,R30
-; 0000 0266         sum_l=(L_1*E_L_1)+(L_2*E_L_2)+(L_3*E_L_3);
+; 0000 026B         sum_l=(L_1*E_L_1)+(L_2*E_L_2)+(L_3*E_L_3);
 	CALL SUBOPT_0x5
 	CALL SUBOPT_0x6
-; 0000 0267         sum_r=(R_1*E_R_1)+(R_2*E_R_2)+(R_3*E_R_3);
+; 0000 026C         sum_r=(R_1*E_R_1)+(R_2*E_R_2)+(R_3*E_R_3);
 	ADD  R30,R22
 	ADC  R31,R23
 	MOVW R18,R30
-; 0000 0268         counter_speed+=1;
+; 0000 026D         counter_speed+=1;
 	MOVW R30,R4
 	ADIW R30,1
 	MOVW R4,R30
-; 0000 0269     }
-; 0000 026A     else
+; 0000 026E     }
+; 0000 026F     else
 	RJMP _0x6C
 _0x69:
-; 0000 026B     {
-; 0000 026C         sum_l=(L_1*E_L_1)+(L_2*E_L_2)+(L_3*E_L_3)+(L_4*E_L_4)+(L_5*E_L_5)+(L_6*E_L_6)+(L_7*E_L_7)+(L_8*E_L_8)+(L_9*E_L_9 ...
+; 0000 0270     {
+; 0000 0271         sum_l=(L_1*E_L_1)+(L_2*E_L_2)+(L_3*E_L_3)+(L_4*E_L_4)+(L_5*E_L_5)+(L_6*E_L_6)+(L_7*E_L_7)+(L_8*E_L_8)+(L_9*E_L_9 ...
 	CALL SUBOPT_0x5
 	__ADDWRR 22,23,30,31
 	__GETB2MN _sen,10
@@ -2496,7 +2515,7 @@ _0x69:
 	LDI  R31,HIGH(64986)
 	CALL __MULW12
 	CALL SUBOPT_0x6
-; 0000 026D         sum_r=(R_1*E_R_1)+(R_2*E_R_2)+(R_3*E_R_3)+(R_4*E_R_4)+(R_5*E_R_5)+(R_6*E_R_6)+(R_7*E_R_7)+(R_8*E_R_8)+(R_9*E_R_9 ...
+; 0000 0272         sum_r=(R_1*E_R_1)+(R_2*E_R_2)+(R_3*E_R_3)+(R_4*E_R_4)+(R_5*E_R_5)+(R_6*E_R_6)+(R_7*E_R_7)+(R_8*E_R_8)+(R_9*E_R_9 ...
 	__ADDWRR 22,23,30,31
 	__GETB2MN _sen,12
 	LDI  R30,LOW(60)
@@ -2531,19 +2550,19 @@ _0x69:
 	ADD  R30,R22
 	ADC  R31,R23
 	MOVW R18,R30
-; 0000 026E         counter_speed=0;
+; 0000 0273         counter_speed=0;
 	CLR  R4
 	CLR  R5
-; 0000 026F     }
+; 0000 0274     }
 _0x6C:
-; 0000 0270 
-; 0000 0271     error=sum_r+sum_l;
+; 0000 0275 
+; 0000 0276     error=sum_r+sum_l;
 	MOVW R30,R20
 	ADD  R30,R18
 	ADC  R31,R19
 	STD  Y+10,R30
 	STD  Y+10+1,R31
-; 0000 0272     if(L_1||R_1||L_2||R_2||L_3||R_3||L_4||R_4||L_5||R_5||L_6||R_6||L_7||R_7||L_8||R_8||L_9||R_9||L_10||R_10||L_11||R_11| ...
+; 0000 0277     if(L_1||R_1||L_2||R_2||L_3||R_3||L_4||R_4||L_5||R_5||L_6||R_6||L_7||R_7||L_8||R_8||L_9||R_9||L_10||R_10||L_11||R_11| ...
 	__GETB1MN _sen,11
 	CPI  R30,0
 	BREQ PC+2
@@ -2625,21 +2644,21 @@ _0x6C:
 	CPI  R30,0
 	BREQ _0x6D
 _0x6E:
-; 0000 0273         last_error=error;
+; 0000 0278         last_error=error;
 	LDD  R30,Y+10
 	LDD  R31,Y+10+1
 	STS  _last_error_S000000D000,R30
 	STS  _last_error_S000000D000+1,R31
-; 0000 0274     else
+; 0000 0279     else
 	RJMP _0x70
 _0x6D:
-; 0000 0275     {
-; 0000 0276         error=last_error;
+; 0000 027A     {
+; 0000 027B         error=last_error;
 	LDS  R30,_last_error_S000000D000
 	LDS  R31,_last_error_S000000D000+1
 	STD  Y+10,R30
 	STD  Y+10+1,R31
-; 0000 0277         if((last_error<299&&last_error>0)||(last_error>-299&&last_error<0))
+; 0000 027C         if((last_error<299&&last_error>0)||(last_error>-299&&last_error<0))
 	CALL SUBOPT_0xB
 	CPI  R26,LOW(0x12B)
 	LDI  R30,HIGH(0x12B)
@@ -2661,15 +2680,15 @@ _0x72:
 _0x75:
 	RJMP _0x71
 _0x74:
-; 0000 0278             error=0;
+; 0000 027D             error=0;
 	LDI  R30,LOW(0)
 	STD  Y+10,R30
 	STD  Y+10+1,R30
-; 0000 0279 
-; 0000 027A     }
+; 0000 027E 
+; 0000 027F     }
 _0x71:
 _0x70:
-; 0000 027B     motor_speed=error*kp;
+; 0000 0280     motor_speed=error*kp;
 	__GETD1S 12
 	LDD  R26,Y+10
 	LDD  R27,Y+10+1
@@ -2678,16 +2697,16 @@ _0x70:
 	CALL __MULF12
 	CALL __CFD1
 	MOVW R16,R30
-; 0000 027C 
-; 0000 027D //    lcd_clear();
-; 0000 027E //    lcd_put_int(motor_speed);
-; 0000 027F //    lcd_gotoxy(0,1);
-; 0000 0280 //    lcd_put_int(error);
-; 0000 0281 //    if(error==0&&(!(R_1||R_2||L_2||R_2||L_3||R_3||L_4||R_4||L_5||R_5||L_6||R_6)))
-; 0000 0282 //        Stop();
-; 0000 0283 //    else
-; 0000 0284 
-; 0000 0285     Move((MAX_STRAIGHT-motor_speed),(MAX_STRAIGHT+motor_speed));
+; 0000 0281 
+; 0000 0282 //    lcd_clear();
+; 0000 0283 //    lcd_put_int(motor_speed);
+; 0000 0284 //    lcd_gotoxy(0,1);
+; 0000 0285 //    lcd_put_int(error);
+; 0000 0286 //    if(error==0&&(!(R_1||R_2||L_2||R_2||L_3||R_3||L_4||R_4||L_5||R_5||L_6||R_6)))
+; 0000 0287 //        Stop();
+; 0000 0288 //    else
+; 0000 0289 
+; 0000 028A     Move((MAX_STRAIGHT-motor_speed),(MAX_STRAIGHT+motor_speed));
 	MOVW R30,R6
 	SUB  R30,R16
 	SBC  R31,R17
@@ -2697,29 +2716,29 @@ _0x70:
 	ADD  R26,R6
 	ADC  R27,R7
 	RCALL _Move
-; 0000 0286    if(counter_speed>20)
+; 0000 028B    if(counter_speed>20)
 	LDI  R30,LOW(20)
 	LDI  R31,HIGH(20)
 	CP   R30,R4
 	CPC  R31,R5
 	BRSH _0x78
-; 0000 0287    {
-; 0000 0288     counter_speed=20;
+; 0000 028C    {
+; 0000 028D     counter_speed=20;
 	MOVW R4,R30
-; 0000 0289    }
-; 0000 028A 
-; 0000 028B }
+; 0000 028E    }
+; 0000 028F 
+; 0000 0290 }
 _0x78:
 	CALL __LOADLOCR6
 	ADIW R28,17
 	RET
 ; .FEND
 ;void digitalize()
-; 0000 028D {
+; 0000 0292 {
 _digitalize:
 ; .FSTART _digitalize
-; 0000 028E     int i=0;
-; 0000 028F     for(;i<24;i++)
+; 0000 0293     int i=0;
+; 0000 0294     for(;i<24;i++)
 	ST   -Y,R17
 	ST   -Y,R16
 ;	i -> R16,R17
@@ -2727,8 +2746,8 @@ _digitalize:
 _0x7A:
 	__CPWRN 16,17,24
 	BRGE _0x7B
-; 0000 0290     {
-; 0000 0291         if(ir_sensor[i]>BLACK)//ir_max_min_calibrate[0][i]-60)
+; 0000 0295     {
+; 0000 0296         if(ir_sensor[i]>BLACK)//ir_max_min_calibrate[0][i]-60)
 	LDI  R26,LOW(_ir_sensor)
 	LDI  R27,HIGH(_ir_sensor)
 	ADD  R26,R16
@@ -2736,16 +2755,16 @@ _0x7A:
 	LD   R26,X
 	CPI  R26,LOW(0x79)
 	BRLO _0x7C
-; 0000 0292             sen[i]=1;
+; 0000 0297             sen[i]=1;
 	LDI  R26,LOW(_sen)
 	LDI  R27,HIGH(_sen)
 	ADD  R26,R16
 	ADC  R27,R17
 	LDI  R30,LOW(1)
 	RJMP _0x93
-; 0000 0293         else
+; 0000 0298         else
 _0x7C:
-; 0000 0294             sen[i]=0;
+; 0000 0299             sen[i]=0;
 	LDI  R26,LOW(_sen)
 	LDI  R27,HIGH(_sen)
 	ADD  R26,R16
@@ -2753,83 +2772,83 @@ _0x7C:
 	LDI  R30,LOW(0)
 _0x93:
 	ST   X,R30
-; 0000 0295     }
+; 0000 029A     }
 	__ADDWRN 16,17,1
 	RJMP _0x7A
 _0x7B:
-; 0000 0296 }
+; 0000 029B }
 	LD   R16,Y+
 	LD   R17,Y+
 	RET
 ; .FEND
 ;void calibrate()
-; 0000 0298 {
-; 0000 0299     int count=0;
-; 0000 029A     unsigned char i=0;
-; 0000 029B     for(i=0;i<24;i++)
+; 0000 029D {
+; 0000 029E     int count=0;
+; 0000 029F     unsigned char i=0;
+; 0000 02A0     for(i=0;i<24;i++)
 ;	count -> R16,R17
 ;	i -> R19
-; 0000 029C     {
-; 0000 029D          ir_max_min_calibrate[0][i]=40;
-; 0000 029E          ir_max_min_calibrate[1][i]=40;
-; 0000 029F     }
-; 0000 02A0     Go(50,50);
-; 0000 02A1     while(count<5)
-; 0000 02A2     {
-; 0000 02A3         for(i=0;i<24;i++)
-; 0000 02A4         {   int temp=0;
-; 0000 02A5             ReadMp();
+; 0000 02A1     {
+; 0000 02A2          ir_max_min_calibrate[0][i]=40;
+; 0000 02A3          ir_max_min_calibrate[1][i]=40;
+; 0000 02A4     }
+; 0000 02A5     Go(50,50);
+; 0000 02A6     while(count<5)
+; 0000 02A7     {
+; 0000 02A8         for(i=0;i<24;i++)
+; 0000 02A9         {   int temp=0;
+; 0000 02AA             ReadMp();
 ;	temp -> Y+0
-; 0000 02A6             if(ir_sensor[i]>ir_max_min_calibrate[0][i])
-; 0000 02A7             {
-; 0000 02A8               ir_max_min_calibrate[0][i]=ir_sensor[i];
-; 0000 02A9             }
-; 0000 02AA             if(ir_sensor[i]<ir_max_min_calibrate[1][i])
-; 0000 02AB             {
-; 0000 02AC               ir_max_min_calibrate[1][i]=ir_sensor[i];
-; 0000 02AD             }
-; 0000 02AE 
-; 0000 02AF         }
-; 0000 02B0         count++;
-; 0000 02B1     }
-; 0000 02B2     Stop();
-; 0000 02B3     delay_ms(100);
-; 0000 02B4     Back(50,50);
-; 0000 02B5     count=0;
-; 0000 02B6     while(count<5)
-; 0000 02B7     {
-; 0000 02B8         for(i=0;i<24;i++)
-; 0000 02B9         {   int temp=0;
-; 0000 02BA             ReadMp();
+; 0000 02AB             if(ir_sensor[i]>ir_max_min_calibrate[0][i])
+; 0000 02AC             {
+; 0000 02AD               ir_max_min_calibrate[0][i]=ir_sensor[i];
+; 0000 02AE             }
+; 0000 02AF             if(ir_sensor[i]<ir_max_min_calibrate[1][i])
+; 0000 02B0             {
+; 0000 02B1               ir_max_min_calibrate[1][i]=ir_sensor[i];
+; 0000 02B2             }
+; 0000 02B3 
+; 0000 02B4         }
+; 0000 02B5         count++;
+; 0000 02B6     }
+; 0000 02B7     Stop();
+; 0000 02B8     delay_ms(100);
+; 0000 02B9     Back(50,50);
+; 0000 02BA     count=0;
+; 0000 02BB     while(count<5)
+; 0000 02BC     {
+; 0000 02BD         for(i=0;i<24;i++)
+; 0000 02BE         {   int temp=0;
+; 0000 02BF             ReadMp();
 ;	temp -> Y+0
-; 0000 02BB             if(ir_sensor[i]>ir_max_min_calibrate[0][i])
-; 0000 02BC             {
-; 0000 02BD               ir_max_min_calibrate[0][i]=ir_sensor[i];
-; 0000 02BE             }
-; 0000 02BF             if(ir_sensor[i]<ir_max_min_calibrate[1][i])
-; 0000 02C0             {
-; 0000 02C1               ir_max_min_calibrate[1][i]=ir_sensor[i];
-; 0000 02C2             }
-; 0000 02C3 
-; 0000 02C4         }
-; 0000 02C5         count++;
-; 0000 02C6     }
-; 0000 02C7 
-; 0000 02C8 //    for(i=0;i<24;i++)
-; 0000 02C9 //    {
-; 0000 02CA //        my_put_int(i);
-; 0000 02CB //        my_putstr(":max:");
-; 0000 02CC //        my_put_int(ir_max_min_calibrate[0][i]);
-; 0000 02CD //        my_putstr("\t");
-; 0000 02CE //        my_putstr("min:");
-; 0000 02CF //        my_put_int(ir_max_min_calibrate[1][i]);
-; 0000 02D0 //        putchar('\n');
-; 0000 02D1 //    }
-; 0000 02D2 
-; 0000 02D3 
-; 0000 02D4     Stop();
-; 0000 02D5 
-; 0000 02D6 }
+; 0000 02C0             if(ir_sensor[i]>ir_max_min_calibrate[0][i])
+; 0000 02C1             {
+; 0000 02C2               ir_max_min_calibrate[0][i]=ir_sensor[i];
+; 0000 02C3             }
+; 0000 02C4             if(ir_sensor[i]<ir_max_min_calibrate[1][i])
+; 0000 02C5             {
+; 0000 02C6               ir_max_min_calibrate[1][i]=ir_sensor[i];
+; 0000 02C7             }
+; 0000 02C8 
+; 0000 02C9         }
+; 0000 02CA         count++;
+; 0000 02CB     }
+; 0000 02CC 
+; 0000 02CD //    for(i=0;i<24;i++)
+; 0000 02CE //    {
+; 0000 02CF //        my_put_int(i);
+; 0000 02D0 //        my_putstr(":max:");
+; 0000 02D1 //        my_put_int(ir_max_min_calibrate[0][i]);
+; 0000 02D2 //        my_putstr("\t");
+; 0000 02D3 //        my_putstr("min:");
+; 0000 02D4 //        my_put_int(ir_max_min_calibrate[1][i]);
+; 0000 02D5 //        putchar('\n');
+; 0000 02D6 //    }
+; 0000 02D7 
+; 0000 02D8 
+; 0000 02D9     Stop();
+; 0000 02DA 
+; 0000 02DB }
 ;//void my_put_int(int data)
 ;//{
 ;//    unsigned char f[50];
