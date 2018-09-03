@@ -136,8 +136,8 @@ unsigned char sen[24];
 unsigned char black[24];
 unsigned char ir_max_min_calibrate[2][24];
 unsigned int counter_speed=0;
-int MAX_STRAIGHT=140;
-int MAX_TURN=180;
+int MAX_STRAIGHT=160;
+int MAX_TURN=210;
 
 
 void ReadMp();
@@ -153,8 +153,9 @@ void init();
 void digitalize();
 void my_put_int(int data);
 void my_putstr( char *f);
-void controller();
+void controller(char f);
 void calibrate();
+int Inverse_is_black();
 
 
 
@@ -358,7 +359,15 @@ init();
 //calibrate();
     while (1)
     {
-        controller();
+        ReadMp();
+        if(Inverse_is_black())//if bc was black
+        {
+            controller(1);
+        }
+        else
+        {
+            controller(0);
+        }
    //       lcd_show_sensor();
  //       ReadMp();
 
@@ -379,6 +388,24 @@ void init()
 //    lcd_putsf("salam");
 //    delay_ms(1000);
 //    lcd_clear();
+}
+int Inverse_is_black()
+{
+    int black_counter=0;
+    int i=0;
+    for(i=0;i<24;i++)
+    {
+        if(sen[i])
+            black_counter++;
+    }
+    if(black_counter>=12)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 }
 void ReadMp()
 {
@@ -481,21 +508,27 @@ void Stop()
 }
 void Move(int motor_r_speed,int motor_l_speed)
 {
-    if(motor_r_speed<0||motor_l_speed<0)
+    if(motor_r_speed<0)
     {
         if(motor_r_speed<(-1*(MAX_TURN)))
             motor_r_speed=-1*(MAX_TURN);
+        if(motor_l_speed>MAX_TURN)
+            motor_l_speed=MAX_TURN;
+    }
+    else if(motor_l_speed<0)
+    {
         if(motor_l_speed<(-1*(MAX_TURN)))
             motor_l_speed=-1*(MAX_TURN);
-    }
-    else
-    {
+        if(motor_r_speed>MAX_TURN)
+            motor_r_speed=MAX_TURN;
+   }
+   else
+   {
         if(motor_r_speed>MAX_STRAIGHT)
             motor_r_speed=MAX_STRAIGHT;
         if(motor_l_speed>MAX_STRAIGHT)
             motor_l_speed=MAX_STRAIGHT;
-
-    }
+   }
 
 
 
@@ -507,10 +540,6 @@ void Move(int motor_r_speed,int motor_l_speed)
         Left(motor_r_speed,motor_l_speed*-1);
     else
         Back(motor_r_speed*-1,motor_r_speed*-1);
-}
-void omeg(int omega)
-{
-
 }
 void lcd_put_int(int Data)
 {
@@ -554,7 +583,7 @@ void lcd_show_sensor()
 
 
 }
-void controller()
+void controller(char f)
 {
     static int last_error=0;
     float kp=.6;
@@ -564,8 +593,21 @@ void controller()
     int error=0;
     int m_r=0;
     int m_l=0;
-    ReadMp();
+    if(f)//if bg was black
+    {
+        int i=0;
+        for(;i<24;i++)
+        {
+            if(ir_sensor[i]<BLACK)//ir_max_min_calibrate[0][i]-60)
+                sen[i]=1;
+            else
+                sen[i]=0;
+        }
 
+    }
+    else//bg is white
+    {
+    }
     if(R_1||R_2||L_2||R_2||L_3||R_3)
     {
         last_error=0;
@@ -600,7 +642,7 @@ void controller()
 //        Stop();
 //    else
 
-    Move((MAX_STRAIGHT+motor_speed),(MAX_STRAIGHT+motor_speed));
+    Move((MAX_STRAIGHT-motor_speed),(MAX_STRAIGHT+motor_speed));
    if(counter_speed>20)
    {
     counter_speed=20;
