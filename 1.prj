@@ -27,7 +27,7 @@ Active0=0
 EditorPanel0=0
 PageIndex0=0
 EditorPanel1=0
-TimeStamp1=1294184277
+TimeStamp1=1294214401
 PageIndex1=1
 TimeStamp0=1293916339
 [CompilerDebug]
@@ -128,8 +128,8 @@ WatchAVR8LAutoVariables=0
 UseEEPROMLocation0=1
 RebuildAll=0
 LinkageInformationPresent=1
-COFFileTimeStamp=1294214402
-Build=220
+COFFileTimeStamp=1294272041
+Build=232
 [DefinedSymbolsDebug]
 Count=0
 [Compiler]
@@ -231,7 +231,7 @@ UseEEPROMLocation0=1
 RebuildAll=1
 LinkageInformationPresent=0
 COFFileTimeStamp=-1
-Build=220
+Build=232
 [DefinedSymbols]
 Count=0
 [StartUp]
@@ -332,16 +332,16 @@ Row=24
 Column=0
 ScrollPosX=0
 ScrollPosY=0
-TimeStamp=1294184278
+TimeStamp=1294218275
 [BookmarksFoldedCode]
 Files=1
 F1=1.c
 [Bookmarks1]
-TimeStamp=1294184277
-Row=509
-Column=26
+TimeStamp=1294214401
+Row=637
+Column=9
 ScrollPosX=0
-ScrollPosY=457
+ScrollPosY=620
 BK0=-1
 BK1=-1
 BK2=-1
@@ -369,8 +369,8 @@ L13=Enhanced function parameters passing: Yes
 L14=Automatic register allocation: Yes
 L15=Smart register allocation: Yes
 L16=
-L17=Build: 220
-L18=10838 line(s) compiled
+L17=Build: 232
+L18=10846 line(s) compiled
 L19=No errors
 L20=14 warning(s)
 L21=
@@ -390,19 +390,19 @@ L34=Heap size: 0 byte(s)
 L35=
 Lines=38
 L36=EEPROM usage: 0 byte(s), 0.0% of EEPROM
-L37=Program size: 1576 words (3152 bytes), 4.8% of FLASH
-L38=136 words (272 bytes), 7.9% reduced by Code Compression
+L37=Program size: 1616 words (3232 bytes), 4.9% of FLASH
+L38=130 words (260 bytes), 7.4% reduced by Code Compression
 [BuildInfoAssembler]
 Lines=12
 L1=AVRASM: AVR macro assembler 2.1.30 (build 592 Nov  7 2008 12:38:17)
 L2=Copyright (C) 1995-2008 ATMEL Corporation
 L3=
-L4=C:\Users\ali\Desktop\line_follower_barman_97\Debug\List\1.asm(3596): No EEPROM data, deleting C:\Users\ali\Desktop\line_follower_barman_97\Debug\Exe\1.eep
+L4=C:\Users\ali\Desktop\line_follower_barman_97\Debug\List\1.asm(3645): No EEPROM data, deleting C:\Users\ali\Desktop\line_follower_barman_97\Debug\Exe\1.eep
 L5=
 L6=ATmega64 memory use summary [bytes]:
 L7=Segment   Begin    End      Code   Data   Used    Size   Use%
 L8=---------------------------------------------------------------
-L9=[.cseg] 0x000000 0x000c50   3102     50   3152   65536   4.8%
+L9=[.cseg] 0x000000 0x000ca0   3182     50   3232   65536   4.9%
 L10=[.dseg] 0x000100 0x00053a      0     58     58    4096   1.4%
 L11=[.eseg] 0x000000 0x000000      0      0      0    2048   0.0%
 L12=

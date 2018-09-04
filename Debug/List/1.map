@@ -31,8 +31,8 @@ Go                                                                              
 Left                                                                              0x001AF     11
 Back                                                                              0x001C3     15
 Move                                                                              0x001D2    117
-controller                                                                        0x00247    391
-_lcd_write_nibble_G100                                                            0x003CE     20
-_lcd_write_data                                                                   0x003E2     12
-lcd_clear                                                                         0x003EE     12
-lcd_init                                                                          0x003FA     46
+controller                                                                        0x00247    439
+_lcd_write_nibble_G100                                                            0x003FE     20
+_lcd_write_data                                                                   0x00412     12
+lcd_clear                                                                         0x0041E     12
+lcd_init                                                                          0x0042A     46

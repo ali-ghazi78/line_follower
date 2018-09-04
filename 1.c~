@@ -109,9 +109,9 @@ return ADCH;
 #define E_R_1 5
 #define E_R_2 15
 #define E_R_3 60
-#define E_R_4 60
-#define E_R_5 70
-#define E_R_6 90
+#define E_R_4 120
+#define E_R_5 140
+#define E_R_6 150
 #define E_R_7 450
 #define E_R_8 450
 #define E_R_9 550
@@ -122,9 +122,9 @@ return ADCH;
 #define E_L_1 -5
 #define E_L_2 -15
 #define E_L_3 -60
-#define E_L_4 -60
-#define E_L_5 -70
-#define E_L_6 -90
+#define E_L_4 -120
+#define E_L_5 -140
+#define E_L_6 -150
 #define E_L_7 -450
 #define E_L_8 -450
 #define E_L_9 -550
@@ -138,8 +138,8 @@ unsigned char sen[24];
 unsigned char black[24];
 unsigned char ir_max_min_calibrate[2][24];
 unsigned int counter_speed=0;
-int MAX_STRAIGHT=150 ;
-int MAX_TURN=220;
+int MAX_STRAIGHT=210 ;//stable ver 150
+int MAX_TURN=250;//stable ver 220
 
 
 char ReadMp();
@@ -625,11 +625,11 @@ void controller(char f)
     else//bg is white
     {
     }
-    if(R_1||R_2||L_2||R_2)
+    if(L_1||R_1||R_2||L_2||L_3||R_3||L_4||R_4)
     {
         last_error=0;
-        sum_l=(L_1*E_L_1)+(L_2*E_L_2);
-        sum_r=(R_1*E_R_1)+(R_2*E_R_2);
+        sum_l=(L_1*E_L_1)+(L_2*E_L_2)+(L_3*E_L_3)+(L_4*E_L_4);
+        sum_r=(R_1*E_R_1)+(R_2*E_R_2)+(R_3*E_R_3)+(R_4*E_R_4);
         counter_speed+=1;
     }
     else
@@ -645,7 +645,15 @@ void controller(char f)
     else
     {
         error=last_error;
-        if((last_error<299&&last_error>0)||(last_error>-299&&last_error<0))
+        if(error>50)
+        {
+            error=600;
+        }
+        else if(error<-50)
+        {
+            error=-600;
+        }
+        if((last_error<100&&last_error>0)||(last_error>-100&&last_error<0))   //299
             error=0;
 
     }

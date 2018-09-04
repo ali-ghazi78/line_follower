@@ -106,31 +106,31 @@ return ADCH;
 
 
 
-#define E_R_1 5
-#define E_R_2 15
-#define E_R_3 60
-#define E_R_4 60
-#define E_R_5 70
-#define E_R_6 90
+#define E_R_1 50
+#define E_R_2 80
+#define E_R_3 110
+#define E_R_4 120
+#define E_R_5 140
+#define E_R_6 150
 #define E_R_7 450
-#define E_R_8 450
+#define E_R_8 500
 #define E_R_9 550
-#define E_R_10 550
-#define E_R_11 550
-#define E_R_12 550
+#define E_R_10 600
+#define E_R_11 600
+#define E_R_12 600
 
-#define E_L_1 -5
-#define E_L_2 -15
-#define E_L_3 -60
-#define E_L_4 -60
-#define E_L_5 -70
-#define E_L_6 -90
+#define E_L_1 -50
+#define E_L_2 -80
+#define E_L_3 -110
+#define E_L_4 -120
+#define E_L_5 -140
+#define E_L_6 -150
 #define E_L_7 -450
-#define E_L_8 -450
+#define E_L_8 -500
 #define E_L_9 -550
-#define E_L_10 -550
-#define E_L_11 -550
-#define E_L_12 -550
+#define E_L_10 -600
+#define E_L_11 -600
+#define E_L_12 -600
 
 
 unsigned char ir_sensor[24];
@@ -138,8 +138,8 @@ unsigned char sen[24];
 unsigned char black[24];
 unsigned char ir_max_min_calibrate[2][24];
 unsigned int counter_speed=0;
-int MAX_STRAIGHT=150 ;
-int MAX_TURN=220;
+int MAX_STRAIGHT=210 ;//stable ver 150
+int MAX_TURN=250;//stable ver 220
 
 
 char ReadMp();
@@ -645,7 +645,15 @@ void controller(char f)
     else
     {
         error=last_error;
-        if((last_error<299&&last_error>0)||(last_error>-299&&last_error<0))
+        if(error>200&&error<500)
+        {
+            error=600;
+        }
+        else if(error<-200&&error>-500)
+        {
+            error=-600;
+        }
+        if((last_error<100&&last_error>0)||(last_error>-100&&last_error<0))   //299
             error=0;
 
     }

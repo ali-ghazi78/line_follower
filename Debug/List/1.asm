@@ -1141,8 +1141,8 @@ __START_OF_CODE:
 
 ;GLOBAL REGISTER VARIABLES INITIALIZATION
 __REG_VARS:
-	.DB  0x0,0x0,0x96,0x0
-	.DB  0xDC,0x0
+	.DB  0x0,0x0,0xD2,0x0
+	.DB  0xFA,0x0
 
 _0x68:
 	.DB  0x0,0x0,0x0,0x0,0x0,0x0,0x9A,0x99
@@ -1390,31 +1390,31 @@ _0x3:
 ;
 ;
 ;
-;#define E_R_1 5
-;#define E_R_2 15
-;#define E_R_3 60
-;#define E_R_4 60
-;#define E_R_5 70
-;#define E_R_6 90
+;#define E_R_1 50
+;#define E_R_2 80
+;#define E_R_3 110
+;#define E_R_4 120
+;#define E_R_5 140
+;#define E_R_6 150
 ;#define E_R_7 450
-;#define E_R_8 450
+;#define E_R_8 500
 ;#define E_R_9 550
-;#define E_R_10 550
-;#define E_R_11 550
-;#define E_R_12 550
+;#define E_R_10 600
+;#define E_R_11 600
+;#define E_R_12 600
 ;
-;#define E_L_1 -5
-;#define E_L_2 -15
-;#define E_L_3 -60
-;#define E_L_4 -60
-;#define E_L_5 -70
-;#define E_L_6 -90
+;#define E_L_1 -50
+;#define E_L_2 -80
+;#define E_L_3 -110
+;#define E_L_4 -120
+;#define E_L_5 -140
+;#define E_L_6 -150
 ;#define E_L_7 -450
-;#define E_L_8 -450
+;#define E_L_8 -500
 ;#define E_L_9 -550
-;#define E_L_10 -550
-;#define E_L_11 -550
-;#define E_L_12 -550
+;#define E_L_10 -600
+;#define E_L_11 -600
+;#define E_L_12 -600
 ;
 ;
 ;unsigned char ir_sensor[24];
@@ -1422,8 +1422,8 @@ _0x3:
 ;unsigned char black[24];
 ;unsigned char ir_max_min_calibrate[2][24];
 ;unsigned int counter_speed=0;
-;int MAX_STRAIGHT=150 ;
-;int MAX_TURN=220;
+;int MAX_STRAIGHT=210 ;//stable ver 150
+;int MAX_TURN=250;//stable ver 220
 ;
 ;
 ;char ReadMp();
@@ -1731,7 +1731,7 @@ _0x10:
 ; 0000 016D         {
 ; 0000 016E             controller(1);
 	LDI  R26,LOW(1)
-	RJMP _0x85
+	RJMP _0x8C
 ; 0000 016F         }
 ; 0000 0170         else
 _0x13:
@@ -1739,7 +1739,7 @@ _0x13:
 ; 0000 0172 
 ; 0000 0173             controller(0);
 	LDI  R26,LOW(0)
-_0x85:
+_0x8C:
 	RCALL _controller
 ; 0000 0174         }
 ; 0000 0175    //       lcd_show_sensor();
@@ -2417,7 +2417,7 @@ _0x6B:
 	SUBI R30,LOW(-_sen)
 	SBCI R31,HIGH(-_sen)
 	LDI  R26,LOW(1)
-	RJMP _0x86
+	RJMP _0x8D
 ; 0000 026C             else
 _0x6D:
 ; 0000 026D                 sen[i]=0;
@@ -2426,7 +2426,7 @@ _0x6D:
 	SUBI R30,LOW(-_sen)
 	SBCI R31,HIGH(-_sen)
 	LDI  R26,LOW(0)
-_0x86:
+_0x8D:
 	STD  Z+0,R26
 ; 0000 026E         }
 	LD   R30,Y
@@ -2495,13 +2495,13 @@ _0x70:
 	__ADDWRR 22,23,30,31
 	__GETB2MN _sen,4
 	LDI  R27,0
-	LDI  R30,LOW(65466)
-	LDI  R31,HIGH(65466)
+	LDI  R30,LOW(65396)
+	LDI  R31,HIGH(65396)
 	CALL SUBOPT_0x7
 	__GETB2MN _sen,6
 	LDI  R27,0
-	LDI  R30,LOW(65446)
-	LDI  R31,HIGH(65446)
+	LDI  R30,LOW(65386)
+	LDI  R31,HIGH(65386)
 	CALL SUBOPT_0x7
 	__GETB2MN _sen,7
 	LDI  R27,0
@@ -2510,30 +2510,39 @@ _0x70:
 	CALL SUBOPT_0x7
 	__GETB2MN _sen,5
 	LDI  R27,0
-	LDI  R30,LOW(65086)
-	LDI  R31,HIGH(65086)
+	LDI  R30,LOW(65036)
+	LDI  R31,HIGH(65036)
 	CALL SUBOPT_0x7
 	__GETB2MN _sen,3
-	CALL SUBOPT_0x8
-	LDS  R26,_sen
-	CALL SUBOPT_0x8
-	__GETB2MN _sen,1
-	CALL SUBOPT_0x8
-	__GETB2MN _sen,2
 	LDI  R27,0
 	LDI  R30,LOW(64986)
 	LDI  R31,HIGH(64986)
+	CALL SUBOPT_0x7
+	LDS  R26,_sen
+	LDI  R27,0
+	LDI  R30,LOW(64936)
+	LDI  R31,HIGH(64936)
+	CALL SUBOPT_0x7
+	__GETB2MN _sen,1
+	LDI  R27,0
+	LDI  R30,LOW(64936)
+	LDI  R31,HIGH(64936)
+	CALL SUBOPT_0x7
+	__GETB2MN _sen,2
+	LDI  R27,0
+	LDI  R30,LOW(64936)
+	LDI  R31,HIGH(64936)
 	CALL __MULW12
 	CALL SUBOPT_0x6
 ; 0000 027E         sum_r=(R_1*E_R_1)+(R_2*E_R_2)+(R_3*E_R_3)+(R_4*E_R_4)+(R_5*E_R_5)+(R_6*E_R_6)+(R_7*E_R_7)+(R_8*E_R_8)+(R_9*E_R_9 ...
 	__ADDWRR 22,23,30,31
 	__GETB2MN _sen,21
-	LDI  R30,LOW(70)
+	LDI  R30,LOW(140)
 	MUL  R30,R26
 	MOVW R30,R0
 	__ADDWRR 22,23,30,31
 	__GETB2MN _sen,23
-	LDI  R30,LOW(90)
+	LDI  R30,LOW(150)
 	MUL  R30,R26
 	MOVW R30,R0
 	__ADDWRR 22,23,30,31
@@ -2544,19 +2553,28 @@ _0x70:
 	CALL SUBOPT_0x7
 	__GETB2MN _sen,20
 	LDI  R27,0
-	LDI  R30,LOW(450)
-	LDI  R31,HIGH(450)
+	LDI  R30,LOW(500)
+	LDI  R31,HIGH(500)
 	CALL SUBOPT_0x7
 	__GETB2MN _sen,18
-	CALL SUBOPT_0x9
-	__GETB2MN _sen,17
-	CALL SUBOPT_0x9
-	__GETB2MN _sen,16
-	CALL SUBOPT_0x9
-	__GETB2MN _sen,19
 	LDI  R27,0
 	LDI  R30,LOW(550)
 	LDI  R31,HIGH(550)
+	CALL SUBOPT_0x7
+	__GETB2MN _sen,17
+	LDI  R27,0
+	LDI  R30,LOW(600)
+	LDI  R31,HIGH(600)
+	CALL SUBOPT_0x7
+	__GETB2MN _sen,16
+	LDI  R27,0
+	LDI  R30,LOW(600)
+	LDI  R31,HIGH(600)
+	CALL SUBOPT_0x7
+	__GETB2MN _sen,19
+	LDI  R27,0
+	LDI  R30,LOW(600)
+	LDI  R31,HIGH(600)
 	CALL __MULW12
 	ADD  R30,R22
 	ADC  R31,R23
@@ -2669,37 +2687,82 @@ _0x74:
 	LDS  R31,_last_error_S000000D000+1
 	STD  Y+10,R30
 	STD  Y+10+1,R31
-; 0000 0288         if((last_error<299&&last_error>0)||(last_error>-299&&last_error<0))
-	CALL SUBOPT_0xA
-	CPI  R26,LOW(0x12B)
-	LDI  R30,HIGH(0x12B)
+; 0000 0288         if(error>200&&error<500)
+	LDD  R26,Y+10
+	LDD  R27,Y+10+1
+	CPI  R26,LOW(0xC9)
+	LDI  R30,HIGH(0xC9)
 	CPC  R27,R30
-	BRGE _0x79
-	CALL SUBOPT_0xA
-	CALL __CPW02
-	BRLT _0x7B
+	BRLT _0x79
+	CPI  R26,LOW(0x1F4)
+	LDI  R30,HIGH(0x1F4)
+	CPC  R27,R30
+	BRLT _0x7A
 _0x79:
-	CALL SUBOPT_0xA
-	LDI  R30,LOW(65237)
-	LDI  R31,HIGH(65237)
+	RJMP _0x78
+_0x7A:
+; 0000 0289         {
+; 0000 028A             error=600;
+	LDI  R30,LOW(600)
+	LDI  R31,HIGH(600)
+	RJMP _0x8E
+; 0000 028B         }
+; 0000 028C         else if(error<-200&&error>-500)
+_0x78:
+	LDD  R26,Y+10
+	LDD  R27,Y+10+1
+	CPI  R26,LOW(0xFF38)
+	LDI  R30,HIGH(0xFF38)
+	CPC  R27,R30
+	BRGE _0x7D
+	LDI  R30,LOW(65036)
+	LDI  R31,HIGH(65036)
 	CP   R30,R26
 	CPC  R31,R27
-	BRGE _0x7C
+	BRLT _0x7E
+_0x7D:
+	RJMP _0x7C
+_0x7E:
+; 0000 028D         {
+; 0000 028E             error=-600;
+	LDI  R30,LOW(64936)
+	LDI  R31,HIGH(64936)
+_0x8E:
+	STD  Y+10,R30
+	STD  Y+10+1,R31
+; 0000 028F         }
+; 0000 0290         if((last_error<100&&last_error>0)||(last_error>-100&&last_error<0))   //299
+_0x7C:
+	CALL SUBOPT_0x8
+	CPI  R26,LOW(0x64)
+	LDI  R30,HIGH(0x64)
+	CPC  R27,R30
+	BRGE _0x80
+	CALL SUBOPT_0x8
+	CALL __CPW02
+	BRLT _0x82
+_0x80:
+	CALL SUBOPT_0x8
+	LDI  R30,LOW(65436)
+	LDI  R31,HIGH(65436)
+	CP   R30,R26
+	CPC  R31,R27
+	BRGE _0x83
 	LDS  R26,_last_error_S000000D000+1
 	TST  R26
-	BRMI _0x7B
-_0x7C:
-	RJMP _0x78
-_0x7B:
-; 0000 0289             error=0;
+	BRMI _0x82
+_0x83:
+	RJMP _0x7F
+_0x82:
+; 0000 0291             error=0;
 	LDI  R30,LOW(0)
 	STD  Y+10,R30
 	STD  Y+10+1,R30
-; 0000 028A 
-; 0000 028B     }
-_0x78:
+; 0000 0292 
+; 0000 0293     }
+_0x7F:
 _0x77:
-; 0000 028C     motor_speed=error*kp;
+; 0000 0294     motor_speed=error*kp;
 	__GETD1S 12
 	LDD  R26,Y+10
 	LDD  R27,Y+10+1
@@ -2708,16 +2771,16 @@ _0x77:
 	CALL __MULF12
 	CALL __CFD1
 	MOVW R16,R30
-; 0000 028D 
-; 0000 028E //    lcd_clear();
-; 0000 028F //    lcd_put_int(motor_speed);
-; 0000 0290 //    lcd_gotoxy(0,1);
-; 0000 0291 //    lcd_put_int(error);
-; 0000 0292 //    if(error==0&&(!(R_1||R_2||L_2||R_2||L_3||R_3||L_4||R_4||L_5||R_5||L_6||R_6)))
-; 0000 0293 //        Stop();
-; 0000 0294 //    else
 ; 0000 0295 
-; 0000 0296     Move((MAX_STRAIGHT-motor_speed),(MAX_STRAIGHT+motor_speed));
+; 0000 0296 //    lcd_clear();
+; 0000 0297 //    lcd_put_int(motor_speed);
+; 0000 0298 //    lcd_gotoxy(0,1);
+; 0000 0299 //    lcd_put_int(error);
+; 0000 029A //    if(error==0&&(!(R_1||R_2||L_2||R_2||L_3||R_3||L_4||R_4||L_5||R_5||L_6||R_6)))
+; 0000 029B //        Stop();
+; 0000 029C //    else
+; 0000 029D 
+; 0000 029E     Move((MAX_STRAIGHT-motor_speed),(MAX_STRAIGHT+motor_speed));
 	MOVW R30,R6
 	SUB  R30,R16
 	SBC  R31,R17
@@ -2727,35 +2790,35 @@ _0x77:
 	ADD  R26,R6
 	ADC  R27,R7
 	RCALL _Move
-; 0000 0297    if(counter_speed>20)
+; 0000 029F    if(counter_speed>20)
 	LDI  R30,LOW(20)
 	LDI  R31,HIGH(20)
 	CP   R30,R4
 	CPC  R31,R5
-	BRSH _0x7F
-; 0000 0298    {
-; 0000 0299     counter_speed=20;
+	BRSH _0x86
+; 0000 02A0    {
+; 0000 02A1     counter_speed=20;
 	MOVW R4,R30
-; 0000 029A    }
-; 0000 029B 
-; 0000 029C }
-_0x7F:
+; 0000 02A2    }
+; 0000 02A3 
+; 0000 02A4 }
+_0x86:
 	CALL __LOADLOCR6
 	ADIW R28,17
 	RET
 ; .FEND
 ;void digitalize()
-; 0000 029E {
-; 0000 029F     int i=0;
-; 0000 02A0     for(;i<24;i++)
+; 0000 02A6 {
+; 0000 02A7     int i=0;
+; 0000 02A8     for(;i<24;i++)
 ;	i -> R16,R17
-; 0000 02A1     {
-; 0000 02A2         if(ir_sensor[i]>BLACK)//ir_max_min_calibrate[0][i]-60)
-; 0000 02A3             sen[i]=1;
-; 0000 02A4         else
-; 0000 02A5             sen[i]=0;
-; 0000 02A6     }
-; 0000 02A7 }
+; 0000 02A9     {
+; 0000 02AA         if(ir_sensor[i]>BLACK)//ir_max_min_calibrate[0][i]-60)
+; 0000 02AB             sen[i]=1;
+; 0000 02AC         else
+; 0000 02AD             sen[i]=0;
+; 0000 02AE     }
+; 0000 02AF }
 ;//void calibrate()
 ;//{
 ;//    int count=0;
@@ -2883,11 +2946,11 @@ __lcd_write_data:
 _lcd_clear:
 ; .FSTART _lcd_clear
 	LDI  R26,LOW(2)
-	CALL SUBOPT_0xB
+	CALL SUBOPT_0x9
 	LDI  R26,LOW(12)
 	RCALL __lcd_write_data
 	LDI  R26,LOW(1)
-	CALL SUBOPT_0xB
+	CALL SUBOPT_0x9
 	LDI  R30,LOW(0)
 	MOV  R10,R30
 	MOV  R11,R30
@@ -2915,9 +2978,9 @@ _lcd_init:
 	LDI  R26,LOW(20)
 	LDI  R27,0
 	CALL _delay_ms
-	CALL SUBOPT_0xC
-	CALL SUBOPT_0xC
-	CALL SUBOPT_0xC
+	CALL SUBOPT_0xA
+	CALL SUBOPT_0xA
+	CALL SUBOPT_0xA
 	LDI  R26,LOW(32)
 	RCALL __lcd_write_nibble_G100
 	__DELAY_USW 200
@@ -3020,26 +3083,26 @@ SUBOPT_0x4:
 SUBOPT_0x5:
 	__GETB2MN _sen,11
 	LDI  R27,0
-	LDI  R30,LOW(65531)
-	LDI  R31,HIGH(65531)
+	LDI  R30,LOW(65486)
+	LDI  R31,HIGH(65486)
 	CALL __MULW12
 	MOVW R22,R30
 	__GETB2MN _sen,8
 	LDI  R27,0
-	LDI  R30,LOW(65521)
-	LDI  R31,HIGH(65521)
+	LDI  R30,LOW(65456)
+	LDI  R31,HIGH(65456)
 	CALL __MULW12
 	__ADDWRR 22,23,30,31
 	__GETB2MN _sen,9
 	LDI  R27,0
-	LDI  R30,LOW(65476)
-	LDI  R31,HIGH(65476)
+	LDI  R30,LOW(65426)
+	LDI  R31,HIGH(65426)
 	CALL __MULW12
 	__ADDWRR 22,23,30,31
 	__GETB2MN _sen,10
 	LDI  R27,0
-	LDI  R30,LOW(65476)
-	LDI  R31,HIGH(65476)
+	LDI  R30,LOW(65416)
+	LDI  R31,HIGH(65416)
 	CALL __MULW12
 	RET
 
@@ -3049,21 +3112,21 @@ SUBOPT_0x6:
 	ADC  R31,R23
 	MOVW R20,R30
 	__GETB2MN _sen,13
-	LDI  R30,LOW(5)
+	LDI  R30,LOW(50)
 	MUL  R30,R26
 	MOVW R22,R0
 	__GETB2MN _sen,15
-	LDI  R30,LOW(15)
+	LDI  R30,LOW(80)
 	MUL  R30,R26
 	MOVW R30,R0
 	__ADDWRR 22,23,30,31
 	__GETB2MN _sen,14
-	LDI  R30,LOW(60)
+	LDI  R30,LOW(110)
 	MUL  R30,R26
 	MOVW R30,R0
 	__ADDWRR 22,23,30,31
 	__GETB2MN _sen,12
-	LDI  R30,LOW(60)
+	LDI  R30,LOW(120)
 	MUL  R30,R26
 	MOVW R30,R0
 	RET
@@ -3074,35 +3137,21 @@ SUBOPT_0x7:
 	__ADDWRR 22,23,30,31
 	RET
 
-;OPTIMIZER ADDED SUBROUTINE, CALLED 3 TIMES, CODE SIZE REDUCTION:3 WORDS
-SUBOPT_0x8:
-	LDI  R27,0
-	LDI  R30,LOW(64986)
-	LDI  R31,HIGH(64986)
-	RJMP SUBOPT_0x7
-
-;OPTIMIZER ADDED SUBROUTINE, CALLED 3 TIMES, CODE SIZE REDUCTION:3 WORDS
-SUBOPT_0x9:
-	LDI  R27,0
-	LDI  R30,LOW(550)
-	LDI  R31,HIGH(550)
-	RJMP SUBOPT_0x7
-
 ;OPTIMIZER ADDED SUBROUTINE, CALLED 3 TIMES, CODE SIZE REDUCTION:1 WORDS
-SUBOPT_0xA:
+SUBOPT_0x8:
 	LDS  R26,_last_error_S000000D000
 	LDS  R27,_last_error_S000000D000+1
 	RET
 
 ;OPTIMIZER ADDED SUBROUTINE, CALLED 2 TIMES, CODE SIZE REDUCTION:1 WORDS
-SUBOPT_0xB:
+SUBOPT_0x9:
 	CALL __lcd_write_data
 	LDI  R26,LOW(3)
 	LDI  R27,0
 	JMP  _delay_ms
 
 ;OPTIMIZER ADDED SUBROUTINE, CALLED 3 TIMES, CODE SIZE REDUCTION:7 WORDS
-SUBOPT_0xC:
+SUBOPT_0xA:
 	LDI  R26,LOW(48)
 	CALL __lcd_write_nibble_G100
 	__DELAY_USW 200

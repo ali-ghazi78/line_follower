@@ -163,31 +163,31 @@
 ;
 ;
 ;
-;#define E_R_1 5
-;#define E_R_2 15
-;#define E_R_3 60
-;#define E_R_4 60
-;#define E_R_5 70
-;#define E_R_6 90
+;#define E_R_1 50
+;#define E_R_2 80
+;#define E_R_3 110
+;#define E_R_4 120
+;#define E_R_5 140
+;#define E_R_6 150
 ;#define E_R_7 450
-;#define E_R_8 450
+;#define E_R_8 500
 ;#define E_R_9 550
-;#define E_R_10 550
-;#define E_R_11 550
-;#define E_R_12 550
+;#define E_R_10 600
+;#define E_R_11 600
+;#define E_R_12 600
 ;
-;#define E_L_1 -5
-;#define E_L_2 -15
-;#define E_L_3 -60
-;#define E_L_4 -60
-;#define E_L_5 -70
-;#define E_L_6 -90
+;#define E_L_1 -50
+;#define E_L_2 -80
+;#define E_L_3 -110
+;#define E_L_4 -120
+;#define E_L_5 -140
+;#define E_L_6 -150
 ;#define E_L_7 -450
-;#define E_L_8 -450
+;#define E_L_8 -500
 ;#define E_L_9 -550
-;#define E_L_10 -550
-;#define E_L_11 -550
-;#define E_L_12 -550
+;#define E_L_10 -600
+;#define E_L_11 -600
+;#define E_L_12 -600
 ;
 ;
 ;unsigned char ir_sensor[24];
@@ -195,8 +195,8 @@
 ;unsigned char black[24];
 ;unsigned char ir_max_min_calibrate[2][24];
 ;unsigned int counter_speed=0;
-;int MAX_STRAIGHT=150 ;
-;int MAX_TURN=220;
+;int MAX_STRAIGHT=210 ;//stable ver 150
+;int MAX_TURN=250;//stable ver 220
 ;
 ;
 ;char ReadMp();
@@ -1970,7 +1970,7 @@
 ; 0000 0287         error=last_error;
 ;PCODE: $000004FE VOL: 0
 ;PCODE: $000004FF VOL: 0
-; 0000 0288         if((last_error<299&&last_error>0)||(last_error>-299&&last_error<0))
+; 0000 0288         if(error>200&&error<500)
 ;PCODE: $00000500 VOL: 0
 ;PCODE: $00000501 VOL: 0
 ;PCODE: $00000502 VOL: 0
@@ -1981,8 +1981,12 @@
 ;PCODE: $00000507 VOL: 0
 ;PCODE: $00000508 VOL: 0
 ;PCODE: $00000509 VOL: 0
+; 0000 0289         {
+; 0000 028A             error=600;
 ;PCODE: $0000050A VOL: 0
 ;PCODE: $0000050B VOL: 0
+; 0000 028B         }
+; 0000 028C         else if(error<-200&&error>-500)
 ;PCODE: $0000050C VOL: 0
 ;PCODE: $0000050D VOL: 0
 ;PCODE: $0000050E VOL: 0
@@ -1990,101 +1994,134 @@
 ;PCODE: $00000510 VOL: 0
 ;PCODE: $00000511 VOL: 0
 ;PCODE: $00000512 VOL: 0
-; 0000 0289             error=0;
 ;PCODE: $00000513 VOL: 0
 ;PCODE: $00000514 VOL: 0
-; 0000 028A 
-; 0000 028B     }
 ;PCODE: $00000515 VOL: 0
 ;PCODE: $00000516 VOL: 0
-; 0000 028C     motor_speed=error*kp;
 ;PCODE: $00000517 VOL: 0
 ;PCODE: $00000518 VOL: 0
+; 0000 028D         {
+; 0000 028E             error=-600;
 ;PCODE: $00000519 VOL: 0
 ;PCODE: $0000051A VOL: 0
+; 0000 028F         }
+; 0000 0290         if((last_error<100&&last_error>0)||(last_error>-100&&last_error<0))   //299
 ;PCODE: $0000051B VOL: 0
 ;PCODE: $0000051C VOL: 0
-; 0000 028D 
-; 0000 028E //    lcd_clear();
-; 0000 028F //    lcd_put_int(motor_speed);
-; 0000 0290 //    lcd_gotoxy(0,1);
-; 0000 0291 //    lcd_put_int(error);
-; 0000 0292 //    if(error==0&&(!(R_1||R_2||L_2||R_2||L_3||R_3||L_4||R_4||L_5||R_5||L_6||R_6)))
-; 0000 0293 //        Stop();
-; 0000 0294 //    else
-; 0000 0295 
-; 0000 0296     Move((MAX_STRAIGHT-motor_speed),(MAX_STRAIGHT+motor_speed));
 ;PCODE: $0000051D VOL: 0
 ;PCODE: $0000051E VOL: 0
 ;PCODE: $0000051F VOL: 0
 ;PCODE: $00000520 VOL: 0
 ;PCODE: $00000521 VOL: 0
 ;PCODE: $00000522 VOL: 0
-; 0000 0297    if(counter_speed>20)
 ;PCODE: $00000523 VOL: 0
 ;PCODE: $00000524 VOL: 0
 ;PCODE: $00000525 VOL: 0
-; 0000 0298    {
-; 0000 0299     counter_speed=20;
 ;PCODE: $00000526 VOL: 0
 ;PCODE: $00000527 VOL: 0
-; 0000 029A    }
-; 0000 029B 
-; 0000 029C }
 ;PCODE: $00000528 VOL: 0
 ;PCODE: $00000529 VOL: 0
 ;PCODE: $0000052A VOL: 0
 ;PCODE: $0000052B VOL: 0
 ;PCODE: $0000052C VOL: 0
-;void digitalize()
-; 0000 029E {
 ;PCODE: $0000052D VOL: 0
 ;PCODE: $0000052E VOL: 0
-; 0000 029F     int i=0;
-; 0000 02A0     for(;i<24;i++)
 ;PCODE: $0000052F VOL: 0
+; 0000 0291             error=0;
 ;PCODE: $00000530 VOL: 0
-;	i -> R16,R17
 ;PCODE: $00000531 VOL: 0
+; 0000 0292 
+; 0000 0293     }
 ;PCODE: $00000532 VOL: 0
 ;PCODE: $00000533 VOL: 0
+; 0000 0294     motor_speed=error*kp;
 ;PCODE: $00000534 VOL: 0
 ;PCODE: $00000535 VOL: 0
 ;PCODE: $00000536 VOL: 0
 ;PCODE: $00000537 VOL: 0
 ;PCODE: $00000538 VOL: 0
 ;PCODE: $00000539 VOL: 0
-; 0000 02A1     {
-; 0000 02A2         if(ir_sensor[i]>BLACK)//ir_max_min_calibrate[0][i]-60)
+; 0000 0295 
+; 0000 0296 //    lcd_clear();
+; 0000 0297 //    lcd_put_int(motor_speed);
+; 0000 0298 //    lcd_gotoxy(0,1);
+; 0000 0299 //    lcd_put_int(error);
+; 0000 029A //    if(error==0&&(!(R_1||R_2||L_2||R_2||L_3||R_3||L_4||R_4||L_5||R_5||L_6||R_6)))
+; 0000 029B //        Stop();
+; 0000 029C //    else
+; 0000 029D 
+; 0000 029E     Move((MAX_STRAIGHT-motor_speed),(MAX_STRAIGHT+motor_speed));
 ;PCODE: $0000053A VOL: 0
 ;PCODE: $0000053B VOL: 0
 ;PCODE: $0000053C VOL: 0
 ;PCODE: $0000053D VOL: 0
 ;PCODE: $0000053E VOL: 0
-; 0000 02A3             sen[i]=1;
 ;PCODE: $0000053F VOL: 0
+; 0000 029F    if(counter_speed>20)
 ;PCODE: $00000540 VOL: 0
 ;PCODE: $00000541 VOL: 0
 ;PCODE: $00000542 VOL: 0
-; 0000 02A4         else
+; 0000 02A0    {
+; 0000 02A1     counter_speed=20;
 ;PCODE: $00000543 VOL: 0
 ;PCODE: $00000544 VOL: 0
-; 0000 02A5             sen[i]=0;
+; 0000 02A2    }
+; 0000 02A3 
+; 0000 02A4 }
 ;PCODE: $00000545 VOL: 0
 ;PCODE: $00000546 VOL: 0
 ;PCODE: $00000547 VOL: 0
 ;PCODE: $00000548 VOL: 0
-; 0000 02A6     }
 ;PCODE: $00000549 VOL: 0
+;void digitalize()
+; 0000 02A6 {
 ;PCODE: $0000054A VOL: 0
 ;PCODE: $0000054B VOL: 0
+; 0000 02A7     int i=0;
+; 0000 02A8     for(;i<24;i++)
 ;PCODE: $0000054C VOL: 0
 ;PCODE: $0000054D VOL: 0
+;	i -> R16,R17
 ;PCODE: $0000054E VOL: 0
-; 0000 02A7 }
 ;PCODE: $0000054F VOL: 0
 ;PCODE: $00000550 VOL: 0
 ;PCODE: $00000551 VOL: 0
+;PCODE: $00000552 VOL: 0
+;PCODE: $00000553 VOL: 0
+;PCODE: $00000554 VOL: 0
+;PCODE: $00000555 VOL: 0
+;PCODE: $00000556 VOL: 0
+; 0000 02A9     {
+; 0000 02AA         if(ir_sensor[i]>BLACK)//ir_max_min_calibrate[0][i]-60)
+;PCODE: $00000557 VOL: 0
+;PCODE: $00000558 VOL: 0
+;PCODE: $00000559 VOL: 0
+;PCODE: $0000055A VOL: 0
+;PCODE: $0000055B VOL: 0
+; 0000 02AB             sen[i]=1;
+;PCODE: $0000055C VOL: 0
+;PCODE: $0000055D VOL: 0
+;PCODE: $0000055E VOL: 0
+;PCODE: $0000055F VOL: 0
+; 0000 02AC         else
+;PCODE: $00000560 VOL: 0
+;PCODE: $00000561 VOL: 0
+; 0000 02AD             sen[i]=0;
+;PCODE: $00000562 VOL: 0
+;PCODE: $00000563 VOL: 0
+;PCODE: $00000564 VOL: 0
+;PCODE: $00000565 VOL: 0
+; 0000 02AE     }
+;PCODE: $00000566 VOL: 0
+;PCODE: $00000567 VOL: 0
+;PCODE: $00000568 VOL: 0
+;PCODE: $00000569 VOL: 0
+;PCODE: $0000056A VOL: 0
+;PCODE: $0000056B VOL: 0
+; 0000 02AF }
+;PCODE: $0000056C VOL: 0
+;PCODE: $0000056D VOL: 0
+;PCODE: $0000056E VOL: 0
 ;//void calibrate()
 ;//{
 ;//    int count=0;
