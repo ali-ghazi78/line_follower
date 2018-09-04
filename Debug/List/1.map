@@ -24,15 +24,15 @@ _lcd_maxx                                                                       
 FLASH Allocation [words]
 Function                                                                          Address   Size
 ------------------------------------------------------------------------------------------------
-read_adc                                                                          0x0008E     20
-main                                                                              0x000A2    108
-init                                                                              0x0010E      3
-Go                                                                                0x001A2     13
-Left                                                                              0x001AF     11
-Back                                                                              0x001C3     15
-Move                                                                              0x001D2    117
-controller                                                                        0x00247    439
-_lcd_write_nibble_G100                                                            0x003FE     20
-_lcd_write_data                                                                   0x00412     12
-lcd_clear                                                                         0x0041E     12
-lcd_init                                                                          0x0042A     46
+read_adc                                                                          0x00091     20
+main                                                                              0x000A5    108
+init                                                                              0x00111      3
+Go                                                                                0x001A5     13
+Left                                                                              0x001B2     11
+Back                                                                              0x001C6     15
+Move                                                                              0x001D5    117
+controller                                                                        0x0024A    438
+_lcd_write_nibble_G100                                                            0x00400     20
+_lcd_write_data                                                                   0x00414     12
+lcd_clear                                                                         0x00420     12
+lcd_init                                                                          0x0042C     46

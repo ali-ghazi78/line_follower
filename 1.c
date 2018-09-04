@@ -106,11 +106,11 @@ return ADCH;
 
 
 
-#define E_R_1 50
-#define E_R_2 80
-#define E_R_3 110
-#define E_R_4 120
-#define E_R_5 140
+#define E_R_1 40
+#define E_R_2 60
+#define E_R_3 80
+#define E_R_4 100
+#define E_R_5 120
 #define E_R_6 150
 #define E_R_7 450
 #define E_R_8 500
@@ -119,11 +119,11 @@ return ADCH;
 #define E_R_11 600
 #define E_R_12 600
 
-#define E_L_1 -50
-#define E_L_2 -80
-#define E_L_3 -110
-#define E_L_4 -120
-#define E_L_5 -140
+#define E_L_1 -40
+#define E_L_2 -60
+#define E_L_3 -80
+#define E_L_4 -100
+#define E_L_5 -120
 #define E_L_6 -150
 #define E_L_7 -450
 #define E_L_8 -500
@@ -133,12 +133,13 @@ return ADCH;
 #define E_L_12 -600
 
 
+
 unsigned char ir_sensor[24];
 unsigned char sen[24];
 unsigned char black[24];
 unsigned char ir_max_min_calibrate[2][24];
 unsigned int counter_speed=0;
-int MAX_STRAIGHT=210 ;//stable ver 150
+int MAX_STRAIGHT=195 ;//stable ver 150   //210 11.4
 int MAX_TURN=250;//stable ver 220
 
 
@@ -603,7 +604,9 @@ void lcd_show_sensor()
 void controller(char f)
 {
     static int last_error=0;
+    int error_i;
     float kp=.6;
+    float ki=0;
     int motor_speed=0;
     int sum_r=0;
     int sum_l=0;
@@ -666,6 +669,9 @@ void controller(char f)
 //    if(error==0&&(!(R_1||R_2||L_2||R_2||L_3||R_3||L_4||R_4||L_5||R_5||L_6||R_6)))
 //        Stop();
 //    else
+
+    //error_i+=error;
+    //motor_speed+=error_i*ki;
 
     Move((MAX_STRAIGHT-motor_speed),(MAX_STRAIGHT+motor_speed));
    if(counter_speed>20)
