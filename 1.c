@@ -30,9 +30,11 @@ Data Stack size         : 1024
 
 unsigned char read_adc(unsigned char adc_input)
 {
+    int o=0;
 ADMUX=adc_input | ADC_VREF_TYPE;
 // Delay needed for the stabilization of the ADC input voltage
 delay_us(10);
+
 // Start the AD conversion
 ADCSRA|=(1<<ADSC);
 // Wait for the AD conversion to complete
@@ -136,11 +138,11 @@ unsigned char sen[24];
 unsigned char black[24];
 unsigned char ir_max_min_calibrate[2][24];
 unsigned int counter_speed=0;
-int MAX_STRAIGHT=170;
-int MAX_TURN=230;
+int MAX_STRAIGHT=150 ;
+int MAX_TURN=220;
 
 
-void ReadMp();
+char ReadMp();
 void Back(unsigned char motor_r_speed,unsigned char motor_l_speed);
 void Left(unsigned char motor_r_speed,unsigned char motor_l_speed);
 void Right(unsigned char motor_r_speed,unsigned char motor_l_speed);
@@ -359,13 +361,13 @@ init();
 //calibrate();
     while (1)
     {
-        ReadMp();
-        if(Inverse_is_black())//if bc was black
+        if(ReadMp()) //if bc was black
         {
             controller(1);
         }
         else
         {
+
             controller(0);
         }
    //       lcd_show_sensor();
@@ -407,10 +409,11 @@ int Inverse_is_black()
         return 0;
     }
 }
-void ReadMp()
+char ReadMp()
 {
     static unsigned int ir_sensor_back[24];
     unsigned char i=0;
+    unsigned int black_counter=0;
     for(;i<8;i++)
     {
         S_A=i%2;
@@ -448,7 +451,21 @@ void ReadMp()
         i--;
         ir_sensor[i+16]=read_adc(2);
     }
-    digitalize();
+    for(i=0;i<24;i++)
+    {
+        if(ir_sensor[i]>BLACK){//ir_max_min_calibrate[0][i]-60)
+            sen[i]=1;
+            black_counter++;
+        }
+        else
+            sen[i]=0;
+    }
+
+    if(black_counter>=12)
+        return 1;
+    else
+        return 0;
+    //digitalize();
 
 }
 void Go(unsigned char motor_r_speed,unsigned char motor_l_speed)
@@ -608,11 +625,11 @@ void controller(char f)
     else//bg is white
     {
     }
-    if(R_1||R_2||L_2||R_2||L_3||R_3)
+    if(L_1||R_1||R_2||L_2||L_3||R_3||L_4||R_4)
     {
         last_error=0;
-        sum_l=(L_1*E_L_1)+(L_2*E_L_2)+(L_3*E_L_3);
-        sum_r=(R_1*E_R_1)+(R_2*E_R_2)+(R_3*E_R_3);
+        sum_l=(L_1*E_L_1)+(L_2*E_L_2)+(L_3*E_L_3)+(L_4*E_L_4);
+        sum_r=(R_1*E_R_1)+(R_2*E_R_2)+(R_3*E_R_3)+(R_4*E_R_4);
         counter_speed+=1;
     }
     else
@@ -660,82 +677,82 @@ void digitalize()
             sen[i]=0;
     }
 }
-void calibrate()
-{
-    int count=0;
-    unsigned char i=0;
-    for(i=0;i<24;i++)
-    {
-         ir_max_min_calibrate[0][i]=40;
-         ir_max_min_calibrate[1][i]=40;
-    }
-    Go(50,50);
-    while(count<5)
-    {
-        for(i=0;i<24;i++)
-        {   int temp=0;
-            ReadMp();
-            if(ir_sensor[i]>ir_max_min_calibrate[0][i])
-            {
-              ir_max_min_calibrate[0][i]=ir_sensor[i];
-            }
-            if(ir_sensor[i]<ir_max_min_calibrate[1][i])
-            {
-              ir_max_min_calibrate[1][i]=ir_sensor[i];
-            }
-
-        }
-        count++;
-    }
-    Stop();
-    delay_ms(100);
-    Back(50,50);
-    count=0;
-    while(count<5)
-    {
-        for(i=0;i<24;i++)
-        {   int temp=0;
-            ReadMp();
-            if(ir_sensor[i]>ir_max_min_calibrate[0][i])
-            {
-              ir_max_min_calibrate[0][i]=ir_sensor[i];
-            }
-            if(ir_sensor[i]<ir_max_min_calibrate[1][i])
-            {
-              ir_max_min_calibrate[1][i]=ir_sensor[i];
-            }
-
-        }
-        count++;
-    }
-
+//void calibrate()
+//{
+//    int count=0;
+//    unsigned char i=0;
 //    for(i=0;i<24;i++)
 //    {
-//        my_put_int(i);
-//        my_putstr(":max:");
-//        my_put_int(ir_max_min_calibrate[0][i]);
-//        my_putstr("\t");
-//        my_putstr("min:");
-//        my_put_int(ir_max_min_calibrate[1][i]);
-//        putchar('\n');
+//         ir_max_min_calibrate[0][i]=40;
+//         ir_max_min_calibrate[1][i]=40;
 //    }
-
-
-    Stop();
-
-}
-//void my_put_int(int data)
-//{
-//    unsigned char f[50];
-//    sprintf(f,”%d”,data);
-//    my_putstr(f);
+//    Go(50,50);
+//    while(count<5)
+//    {
+//        for(i=0;i<24;i++)
+//        {   int temp=0;
+//            ReadMp();
+//            if(ir_sensor[i]>ir_max_min_calibrate[0][i])
+//            {
+//              ir_max_min_calibrate[0][i]=ir_sensor[i];
+//            }
+//            if(ir_sensor[i]<ir_max_min_calibrate[1][i])
+//            {
+//              ir_max_min_calibrate[1][i]=ir_sensor[i];
+//            }
+//
+//        }
+//        count++;
+//    }
+//    Stop();
+//    delay_ms(100);
+//    Back(50,50);
+//    count=0;
+//    while(count<5)
+//    {
+//        for(i=0;i<24;i++)
+//        {   int temp=0;
+//            ReadMp();
+//            if(ir_sensor[i]>ir_max_min_calibrate[0][i])
+//            {
+//              ir_max_min_calibrate[0][i]=ir_sensor[i];
+//            }
+//            if(ir_sensor[i]<ir_max_min_calibrate[1][i])
+//            {
+//              ir_max_min_calibrate[1][i]=ir_sensor[i];
+//            }
+//
+//        }
+//        count++;
+//    }
+//
+////    for(i=0;i<24;i++)
+////    {
+////        my_put_int(i);
+////        my_putstr(":max:");
+////        my_put_int(ir_max_min_calibrate[0][i]);
+////        my_putstr("\t");
+////        my_putstr("min:");
+////        my_put_int(ir_max_min_calibrate[1][i]);
+////        putchar('\n');
+////    }
+//
+//
+//    Stop();
+//
 //}
-//void my_putstr( char *f)
-//{
-//     int i=0;
-//      while(f[i]!=‘\0’)
-//      {
-//           putchar(f[i]);
-//           i++;
-//       }
-//}
+////void my_put_int(int data)
+////{
+////    unsigned char f[50];
+////    sprintf(f,”%d”,data);
+////    my_putstr(f);
+////}
+////void my_putstr( char *f)
+////{
+////     int i=0;
+////      while(f[i]!=‘\0’)
+////      {
+////           putchar(f[i]);
+////           i++;
+////       }
+////}
