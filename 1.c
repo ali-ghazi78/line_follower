@@ -50,7 +50,7 @@ return ADCH;
 #define IN1 PORTB.4
 #define IN2 PORTB.7
 
-#define BLACK 120
+#define BLACK 100
 
 #define R_12 sen[19]
 #define R_11 sen[16]
@@ -140,7 +140,7 @@ unsigned char black[24];
 unsigned char ir_max_min_calibrate[2][24];
 unsigned int counter_speed=0;
 int MAX_STRAIGHT=195 ;//stable ver 150   //210 11.4
-int MAX_TURN=250;//stable ver 220
+int MAX_TURN=210;//stable ver 220
 
 
 char ReadMp();
@@ -359,9 +359,9 @@ DDRB.7=1;
 //-----
 
 init();
-//calibrate();
     while (1)
     {
+
         if(ReadMp()) //if bc was black
         {
             controller(1);
@@ -370,9 +370,8 @@ init();
         {
 
             controller(0);
+
         }
-   //       lcd_show_sensor();
- //       ReadMp();
 
 
 
@@ -529,14 +528,14 @@ void Move(int motor_r_speed,int motor_l_speed)
     if(motor_r_speed<0)
     {
         if(motor_r_speed<(-1*(MAX_TURN)))
-            motor_r_speed=-1*(MAX_TURN);
+            motor_r_speed=-1*(250);
         if(motor_l_speed>MAX_TURN)
             motor_l_speed=MAX_TURN;
     }
     else if(motor_l_speed<0)
     {
         if(motor_l_speed<(-1*(MAX_TURN)))
-            motor_l_speed=-1*(MAX_TURN);
+            motor_l_speed=-1*(250);
         if(motor_r_speed>MAX_TURN)
             motor_r_speed=MAX_TURN;
    }
@@ -628,11 +627,46 @@ void controller(char f)
     else//bg is white
     {
     }
-    if(L_1||R_1||R_2||L_2||L_3||R_3||L_4||R_4)
+    if(L_1||R_1||R_2||L_2||L_3||R_3||L_4||R_4||L_5||R_5||R_6||L_6||L_7||R_7)
     {
         last_error=0;
-        sum_l=(L_1*E_L_1)+(L_2*E_L_2)+(L_3*E_L_3)+(L_4*E_L_4);
-        sum_r=(R_1*E_R_1)+(R_2*E_R_2)+(R_3*E_R_3)+(R_4*E_R_4);
+        if(L_1||R_1||R_2||L_2||L_3||R_3)
+        {
+            sum_l=(L_1*E_L_1)+(L_2*E_L_2)+(L_3*E_L_3);//+(L_4*E_L_4)+(L_5*E_L_5)+(L_6*E_L_6);
+            sum_r=(R_1*E_R_1)+(R_2*E_R_2)+(R_3*E_R_3);//+(R_4*E_R_4)+(R_5*E_R_5)+(R_6*E_R_6);
+            //Go(50,0);
+        }
+        else if(L_4||R_4)
+        {
+            sum_l=(L_1*E_L_1)+(L_2*E_L_2)+(L_3*E_L_3)+(L_4*E_L_4);
+            sum_r=(R_1*E_R_1)+(R_2*E_R_2)+(R_3*E_R_3)+(R_4*E_R_4);
+            //Go(0,50);
+        }
+        else if(L_5||R_5)
+        {
+            sum_l=(L_1*E_L_1)
+            +(L_2*E_L_2)+
+            (L_3*E_L_3)+
+            (L_4*E_L_4)+
+            (L_5*E_L_5);
+            //+(L_6*E_L_6);
+            sum_r=(R_1*E_R_1)+(R_2*E_R_2)+(R_3*E_R_3)+(R_4*E_R_4)+(R_5*E_R_5);//+(R_6*E_R_6);
+            //Go(50,50);
+        }
+        else if(L_6||R_6)
+        {
+            sum_l=(L_1*E_L_1)+(L_2*E_L_2)+(L_3*E_L_3)+(L_4*E_L_4)+(L_5*E_L_5)+(L_6*E_L_6);
+            sum_r=(R_1*E_R_1)+(R_2*E_R_2)+(R_3*E_R_3)+(R_4*E_R_4)+(R_5*E_R_5)+(R_6*E_R_6);
+            //Right(50,50);
+
+        }
+        else if(L_7||R_7)
+        {
+            sum_l=(L_1*E_L_1)+(L_2*E_L_2)+(L_3*E_L_3)+(L_7*E_L_7)+(L_5*E_L_5)+(L_6*E_L_6);
+            sum_r=(R_1*E_R_1)+(R_2*E_R_2)+(R_3*E_R_3)+(R_7*E_R_7)+(R_5*E_R_5)+(R_6*E_R_6);
+            //Left(50,50);
+        }
+
         counter_speed+=1;
     }
     else
@@ -640,6 +674,7 @@ void controller(char f)
         sum_l=(L_1*E_L_1)+(L_2*E_L_2)+(L_3*E_L_3)+(L_4*E_L_4)+(L_5*E_L_5)+(L_6*E_L_6)+(L_7*E_L_7)+(L_8*E_L_8)+(L_9*E_L_9)+(L_10*E_L_10)+(L_11*E_L_11)+(L_12*E_L_12);
         sum_r=(R_1*E_R_1)+(R_2*E_R_2)+(R_3*E_R_3)+(R_4*E_R_4)+(R_5*E_R_5)+(R_6*E_R_6)+(R_7*E_R_7)+(R_8*E_R_8)+(R_9*E_R_9)+(R_10*E_R_10)+(R_11*E_R_11)+(R_12*E_R_12);
         counter_speed=0;
+        //Back(50,50);
     }
 
     error=sum_r+sum_l;
@@ -673,7 +708,7 @@ void controller(char f)
     //error_i+=error;
     //motor_speed+=error_i*ki;
 
-    Move((MAX_STRAIGHT-motor_speed),(MAX_STRAIGHT+motor_speed));
+   Move((MAX_STRAIGHT-motor_speed),(MAX_STRAIGHT+motor_speed));
    if(counter_speed>20)
    {
     counter_speed=20;
